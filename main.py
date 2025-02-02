@@ -1,8 +1,9 @@
 import sys
-import json
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QPushButton, QFrame, QMenu, QInputDialog, QColorDialog, QFileDialog, QMessageBox
-)
-from PyQt6.QtCore import Qt, QPoint
 
+from main_gui import *
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
