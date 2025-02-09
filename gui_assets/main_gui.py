@@ -1,12 +1,15 @@
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QIcon, QLinearGradient, QColor, QPainter
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
-    QMainWindow, QVBoxLayout, QHBoxLayout, QLabel, QToolButton,
-    QWidget, QFrame, QSizePolicy, QSpacerItem, QComboBox, QLineEdit, QGridLayout,
-    QFileDialog, QPushButton
+    QMainWindow, QVBoxLayout, QWidget, QFrame, QSizePolicy, QGridLayout,
+    QGraphicsDropShadowEffect
 )
 from gui_assets.title_bar import TitleBar
-from gui_assets.side_bar import SideBar, ButtonPreview
+from gui_assets.main_window.side_bar import SideBar
+
+
+#was working on grid layout to include spacers and all the contents
+#need spacers since shadow fx don't appear on the margins for some reason
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -14,67 +17,72 @@ class MainWindow(QMainWindow):
         # Give our window a title
         self.setWindowTitle("KeySync")
         # Set the window size
-        self.resize(1200, 600)
+        self.resize(1280, 580)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
+        side_bar_shadow = QGraphicsDropShadowEffect(self)
+        side_bar_shadow.setBlurRadius(15)
+        side_bar_shadow.setOffset(0)
+        side_bar_shadow.setColor(QColor(0, 0, 0, 100))
+
         # Central widget for the main window
-        central_widget = QWidget(self)
-        central_widget.setObjectName("Container")
-        central_widget.setStyleSheet(
+        main_window = QWidget(self)
+        main_window.setObjectName("Container")
+        main_window.setStyleSheet(
             """#Container {
                 background: qlineargradient(
-                    x1: 0, y1: 0, x2: 1, y2: 1,
-                    stop: 0 #1d242e,
-                    stop: 1 #000000
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #093d70,
+                    stop: 1 #737373
                 );
                 border-radius: 8px;
             }"""
         )
-
-        # Custom title bar
-        self.title_bar = TitleBar(self)
-
         # Layout for the central widget
-        central_widget_layout = QVBoxLayout()
-        central_widget_layout.setContentsMargins(0, 0, 0, 0)  # No margins for fullscreen effect
+        main_window_layout = QGridLayout()
+        # set margins to zero since spacer items allow for better shadowing
+        main_window_layout.setContentsMargins(10, 0, 10, 10)
+        #set spacing between items
+        main_window_layout.setSpacing(10)
 
-        # Add the title bar at the top
-        central_widget_layout.addWidget(self.title_bar)
+        #add custom title bar
+        title_bar = TitleBar(self)
+        title_bar_layout = QVBoxLayout()
+        title_bar_layout.setContentsMargins(0,0,0,0)
+        title_bar_layout.setSpacing(0)
+        title_bar_layout.addWidget(title_bar)
+        #add the title bar at the top
+        #main_window_layout.addWidget(title_bar,0,0,1,2, Qt.AlignmentFlag.AlignTop)
 
-        # Workspace layout for the rest of the content
-        work_space_layout = QVBoxLayout()
-        work_space_layout.setContentsMargins(11, 11, 11, 11)
-
-        # Layout to position the sidebar alongside the frame
-        side_and_frame_layout = QHBoxLayout()
-        side_and_frame_layout.setContentsMargins(0, 0, 0, 0)  # No margins for proper alignment
 
         # Sidebar widget (Add this on the left of the frame)
-        self.button_preview = ButtonPreview(self)  # Create a button preview
-        self.side_bar = SideBar(self, self.button_preview)  # Sidebar needs the preview button
-        side_and_frame_layout.addWidget(self.side_bar)
+        side_bar = SideBar(self)  # Sidebar needs the preview button
+        side_bar.setGraphicsEffect(side_bar_shadow)
+        main_window_layout.addWidget(side_bar, 0, 0, 2, 1)
 
         # Frame widget (Add this on the right of the sidebar)
-        self.frame = QFrame()
-        self.frame.setFixedSize(800, 480)
-        self.frame.setStyleSheet("""
-            QFrame {
+        frame = QFrame()
+        frame.setFixedSize(800, 480)
+        frame.setObjectName("frame")
+        frame.setFrameShape(QFrame.Shape.WinPanel)
+        frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        frame.setStyleSheet("""
+            frame {
                 background-color: #f0f0f0; 
                 border: 0px solid #ccc;
+                border-radius: 0px;
             }
         """)
-        side_and_frame_layout.addWidget(self.frame, stretch=1)
+        #frame.setGraphicsEffect(shadow)
+        main_window_layout.addWidget(frame, 1, 1) #stretch=1
 
         # Add side_and_frame_layout to the workspace layout
-        work_space_layout.addLayout(side_and_frame_layout)
-
-        # Add the workspace to the central widget layout
-        central_widget_layout.addLayout(work_space_layout)
 
         # Set the layout for the central widget
-        central_widget.setLayout(central_widget_layout)
-        self.setCentralWidget(central_widget)
+        title_bar_layout.addLayout(main_window_layout)
+        main_window.setLayout(title_bar_layout)
+        self.setCentralWidget(main_window)
 
 
 
