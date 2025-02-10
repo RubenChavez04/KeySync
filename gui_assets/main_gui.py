@@ -4,8 +4,11 @@ from PyQt6.QtWidgets import (
     QMainWindow, QVBoxLayout, QWidget, QFrame, QSizePolicy, QGridLayout,
     QGraphicsDropShadowEffect
 )
-from gui_assets.title_bar import TitleBar
-from gui_assets.main_window.side_bar import SideBar
+
+from gui_assets.buttons_sliders_etc.page import Page
+from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
+from gui_assets.buttons_sliders_etc.title_bar import TitleBar
+from gui_assets.main_window_complete_widgets.side_bar import SideBar
 
 
 #was working on grid layout to include spacers and all the contents
@@ -21,10 +24,9 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        side_bar_shadow = QGraphicsDropShadowEffect(self)
-        side_bar_shadow.setBlurRadius(15)
-        side_bar_shadow.setOffset(0)
-        side_bar_shadow.setColor(QColor(0, 0, 0, 100))
+        side_bar_shadow = ShadowFX(self)
+        frame_shadow = ShadowFX(self)
+        top_bar_shadow = ShadowFX(self)
 
         # Central widget for the main window
         main_window = QWidget(self)
@@ -62,18 +64,8 @@ class MainWindow(QMainWindow):
         main_window_layout.addWidget(side_bar, 0, 0, 2, 1)
 
         # Frame widget (Add this on the right of the sidebar)
-        frame = QFrame()
-        frame.setFixedSize(800, 480)
-        frame.setObjectName("frame")
-        frame.setFrameShape(QFrame.Shape.WinPanel)
-        frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        frame.setStyleSheet("""
-            frame {
-                background-color: #f0f0f0; 
-                border: 0px solid #ccc;
-                border-radius: 0px;
-            }
-        """)
+        frame = Page(self)
+        frame.setGraphicsEffect(frame_shadow)
         #frame.setGraphicsEffect(shadow)
         main_window_layout.addWidget(frame, 1, 1) #stretch=1
 

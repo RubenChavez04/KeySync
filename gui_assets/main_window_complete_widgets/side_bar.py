@@ -1,25 +1,12 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QPixmap, QColor, QFont
-from PyQt6.QtWidgets import (QWidget, QSizePolicy, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QFrame,
-                             QGridLayout, QToolButton, QGraphicsDropShadowEffect)
-from gui_assets.buttons_sliders_etc.QToggle import QToggle
-#imports for testing widget
-from PyQt6.QtWidgets import QApplication, QMainWindow
-import sys
+from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import (QWidget, QSizePolicy, QFrame,
+                             QGridLayout, QGraphicsDropShadowEffect)
 
-from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
-from gui_assets.buttons_sliders_etc.sidebar_button_mini import SideBarToolButtonMini
-from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
+from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
 from gui_assets.widgets.action_buttons_widget import ActionButtonsWidget
 from gui_assets.widgets.appearance_widget import AppearanceWidget
 
-
-class ShadowFX(QGraphicsDropShadowEffect):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.setBlurRadius(15)
-        self.setOffset(0)
-        self.setColor(QColor(0, 0, 0, 150))
 
 class SideBar(QWidget):
     def __init__(self, parent):
@@ -56,24 +43,3 @@ class SideBar(QWidget):
         action_buttons = ActionButtonsWidget(frame)
         action_buttons.setGraphicsEffect(actions_shadow)
         frame_layout.addWidget(action_buttons,1,0)
-
-class TestWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Test Window")
-        self.setStyleSheet("""
-        QMainWindow {
-            background: black;
-        }""")
-        self.test_layout = QVBoxLayout()
-        self.setCentralWidget(QWidget(self))
-        self.centralWidget().setLayout(self.test_layout)
-        self.side_bar = SideBar(self)
-        self.test_layout.addWidget(self.side_bar)
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    window = TestWindow()
-    window.show()
-    sys.exit(app.exec())
