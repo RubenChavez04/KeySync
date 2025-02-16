@@ -1,12 +1,12 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
-    QMainWindow, QVBoxLayout, QWidget, QFrame, QSizePolicy, QGridLayout,
-    QGraphicsDropShadowEffect
+    QMainWindow, QVBoxLayout, QWidget, QGridLayout,
+    QStackedLayout
 )
 
 from gui_assets.buttons_sliders_etc.page import Page
 from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
+from gui_assets.buttons_sliders_etc.tab_bar import CustomTabWidget
 from gui_assets.buttons_sliders_etc.title_bar import TitleBar
 from gui_assets.main_window_complete_widgets.side_bar import SideBar
 
@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         # Give our window a title
         self.setWindowTitle("KeySync")
         # Set the window size
-        self.resize(1280, 580)
+        self.setFixedSize(1280, 580)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -61,13 +61,23 @@ class MainWindow(QMainWindow):
         # Sidebar widget (Add this on the left of the frame)
         side_bar = SideBar(self)  # Sidebar needs the preview button
         side_bar.setGraphicsEffect(side_bar_shadow)
+        main_window_layout.setColumnStretch(0, 1)
         main_window_layout.addWidget(side_bar, 0, 0, 2, 1)
 
         # Frame widget (Add this on the right of the sidebar)
-        frame = Page(self)
-        frame.setGraphicsEffect(frame_shadow)
+        self.page_container = QStackedLayout()
+        self.page_container.setContentsMargins(0, 0, 0, 0)
+        self.pages = []
         #frame.setGraphicsEffect(shadow)
-        main_window_layout.addWidget(frame, 1, 1) #stretch=1
+        main_window_layout.addLayout(self.page_container, 1, 1) #stretch=1
+
+        self.tab_widget = CustomTabWidget(self)
+        main_window_layout.addWidget(self.tab_widget, 0, 1)
+
+
+        self.tab_widget.tab_changed.connect(self.switch_or_add_page)
+        self.add_new_page()
+
 
         # Add side_and_frame_layout to the workspace layout
 
@@ -76,21 +86,15 @@ class MainWindow(QMainWindow):
         main_window.setLayout(title_bar_layout)
         self.setCentralWidget(main_window)
 
+    def add_new_page(self):
+        page_shadow = ShadowFX(self)
+        page= Page(self)
+        page.setGraphicsEffect(page_shadow)
+        self.pages.append(page)
+        self.page_container.addWidget(page)
 
-
-
-
-#class Button(QWidget):
-#    def __init__(self, appName):
-
-
-
-#        def
-# thinking about making the frame its own class to simplify main window code
-# possibly do this for all elements that get added to the main window just to keep
-# things a bit more simplified, easier to add, and easier to debug
-# class Frame(QFrame):
-#     def __init__(self, parent):
-#         super().__init__(parent)
-#         self.setFrameShape(QFrame.Shape.StyledPanel)
-#         self.setFrameShadow(QFrame.Shadow.Raised)
+    def switch_or_add_page(self,index):
+        if index >= len(self.pages):
+            # Add a new page if it doesn't exist
+            self.add_new_page()
+        self.page_container.setCurrentWidget(self.pages[index])

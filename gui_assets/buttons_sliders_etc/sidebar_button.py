@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import QToolButton
 
 
 class SideBarToolButton(QToolButton):
-    def __init__(self, parent=None, image_path=None, text=None, font_size=15, tooltip=None, width =200):
+    def __init__(self, parent=None, image_path=None, text=None,
+                 font_size=15, tooltip=None, width =200):
         super().__init__(parent)
         self.setFixedSize(width, 40)
         self.setStyleSheet("""
@@ -13,7 +14,8 @@ class SideBarToolButton(QToolButton):
             color: black;
         }""")
 
-        #added this to simplify adding images and button labels, one or the other for a cleaner look
+        #added this to simplify adding images and button labels, one
+        # or the other for a cleaner look
         if image_path:
             pixmap = QPixmap(image_path)
             if not pixmap.isNull():
@@ -29,4 +31,5 @@ class SideBarToolButton(QToolButton):
             self.setToolTip(tooltip)
         if text:
             self.setText(text)
-            self.setFont(QFont("Microsoft YaHei UI", font_size, QFont.Weight.Bold))
+            self.setFont(QFont("Microsoft YaHei UI", font_size,
+                               QFont.Weight.Bold))
