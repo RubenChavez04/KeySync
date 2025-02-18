@@ -13,7 +13,9 @@ class RenamableTabButton(QPushButton):
             QPushButton {
                 background-color: lightgray;
                 border: 1px solid gray;
-                border-radius: 10px;
+                border-radius: 5px;
+                color: black;
+                font-weight: bold;
             }
             QPushButton:checked {
                 background-color: gray;
@@ -64,8 +66,7 @@ class CustomTabWidget(QWidget):
         # Internal frame containing all tab elements
         self.tabs_frame = QFrame(self)
         self.tabs_frame.setFrameShape(QFrame.Shape.Box)
-        self.tabs_frame.setFixedSize(800, 40)
-        self.tabs_frame.setStyleSheet("border-radius: 8px")
+        self.tabs_frame.setFixedSize(800,40)
 
         # Layout for the internal frame
         self.frame_layout = QVBoxLayout(self.tabs_frame)
@@ -77,13 +78,14 @@ class CustomTabWidget(QWidget):
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setViewportMargins(0, 0, 0, 0)
 
         # Container widget inside the scroll area
         self.tabs_widget = QWidget(self.scroll_area)
         self.tabs_layout = QHBoxLayout(self.tabs_widget)  # Horizontal layout for holding tab buttons
-        self.tabs_layout.setContentsMargins(5, 5, 5, 5)
+        self.tabs_layout.setContentsMargins(0, 0, 0, 0)
         self.tabs_layout.setSpacing(5)  # Small space between tabs
-        self.tabs_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # Explicitly align tabs to the left
+        self.tabs_layout.setAlignment(Qt.AlignmentFlag.AlignLeft |Qt.AlignmentFlag.AlignTop)  # Explicitly align tabs to the left
         self.tabs_widget.setLayout(self.tabs_layout)
         self.scroll_area.setWidget(self.tabs_widget)
 
@@ -101,6 +103,25 @@ class CustomTabWidget(QWidget):
 
         # Initialize the first tab and the add button
         self.init_first_tab()
+
+        # Styling the frame
+        self.tabs_frame.setStyleSheet("""
+            QFrame {
+                background-color: #303030;
+                border: 2px solid #303030;
+                border-radius: 8px; /* Rounded edges */
+            }
+        """)
+
+        # Styling the scroll area and its slider
+
+        # Styling tabs_widget (the area where buttons are displayed)
+        self.tabs_widget.setStyleSheet("""
+            QWidget {
+                background-color: #303030; /* Matches the QFrame color */
+                border: none; /* Removes any border that creates dark areas */
+            }
+        """)
 
     def init_first_tab(self):
         """Initialize the first tab and the add button."""
@@ -133,7 +154,8 @@ class CustomTabWidget(QWidget):
             QPushButton {
                 background-color: lightgray;
                 border: 1px solid darkgray;
-                border-radius: 10px;
+                border-radius: 5px;
+                color: black;
                 font-weight: bold;
             }
             QPushButton:hover {
@@ -152,7 +174,7 @@ class CustomTabWidget(QWidget):
 
     def add_new_tab(self):
         """Add a new tab dynamically."""
-        new_tab = self.create_tab_button(f"Tab {len(self.tab_buttons) + 1}")
+        new_tab = self.create_tab_button(f"Page {len(self.tab_buttons) + 1}")
         self.tab_buttons.append(new_tab)
 
         # Add the new tab to the layout before the "+" button
@@ -161,7 +183,7 @@ class CustomTabWidget(QWidget):
         # Notify the main window about the new tab (trigger page creation)
         self.tab_changed.emit(len(self.tab_buttons) - 1)
 
-        # Scroll to the new tab
+        # Scroll to the new tab (move to the far right)
         self.scroll_to_tab(new_tab)
 
         # Set the new tab as active
@@ -178,15 +200,11 @@ class CustomTabWidget(QWidget):
         print(f"Tab renamed to: {new_name}")
 
     def scroll_to_tab(self, tab_button: QPushButton):
-        """Scroll the scroll area to ensure the given tab is visible."""
+        """Ensure the scroll bar moves fully to the far right after a new tab is added."""
         scroll_bar = self.scroll_area.horizontalScrollBar()
-        tab_pos = tab_button.pos().x()
-        widget_width = self.scroll_area.viewport().width()
-
-        if tab_pos < scroll_bar.value():  # If the tab is off-screen to the left
-            scroll_bar.setValue(tab_pos)
-        elif tab_pos + tab_button.width() > scroll_bar.value() + widget_width:  # Off-screen to the right
-            scroll_bar.setValue(tab_pos + tab_button.width() - widget_width)
+        # Calculate the maximum scroll position dynamically
+        max_scroll_pos = scroll_bar.maximum()
+        scroll_bar.setValue(max_scroll_pos)  # Fully move to the far-right edge
 
     def wheelEvent(self, event):
         """Allow mouse wheel to scroll tabs horizontally."""

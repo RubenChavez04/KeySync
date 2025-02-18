@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (QWidget, QSizePolicy, QFrame,
-                             QGridLayout, QGraphicsDropShadowEffect)
+    QGridLayout, QGraphicsDropShadowEffect)
 
 from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
 from gui_assets.widgets.action_buttons_widget import ActionButtonsWidget
@@ -20,22 +20,20 @@ class SideBar(QWidget):
         QFrame {
             background: qlineargradient(
                 x1: 0, y1: 0, x2: 0, y2: 1,
-                stop: 0 #bfbfbf,
+                stop: 0 #303030,
                 stop: 1 #737373
             );
             border-radius: 8px;
         }""")
         #set size
-        frame.setFixedHeight(540)
+        frame.setFixedHeight(580)
         frame.setFixedWidth(430)  # Sidebar fixed width
         frame.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
-        #frame layout setup
         frame_layout = QGridLayout()
         frame.setLayout(frame_layout)
         frame_layout.setContentsMargins(10, 10, 10, 10)
         frame_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         frame_layout.setSpacing(10)
-        # Styling the sidebar to have a gray background
         appearance_widget = AppearanceWidget(frame)
         appearance_widget.setGraphicsEffect(appearance_shadow)
         frame_layout.addWidget(appearance_widget,0,0)
