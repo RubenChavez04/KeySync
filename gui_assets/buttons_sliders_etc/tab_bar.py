@@ -11,7 +11,7 @@ class RenamableTabButton(QPushButton):
         self.setCheckable(True)
         self.setStyleSheet("""
             QPushButton {
-                background-color: lightgray;
+                background-color: #d9d9d9;
                 border: 1px solid gray;
                 border-radius: 5px;
                 color: black;
@@ -48,8 +48,7 @@ class RenamableTabButton(QPushButton):
 
         self.line_edit.editingFinished.connect(finish_renaming)
         self.line_edit.show()
-        self.hide()  # Hide the button while editing
-
+        #self.hide()  # Hide the button while editing
 
 class CustomTabWidget(QWidget):
     """Custom tabs widget using an internal QFrame for containment."""
@@ -75,6 +74,7 @@ class CustomTabWidget(QWidget):
 
         # Scroll area to contain the tabs
         self.scroll_area = QScrollArea(self.tabs_frame)
+        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scroll_area.setWidgetResizable(True)
@@ -113,8 +113,6 @@ class CustomTabWidget(QWidget):
             }
         """)
 
-        # Styling the scroll area and its slider
-
         # Styling tabs_widget (the area where buttons are displayed)
         self.tabs_widget.setStyleSheet("""
             QWidget {
@@ -131,8 +129,8 @@ class CustomTabWidget(QWidget):
         self.tab_buttons.append(first_tab)
 
         # Add the "+" button
-        self.add_button = self.create_add_button()
-        self.tabs_layout.addWidget(self.add_button)
+        add_button = self.create_add_button()
+        self.tabs_layout.addWidget(add_button)
 
         # Set the first tab as active
         self.set_active_tab(first_tab)
@@ -169,8 +167,11 @@ class CustomTabWidget(QWidget):
     def set_active_tab(self, tab_button: QPushButton):
         """Set the given tab as active and deactivate others."""
         for button in self.tab_buttons:
-            button.setChecked(False)
-        tab_button.setChecked(True)
+            if button != tab_button:
+                button.setChecked(False)  # Uncheck all other tabs
+                button.repaint()  # Force repaint for update issues
+        tab_button.setChecked(True)  # Check the currently active tab
+
 
     def add_new_tab(self):
         """Add a new tab dynamically."""
@@ -180,20 +181,33 @@ class CustomTabWidget(QWidget):
         # Add the new tab to the layout before the "+" button
         self.tabs_layout.insertWidget(len(self.tab_buttons) - 1, new_tab)
 
+        # Ensure proper layout updates, forcing UI to redraw the changes
+        self.tabs_layout.update()
+        self.tabs_frame.update()
+        self.tabs_widget.update()
+
         # Notify the main window about the new tab (trigger page creation)
         self.tab_changed.emit(len(self.tab_buttons) - 1)
 
         # Scroll to the new tab (move to the far right)
-        self.scroll_to_tab(new_tab)
 
         # Set the new tab as active
         self.set_active_tab(new_tab)
+
+        # Force the scroll area to refresh/redraw
+        self.scroll_area.update()
+        self.scroll_area.ensureWidgetVisible(new_tab)
+        self.scroll_to_tab(new_tab)
 
     def change_tab(self, index):
         """Change the active tab."""
         self.current_tab_index = index
         self.tab_changed.emit(index)
         self.set_active_tab(self.tab_buttons[index])
+        self.tabs_layout.update()
+        self.tabs_frame.update()
+        self.tabs_widget.update()
+        self.scroll_area.update()
 
     def handle_tab_renamed(self, new_name: str):
         """Handle the tab renaming (e.g., validation or logging)."""
@@ -203,6 +217,9 @@ class CustomTabWidget(QWidget):
         """Ensure the scroll bar moves fully to the far right after a new tab is added."""
         scroll_bar = self.scroll_area.horizontalScrollBar()
         # Calculate the maximum scroll position dynamically
+        # Force a scroll area update to ensure everything renders correctly
+        self.scroll_area.update()
+        self.tabs_widget.update()
         max_scroll_pos = scroll_bar.maximum()
         scroll_bar.setValue(max_scroll_pos)  # Fully move to the far-right edge
 

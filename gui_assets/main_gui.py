@@ -16,16 +16,19 @@ class MainWindow(QMainWindow):
         super().__init__()
         #give our window a title
         self.setWindowTitle("KeySync")
+        self.setContentsMargins(10,10,10,10)
         #set the window size
-        self.setFixedSize(1265, 630)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.color = QColor(0, 0, 0, 150)
+        self.shadow = ShadowFX(self, self.color)
         side_bar_shadow = ShadowFX(self, self.color)
         top_bar_shadow = ShadowFX(self, self.color)
 
         #central widget for the main window
         main_window = QWidget(self)
+        main_window.setFixedSize(1265, 630)
+        main_window.setGraphicsEffect(self.shadow)
         main_window.setObjectName("Container")
         main_window.setStyleSheet(
             """#Container {
@@ -82,9 +85,9 @@ class MainWindow(QMainWindow):
 
     def add_new_page(self):
         """Add a new page to the page container when called"""
-        page_shadow = ShadowFX(self, self.color) #decalre shadow fx
+        #page_shadow = ShadowFX(self, self.color) #decalre shadow fx
         page= Page(self) #set page to page class
-        page.setGraphicsEffect(page_shadow) #add shadow fx
+        #page.setGraphicsEffect(page_shadow) #add shadow fx
         self.pages.append(page) #add page to list
         self.page_container.addWidget(page) #add page to page container
 

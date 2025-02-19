@@ -5,6 +5,7 @@ import psutil
 global buttonFunctionList
 global shellpid
 import time
+import webbrowser
 
 def updateButtonFunction(buttonID, function, pressType):
     buttonFunctionList[buttonID][pressType] = function
@@ -34,10 +35,15 @@ def getChildShell(app):
     child_pid = children[0].pid
     return child_pid
 
-def runFunction(app,function):
+def runFunction(app, function):
+    filepath = getFilePath(app)
     if function == 'Open':
-        shell_process = subprocess.Popen(getFilePath(app), shell=True, close_fds=True)
-        updateShellpid(app,shell_process.pid)
+        if filepath.startswith("URL "):  #Given from getFilePath, will start with 'URL '
+            webbrowser.open(filepath[4:])  #Start reading after 'URL ' to open the actual URL
+        else: #Else, it's either a normal exe or a microsoft app, run normally with the MSA path
+            shell_process = subprocess.Popen(filepath, shell=True, close_fds=True)
+            updateShellpid(app, shell_process.pid)
+
     elif function == 'Close':
         closeApp(app)
 
@@ -50,10 +56,16 @@ def closeApp(app):
         if pid:
             subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], shell=True)
 
-def getFilePath(app): #App ID not file path, shell uses that, sometimes it is a filepath if there is no app id associated with it
+def getFilePath(app):
     for i in range(len(appList)):
         if appList[i][0] == app:
-            return appList[i][1]
+            app_id = appList[i][1]
+            if app_id.startswith("http"): #URL
+                return f"URL {app_id}"
+            elif "!" in app_id: #Only microsoft apps have  !in them
+                return f"explorer.exe shell:appsFolder\\{app_id}"
+            else: #Normal exe
+                return app_id
 
 def getAppName(buttonID):
     return buttonFunctionList[buttonID][0]

@@ -6,14 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="caacc398-e183-47bf-801e-fefa9e88d20a" name="Changes" comment="Setup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/shadow_fx.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/shadow_fx.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/tab_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/tab_bar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/side_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/side_bar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/functions/button_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/button_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" afterDir="false" />
     </list>
     <list id="403648c6-7cc9-4c1d-92fd-bbd07997cb66" name="Changes by logan" comment="">
       <change beforePath="$PROJECT_DIR$/widgets/functions/button_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/button_functions.py" afterDir="false" />
@@ -53,16 +48,6 @@
     <setting file="file://$PROJECT_DIR$/.venv/Widgets/button_functions.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/.venv/Widgets/getapps.py" root0="SKIP_INSPECTION" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/widgets/functions/button_functions.py">
-      <ranges>
-        <range start1="2" end1="3" start2="2" end2="13" changelist="403648c6-7cc9-4c1d-92fd-bbd07997cb66" />
-        <range start1="4" end1="7" start2="14" end2="55" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="9" end1="15" start2="57" end2="73" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="16" end1="17" start2="74" end2="79" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-      </ranges>
-    </file>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -95,7 +80,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.platform.ide.impl.presentationAssistant.PresentationAssistantConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -273,7 +258,13 @@
       <workItem from="1739647213938" duration="15953000" />
       <workItem from="1739685807573" duration="1897000" />
       <workItem from="1739737245122" duration="14202000" />
-      <workItem from="1739830732596" duration="9773000" />
+      <workItem from="1739830732596" duration="10867000" />
+      <workItem from="1739852310303" duration="364000" />
+      <workItem from="1739852686694" duration="120000" />
+      <workItem from="1739919745057" duration="778000" />
+      <workItem from="1739924898679" duration="865000" />
+      <workItem from="1739925778097" duration="1178000" />
+      <workItem from="1739926972454" duration="3719000" />
     </task>
     <task id="LOCAL-00001" summary="Setup">
       <option name="closed" value="true" />
@@ -355,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739675754892</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Setup">
+      <option name="closed" value="true" />
+      <created>1739849374574</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1739849374574</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,7 +377,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$button_functions.coverage" NAME="button_functions Coverage Results" MODIFIED="1739848347142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1739849226502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1739931050324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$side_bar.coverage" NAME="side_bar Coverage Results" MODIFIED="1739088077916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/main_window" />
     <SUITE FILE_PATH="coverage/PythonProject1$getapps.coverage" NAME="getapps Coverage Results" MODIFIED="1738893218977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Widgets/Functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$QToggle.coverage" NAME="QToggle Coverage Results" MODIFIED="1739089711949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/buttons_sliders_etc" />
