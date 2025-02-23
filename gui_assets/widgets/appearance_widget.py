@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel
+from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QPushButton, QDialog
 
 from gui_assets.buttons_sliders_etc.QToggle import QToggle
 from gui_assets.buttons_sliders_etc.button_preview import ButtonPreview
@@ -105,3 +105,8 @@ class AppearanceWidget(QWidget):
             self.button_preview.update_style("On")
         else:
             self.button_preview.update_style("Off")
+
+
+
+
+

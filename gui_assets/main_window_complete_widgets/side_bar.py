@@ -1,7 +1,6 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (QWidget, QSizePolicy, QFrame,
-    QGridLayout, QGraphicsDropShadowEffect)
+                             QGridLayout, QVBoxLayout, QLabel, QPushButton)
 
 from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
 from gui_assets.widgets.action_buttons_widget import ActionButtonsWidget
@@ -41,3 +40,4 @@ class SideBar(QWidget):
         action_buttons = ActionButtonsWidget(frame)
         action_buttons.setGraphicsEffect(actions_shadow)
         frame_layout.addWidget(action_buttons,1,0)
+

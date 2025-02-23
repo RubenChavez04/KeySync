@@ -9,7 +9,10 @@ from gui_assets.buttons_sliders_etc.page import Page
 from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
 from gui_assets.buttons_sliders_etc.title_bar import TitleBar
 from gui_assets.main_window_complete_widgets.side_bar import SideBar
+from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.main_window_complete_widgets.top_bar import TopBar
+from gui_assets.widgets import appearance_widget
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -77,6 +80,7 @@ class MainWindow(QMainWindow):
         self.top_bar.tab_bar.tab_changed.connect(self.switch_or_add_page) #go to switch or add page when state change
         self.add_new_page() #add a default page
 
+        global_signal_dispatcher.add_widget_signal.connect(self.show_add_widget_popup)
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
@@ -85,9 +89,9 @@ class MainWindow(QMainWindow):
 
     def add_new_page(self):
         """Add a new page to the page container when called"""
-        #page_shadow = ShadowFX(self, self.color) #decalre shadow fx
+        page_shadow = ShadowFX(self, self.color) #decalre shadow fx
         page= Page(self) #set page to page class
-        #page.setGraphicsEffect(page_shadow) #add shadow fx
+        page.setGraphicsEffect(page_shadow) #add shadow fx
         self.pages.append(page) #add page to list
         self.page_container.addWidget(page) #add page to page container
 
@@ -96,3 +100,10 @@ class MainWindow(QMainWindow):
         if index >= len(self.pages): #check if page exists with current amount of tabs
             self.add_new_page() #add a new page
         self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
+
+    def show_add_widget_popup(self):
+        # Reference the current page based on tab
+        current_page = self.pages[self.page_container.currentIndex()]
+        current_page.show_add_widget_popup()
+
+

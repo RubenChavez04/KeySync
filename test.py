@@ -1,3 +1,5 @@
+import json
+import os
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QPushButton, QVBoxLayout, QDialog, QLabel
 )
@@ -5,23 +7,26 @@ from PyQt6.QtGui import QMouseEvent
 from PyQt6.QtCore import Qt, QPoint
 
 
-#####THIS IS JUST CHAT CODE FOR LATER REFERENCE
-#gives us an idea on the events and defs needed for our application process
-#got bored and wanted to test to see if setting a grid size of 4x8 was doable and it is
-class DraggableButton(QPushButton):
-    def __init__(self, text, parent, grid_size, size_multiplier=(1, 1)):
-        super().__init__(text, parent)
+LAYOUT_FILE = "layout.json"  # JSON file for persistent storage
+
+
+class DraggableWidget(QPushButton):
+    """Generic draggable widget (for buttons, small elements)"""
+    def __init__(self, widget_type, parent, grid_size, size_multiplier=(1, 1), position=None):
+        super().__init__(widget_type, parent)
         self.parent = parent
         self.grid_size = grid_size
         self.size_multiplier = size_multiplier
+        self.widget_type = widget_type
         self.setFixedSize(grid_size * size_multiplier[0], grid_size * size_multiplier[1])
         self.startPos = None
-        self.last_valid_position = None  # Store last valid position
+        self.last_valid_position = position if position else QPoint(0, 0)
+        self.move(self.last_valid_position)
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.startPos = event.pos()
-            self.last_valid_position = self.pos()  # Save last position
+            self.last_valid_position = self.pos()
 
     def mouseMoveEvent(self, event: QMouseEvent):
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
@@ -33,58 +38,26 @@ class DraggableButton(QPushButton):
             snapped_pos = self.parent.get_snapped_position(self.pos(), self.size_multiplier)
             if self.parent.is_position_available(snapped_pos, self, self.size_multiplier):
                 self.move(snapped_pos)
-                self.parent.save_widget_position(self, snapped_pos)
+                self.parent.save_layout()  # Auto-save on move
             else:
-                self.move(self.last_valid_position)  # Snap back to last valid position
+                self.move(self.last_valid_position)
 
 
-class AddWidgetDialog(QDialog):
-    """Popup window to select widget size"""
-    def __init__(self, parent, deck):
+class SpotifyWidget(QWidget):
+    """A fixed Spotify widget with specific grid size (2 rows × 4 columns)"""
+    def __init__(self, parent, grid_size, position=None):
         super().__init__(parent)
-        self.setWindowTitle("Add Widget")
-        self.setFixedSize(200, 100)
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.deck = deck  # Explicitly pass the MacroDeckGrid instance
-        self.setStyleSheet(
-            """QDialog {
-                background: qlineargradient(
-                    x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #093d70,
-                    stop: 1 #737373
-                );
-                border-radius: 8px;
-            }"""
-        )
-        layout = QVBoxLayout()
-
-        self.status_label = QLabel("", self)
-        layout.addWidget(self.status_label)
-
-        btn_small = QPushButton("1x1 Button", self)
-        btn_small.clicked.connect(lambda: self.add_widget((1, 1)))
-
-        btn_large = QPushButton("2x2 Button", self)
-        btn_large.clicked.connect(lambda: self.add_widget((2, 2)))
-
-        layout.addWidget(btn_small)
-        layout.addWidget(btn_large)
-        self.setLayout(layout)
-
-    def add_widget(self, size_multiplier):
-        """Find an empty spot and add the widget"""
-        if not self.deck.is_grid_full():
-            self.deck.add_widget(f"Btn {len(self.deck.widgets) + 1}", size_multiplier)
-            self.close()
-        else:
-            self.status_label.setText("Grid is full!")
-
-    def setCentralWidget(self, window):
-        pass
+        self.parent = parent
+        self.grid_size = grid_size
+        self.size_multiplier = (4, 2)  # 2 rows × 4 columns
+        self.setFixedSize(grid_size * self.size_multiplier[0], grid_size * self.size_multiplier[1])
+        self.setStyleSheet("background-color: #1DB954; border: 2px solid black;")
+        if position:
+            self.move(position)
 
 
 class MacroDeckGrid(QWidget):
+    """Main widget grid for adding and managing draggable buttons/widgets"""
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
@@ -102,26 +75,80 @@ class MacroDeckGrid(QWidget):
         self.setStyleSheet("background-color: #222; border: 2px solid #444;")
 
         self.widgets = []
-        self.positions = {}
+        self.positions = {}  # Dictionary to track occupied positions
+        self.load_layout()  # Load saved layout on startup
 
-    def add_widget(self, label, size_multiplier=(1, 1)):
+    def add_widget(self, widget_type, size_multiplier=(1, 1), position=None):
         """Find the first available position and add a new widget."""
-        available_pos = self.find_first_available_position(size_multiplier)
-        if available_pos:
-            btn = DraggableButton(label, self, self.grid_size, size_multiplier)
-            btn.move(available_pos)
-            self.widgets.append(btn)
-            self.save_widget_position(btn, available_pos)
-            btn.show()
+        available_pos = self.find_first_available_position(size_multiplier) if not position else position
 
-            # Disable adding if grid is full
+        if available_pos:
+            if widget_type == "Spotify":
+                widget = SpotifyWidget(self, self.grid_size, available_pos)
+            else:
+                widget = DraggableWidget(   self, self.grid_size, size_multiplier, available_pos)
+
+            widget.move(available_pos)
+            self.widgets.append(widget)
+            self.save_widget_position(widget, available_pos)
+            widget.show()
+
+            self.save_layout()  # Auto-save on add
+
             if self.is_grid_full():
                 self.main_window.add_button.setDisabled(True)
         else:
-            print("No space available!")
+            print(f"No space available for {widget_type}!")
+
+    def save_widget_position(self, widget, pos):
+        """Store widget positions to prevent overlapping"""
+        self.positions[(pos.x(), pos.y())] = widget
+
+    def is_position_available(self, pos, ignore_widget=None, size_multiplier=(1, 1)):
+        """Check if a given position is available in the grid, considering multi-cell widgets."""
+        return all(
+            (pos.x(), pos.y()) not in self.positions for _ in range(size_multiplier[0] * size_multiplier[1])
+        )
+
+    def get_snapped_position(self, pos, size_multiplier):
+        """Snap widgets to the nearest grid position"""
+        col = (pos.x() - self.padding) // (self.grid_size + self.spacing)
+        row = (pos.y() - self.padding) // (self.grid_size + self.spacing)
+        return QPoint(
+            self.padding + col * (self.grid_size + self.spacing),
+            self.padding + row * (self.grid_size + self.spacing)
+        )
+
+    def save_layout(self):
+        """Save the layout to a JSON file"""
+        layout_data = [
+            {"type": widget.widget_type if isinstance(widget, DraggableWidget) else "Spotify",
+             "x": widget.x(), "y": widget.y(), "size": widget.size_multiplier}
+            for widget in self.widgets
+        ]
+
+        with open(LAYOUT_FILE, "w") as file:
+            json.dump(layout_data, file, indent=4)
+
+    def load_layout(self):
+        """Load the layout from a JSON file"""
+        if os.path.exists(LAYOUT_FILE):
+            with open(LAYOUT_FILE, "r") as file:
+                try:
+                    layout_data = json.load(file)
+                    for widget_data in layout_data:
+                        self.add_widget(widget_data["type"], tuple(widget_data["size"]), QPoint(widget_data["x"], widget_data["y"]))
+                except json.JSONDecodeError:
+                    print("Error reading layout file. Resetting layout.")
+
+    def remove_widget(self, widget):
+        """Remove a widget from the grid"""
+        if widget in self.widgets:
+            self.widgets.remove(widget)
+            self.save_layout()  # Auto-save after removal
 
     def find_first_available_position(self, size_multiplier):
-        """Find the first available grid position for the given size multiplier."""
+        """Find the first available position in the grid"""
         for row in range(self.rows - size_multiplier[1] + 1):
             for col in range(self.cols - size_multiplier[0] + 1):
                 pos = QPoint(
@@ -130,57 +157,13 @@ class MacroDeckGrid(QWidget):
                 )
                 if self.is_position_available(pos, size_multiplier=size_multiplier):
                     return pos
-        return None
-
-    def is_position_available(self, pos, ignore_widget=None, size_multiplier=(1, 1)):
-        """Check if a given position is available in the grid, considering multi-cell widgets."""
-        for widget, stored_pos in self.positions.items():
-            if widget == ignore_widget:
-                continue
-
-            widget_col = stored_pos[0] // (self.grid_size + self.spacing)
-            widget_row = stored_pos[1] // (self.grid_size + self.spacing)
-            widget_width = widget.size_multiplier[0]
-            widget_height = widget.size_multiplier[1]
-
-            # Check if any part of the new button overlaps existing ones
-            new_col = pos.x() // (self.grid_size + self.spacing)
-            new_row = pos.y() // (self.grid_size + self.spacing)
-
-            if (
-                (new_col < widget_col + widget_width and new_col + size_multiplier[0] > widget_col) and
-                (new_row < widget_row + widget_height and new_row + size_multiplier[1] > widget_row)
-            ):
-                return False  # Overlapping detected!
-
-        return True
 
     def is_grid_full(self):
-        """Check if all available spots are occupied."""
-        total_slots = self.rows * self.cols
-        return len(self.widgets) >= total_slots
-
-    def get_snapped_position(self, pos, size_multiplier=(1, 1)):
-        """Calculate the nearest valid grid position while ensuring the widget fits in bounds."""
-        max_col = self.cols - size_multiplier[0]
-        max_row = self.rows - size_multiplier[1]
-
-        col = max(0, min(max_col, round((pos.x() - self.padding) / (self.grid_size + self.spacing))))
-        row = max(0, min(max_row, round((pos.y() - self.padding) / (self.grid_size + self.spacing))))
-
-        x = self.padding + col * (self.grid_size + self.spacing)
-        y = self.padding + row * (self.grid_size + self.spacing)
-
-        return QPoint(x, y)
-
-    def save_widget_position(self, widget, pos):
-        """Store widget positions (can be saved to JSON later)"""
-        self.positions[widget] = (pos.x(), pos.y())
-        print("Updated Positions:", self.positions)
+        pass
 
 
 class MainWindow(QWidget):
-    """Main UI with an 'Add Widget' button"""
+    """Main Application Window"""
     def __init__(self):
         super().__init__()
 
@@ -198,12 +181,34 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
     def show_add_dialog(self):
-        """Open the add widget dialog"""
+        """Open the Add Widget dialog"""
         dialog = AddWidgetDialog(self, self.deck)
         dialog.exec()
 
 
-# Running the Application
+class AddWidgetDialog(QDialog):
+    """Popup window to select widget type"""
+    def __init__(self, parent, deck):
+        super().__init__(parent)
+        self.setWindowTitle("Add Widget")
+        self.setFixedSize(200, 150)
+        self.deck = deck
+
+        layout = QVBoxLayout()
+        for text, size in [("1x1 Button", (1, 1)), ("2x2 Button", (2, 2)), ("Spotify Widget (2x4)", (4, 2))]:
+            btn = QPushButton(text, self)
+            btn.clicked.connect(lambda _, t=text, s=size: self.add_widget(t, s))
+            layout.addWidget(btn)
+
+        self.setLayout(layout)
+
+    def add_widget(self, widget_type, size_multiplier):
+        """Add a widget to the grid"""
+        self.deck.add_widget(widget_type, size_multiplier)
+        self.close()
+
+
+
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()

@@ -1,11 +1,13 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QGridLayout, QScrollArea, QVBoxLayout, QSizePolicy, QFrame, QLayout
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QWidget, QGridLayout
 
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
-from gui_assets.buttons_sliders_etc.tab_bar import CustomTabWidget
+from gui_assets.buttons_sliders_etc.tab_bar import TabBar
+from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
 
 
 class TopBar(QWidget):
+    add_widget_btn_pressed = pyqtSignal()
     def __init__(self, parent=None,):
         super().__init__(parent)
         main_layout = QGridLayout(self)
@@ -36,16 +38,19 @@ class TopBar(QWidget):
         )
         preview_btn = SideBarToolButton(
             self,
-            text=" Preview",
+            text="Preview",
             tooltip="Preview the page with functionality",
             width=self.width
         )
         settings_btn = SideBarToolButton(
             self,
-            text=" Settings",
+            text="Settings",
             width=self.width
         )
-        self.tab_bar = CustomTabWidget(self)
+        self.tab_bar = TabBar(self)
+
+        add_widget_btn.clicked.connect(global_signal_dispatcher.add_widget_signal.emit)
+
 
         btn_layout.addWidget(add_widget_btn, 0, 0, alignment=Qt.AlignmentFlag.AlignTop)
         btn_layout.addWidget(change_background_btn, 0, 1)
