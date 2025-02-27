@@ -6,15 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="caacc398-e183-47bf-801e-fefa9e88d20a" name="Changes" comment="Setup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/signal_dispatcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/signal_dispatcher.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layout.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/key.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/key.txt.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssh-copy-id rubchave@10.0.6.151" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssh-copy-id rubchave@10.0.6.151.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" afterDir="false" />
     </list>
-    <list id="403648c6-7cc9-4c1d-92fd-bbd07997cb66" name="Changes by logan" comment="" />
+    <list id="403648c6-7cc9-4c1d-92fd-bbd07997cb66" name="Changes by logan" comment="">
+      <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/transfer_icons.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/transfer_icons.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../PythonProject1\exportToHTML" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -213,8 +224,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.transfer_icons" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.transfer_icons" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.button_functions" />
         <item itemvalue="Python.server (1)" />
@@ -276,7 +287,9 @@
       <workItem from="1740339603517" duration="3592000" />
       <workItem from="1740359767394" duration="5004000" />
       <workItem from="1740447100863" duration="4744000" />
-      <workItem from="1740537814174" duration="2374000" />
+      <workItem from="1740537814174" duration="3594000" />
+      <workItem from="1740542483831" duration="553000" />
+      <workItem from="1740622963256" duration="6100000" />
     </task>
     <task id="LOCAL-00001" summary="Setup">
       <option name="closed" value="true" />
@@ -382,7 +395,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740275483006</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Setup">
+      <option name="closed" value="true" />
+      <created>1740540891497</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1740540891497</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +426,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$button_functions.coverage" NAME="button_functions Coverage Results" MODIFIED="1739848347142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1740448369000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1740629066495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$side_bar.coverage" NAME="side_bar Coverage Results" MODIFIED="1739088077916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/main_window" />
     <SUITE FILE_PATH="coverage/PythonProject1$getapps.coverage" NAME="getapps Coverage Results" MODIFIED="1738893218977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Widgets/Functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$QToggle.coverage" NAME="QToggle Coverage Results" MODIFIED="1739089711949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/buttons_sliders_etc" />
@@ -413,7 +434,7 @@
     <SUITE FILE_PATH="coverage/PythonProject1$server.coverage" NAME="server Coverage Results" MODIFIED="1739134489755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$buttonFunction.coverage" NAME="buttonFunction Coverage Results" MODIFIED="1738536942217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$main_gui.coverage" NAME="main_gui Coverage Results" MODIFIED="1738916143908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets" />
-    <SUITE FILE_PATH="coverage/PythonProject1$transfer_icons.coverage" NAME="transfer_icons Coverage Results" MODIFIED="1740451765815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
+    <SUITE FILE_PATH="coverage/PythonProject1$transfer_icons.coverage" NAME="transfer_icons Coverage Results" MODIFIED="1740623849457" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
     <SUITE FILE_PATH="coverage/PythonProject1$server__1_.coverage" NAME="server (1) Coverage Results" MODIFIED="1739134985882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

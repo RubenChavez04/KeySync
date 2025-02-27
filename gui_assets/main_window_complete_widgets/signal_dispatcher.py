@@ -5,5 +5,5 @@ class SignalDispatcher(QObject):
     add_widget_signal = pyqtSignal()
 
 
-# Create a global dispatcher instance
+#create a global dispatcher instance
 global_signal_dispatcher = SignalDispatcher()

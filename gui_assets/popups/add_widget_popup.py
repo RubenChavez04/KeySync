@@ -13,7 +13,7 @@ class AddWidgetPopup(QDialog):
         self.setWindowTitle("Add Widget")
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)   #make window frameless removing the titlebar
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-        self.offset = None  #honestly have no clue what this is, but it makes the window popup properly, even googled
+        self.offset = None
         self.grid = grid    #parent grid
         self.layout = QVBoxLayout() #give the popup a layout
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -38,9 +38,6 @@ class AddWidgetPopup(QDialog):
                 );
                 border-radius: 8px;
         }""")
-
-
-        #self.container.setFixedSize(200, 150)
 
         self.container_layout = QGridLayout()
         self.container_layout.setContentsMargins(10, 10, 10, 10)
