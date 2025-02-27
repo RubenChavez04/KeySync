@@ -18,9 +18,6 @@ def send_icons(folder_path):
         print(scp_command)
         output = subprocess.run(f'{scp_command} & 7477', shell=True, capture_output = True, text=True)
         print(output.stdout)
-        #output = subprocess.run(f'{scp_command} & 7477', capture_output=True, text=True)
-        #print("STDOUT:", output.stdout)
-        #print("STDERR:", output.stderr)
-
 
 send_icons(r'C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons')
+
