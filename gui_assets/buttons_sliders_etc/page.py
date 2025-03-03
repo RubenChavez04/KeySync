@@ -1,11 +1,14 @@
+import PyQt6
 from PyQt6.QtCore import Qt, QPoint, pyqtSignal
-from PyQt6.QtGui import QMouseEvent
-from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout, QPushButton
+from PyQt6.QtGui import QMouseEvent, QIcon, QPixmap
+from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout, QPushButton, QInputDialog
 import random
+import re
 
 from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.popups.add_widget_popup import AddWidgetPopup
 
+signal_dispatcher = global_signal_dispatcher
 
 class Page(QWidget):
     def __init__(self, parent, image_path=None):
@@ -76,6 +79,8 @@ class PageGrid(QWidget):
 
         self.widgets = []   #list of added widgets
         self.positions = {} #dictionary to track widgets
+
+        signal_dispatcher.update_position.connect(self.remove_widget_position)
 
     def add_widget(self, widget_type, size_multiplier = (1,1), position = None):
         available_pos = self.find_first_available_position() if not position else position
@@ -190,6 +195,7 @@ class PageGrid(QWidget):
         print(f"Removed positions for widget: {to_remove}")
 
 
+
 class ButtonWidget(QPushButton):
     """draggable button widget with custom sizing parameters, users can select button size"""
     def __init__(self, parent, cell_size, size_multiplier=(1, 1), position=None):
@@ -205,11 +211,15 @@ class ButtonWidget(QPushButton):
         self.startPos = None
         self.last_valid_position = position if position else QPoint(0, 0)
         self.move(self.last_valid_position)
+        self.setStyleSheet(f"QPushButton {{border-radius: 15px;background-color: #f0f0f0;border: 2px solid #737373;}} QPushButton:hover {{ background-color: #cccccc;}}")
+
+        signal_dispatcher.selected_button.connect(self.showSelected)
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.startPos = event.pos()
             self.last_valid_position = self.pos()
+            signal_dispatcher.selected_button.emit(self)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
@@ -236,4 +246,8 @@ class ButtonWidget(QPushButton):
                 self.parent.save_widget_position(self, self.last_valid_position)  # Restore old position
                 self.move(self.last_valid_position)  # Revert to old position
 
-
+    def showSelected(self,selected_button):
+        if self == selected_button:
+            self.setStyleSheet(re.sub(r'border:.*?;', 'border: 4px solid green;', self.styleSheet()))
+        else:
+            self.setStyleSheet(re.sub(r'border:.*?;', 'border: 2px solid #737373;', self.styleSheet()))

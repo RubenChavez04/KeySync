@@ -1,18 +1,21 @@
+import PyQt6
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QPushButton, QDialog
+from PyQt6.QtGui import QFont, QColor, QPixmap, QIcon
+from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QPushButton, QDialog, QColorDialog, QInputDialog
 
+import re
 from gui_assets.buttons_sliders_etc.QToggle import QToggle
 from gui_assets.buttons_sliders_etc.button_preview import ButtonPreview
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.sidebar_button_mini import SideBarToolButtonMini
 from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
 
+from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
+signal_dispatcher = global_signal_dispatcher
 
 class AppearanceWidget(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-
     # ----------Appearance Section----------#
         # Add a header for Appearance
         appearance_header = SideBarLabel(self, "Appearance")
@@ -27,12 +30,15 @@ class AppearanceWidget(QWidget):
         layout.addWidget(self.button_preview, 1, 0)
         layout.addWidget(appearance_header, 0, 0,1,2)
         # add appearance section buttons
+        signal_dispatcher.selected_button.connect(self.selected_button)
+        self.button = None
         add_label_button = SideBarToolButton(
             self,
             text="Add Label",
             tooltip="Add a label to your button",
             font_size= 12
         )
+        add_label_button.clicked.connect(self.edit_button_text)
         variable_button = SideBarToolButtonMini(
             self,
             text="(X)",
@@ -44,16 +50,19 @@ class AppearanceWidget(QWidget):
             image_path="gui_assets/gui_icons/trash.ico",
             tooltip="Delete the button"
         )
+        delete_button.clicked.connect(self.delete_button)
         add_icon_button = SideBarToolButtonMini(
             self,
             image_path="gui_assets/gui_icons/image.ico",
             tooltip="Add a image to your button"
         )
+        add_icon_button.clicked.connect(self.edit_icon)
         change_color_button = SideBarToolButtonMini(
             self,
             image_path="gui_assets/gui_icons/Color.ico",
             tooltip="Change the color of your button"
         )
+        change_color_button.clicked.connect(self.edit_color)
         # set them in a specific layout
         appearance_button_layout = QGridLayout()
         appearance_button_layout.setContentsMargins(0, 0, 0, 0)
@@ -106,7 +115,46 @@ class AppearanceWidget(QWidget):
         else:
             self.button_preview.update_style("Off")
 
+    def selected_button(self, selected_button):
+        self.button = selected_button
 
+    def edit_button_text(self, selected_button):
+        print("Edit button called")
+        # When add label is pressed allow user to input new label
+        if self.button:
+            new_text, ok = QInputDialog.getText(self, "Edit Button Text", "Enter new text:")
+            if ok and new_text:
+                print(new_text)
+                self.button.setText(new_text)
+        else:
+            print("No button selected for editing.")
 
+    def edit_icon(self):
+        image_path = "gui_assets\gui_icons\Spotify.png"
+        if self.button:
+            if image_path:
+                pixmap = QPixmap(image_path)
+                if not pixmap.isNull():
+                    self.button.setText("")
+                    scaled_pixmap = pixmap.scaled(180, 180, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                    icon = QIcon(scaled_pixmap)
+                    self.button.setIcon(QIcon(icon))
+                    size = PyQt6.QtCore.QSize(100, 100)
+                    self.button.setIconSize(size)
+                else:
+                    print("Failed to load image")
+        else:
+            print("No Button selected")
 
+    def edit_color(self):
+        if self.button:
+            color = QColorDialog.getColor(initial=QColor(255, 255, 255), title="Select Color")
+            if color.isValid():
+                print(f"Hex color code: {color.name()}")
+                self.button.setStyleSheet(re.sub(r'background-color:.*?;', f'background-color: {color.name()};', self.button.styleSheet()))
 
+    def delete_button(self):
+        if self.button:
+            signal_dispatcher.update_position.emit(self.button)
+            self.button.deleteLater()
+            self.button = None

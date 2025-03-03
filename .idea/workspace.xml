@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="caacc398-e183-47bf-801e-fefa9e88d20a" name="Changes" comment="Setup">
+      <change afterPath="$PROJECT_DIR$/gui_assets/gui_icons/Spotify.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PythonProject1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PythonProject1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layout.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/signal_dispatcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/signal_dispatcher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" afterDir="false" />
     </list>
     <list id="403648c6-7cc9-4c1d-92fd-bbd07997cb66" name="Changes by logan" comment="" />
@@ -25,6 +29,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -36,7 +45,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/RubenChavez04/KeySync.git&quot;,
-    &quot;accountId&quot;: &quot;ba415aa1-7d82-4786-901a-5622f0e2dbc5&quot;
+    &quot;accountId&quot;: &quot;837442d5-32db-4d7e-99b3-494a6b5c09c2&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -71,7 +80,7 @@
     &quot;Python.transfer_icons.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;page-buttons2&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/chave/PycharmProjects/PythonProject1/gui_assets/page_backgrounds&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -88,11 +97,11 @@
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\page_backgrounds" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\brayd\PycharmProjects\KeySync27th2\gui_assets\gui_icons" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\page_backgrounds" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\main_window_complete_widgets" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\buttons_sliders_etc" />
-      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\widgets" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -213,8 +222,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.transfer_icons" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.transfer_icons" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.button_functions" />
         <item itemvalue="Python.server (1)" />
@@ -224,8 +233,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-PY-243.23654.177" />
-        <option value="bundled-python-sdk-91d3a02ef49d-43b77aa2d136-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.23654.177" />
+        <option value="bundled-python-sdk-98f27166c754-ba05f1cad1b1-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.21829.153" />
       </set>
     </attachedChunks>
   </component>
@@ -402,6 +410,22 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Setup" />
     <option name="LAST_COMMIT_MESSAGE" value="Setup" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py</url>
+          <line>153</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py</url>
+          <line>190</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$button_functions.coverage" NAME="button_functions Coverage Results" MODIFIED="1739848347142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />
