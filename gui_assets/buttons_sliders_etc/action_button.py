@@ -27,5 +27,4 @@ class ActionButton(QToolButton):
                 border-radius: 10px;
                 color: white;
                 }
-
             """)

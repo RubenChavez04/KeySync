@@ -45,6 +45,7 @@ class AddWidgetPopup(QDialog):
         self.widget_btn_label.setStyleSheet("""
             QLabel {
                 background-color: None;
+                font: bold 14px;
                 color: white;
         }""")
         self.container_layout.addWidget(self.widget_btn_label,0,0,1,3, alignment=Qt.AlignmentFlag.AlignLeft)

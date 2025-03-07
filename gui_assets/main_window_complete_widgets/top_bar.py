@@ -50,6 +50,7 @@ class TopBar(QWidget):
         self.tab_bar = TabBar(self)
 
         add_widget_btn.clicked.connect(global_signal_dispatcher.add_widget_signal.emit)
+        change_background_btn.clicked.connect(global_signal_dispatcher.change_page_background_signal.emit)
 
 
         btn_layout.addWidget(add_widget_btn, 0, 0, alignment=Qt.AlignmentFlag.AlignTop)

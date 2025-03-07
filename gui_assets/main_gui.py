@@ -11,7 +11,9 @@ from gui_assets.buttons_sliders_etc.title_bar import TitleBar
 from gui_assets.main_window_complete_widgets.side_bar import SideBar
 from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.main_window_complete_widgets.top_bar import TopBar
+from gui_assets.popups.page_background_selection import ChangePageBackgroundDialog
 from gui_assets.widgets import appearance_widget
+
 
 
 class MainWindow(QMainWindow):
@@ -80,7 +82,12 @@ class MainWindow(QMainWindow):
         self.top_bar.tab_bar.tab_changed.connect(self.switch_or_add_page) #go to switch or add page when state change
         self.add_new_page() #add a default page
 
+        #show popup to add widgets
         global_signal_dispatcher.add_widget_signal.connect(self.show_add_widget_popup)
+
+        #show popup to change page background
+        global_signal_dispatcher.change_page_background_signal.connect(self.show_background_dialog)
+        global_signal_dispatcher.image_selected_signal.connect(self.update_page_background)
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
@@ -102,8 +109,16 @@ class MainWindow(QMainWindow):
         self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
 
     def show_add_widget_popup(self):
-        # Reference the current page based on tab
+        #get the current page from index and show popup for respective page
         current_page = self.pages[self.page_container.currentIndex()]
         current_page.show_add_widget_popup()
 
+    def show_background_dialog(self):
+        """Open the image import dialog."""
+        dialog = ChangePageBackgroundDialog()
+        dialog.exec()
 
+    def update_page_background(self, image_path):
+        """Update the background of the current page."""
+        current_page = self.pages[self.page_container.currentIndex()]
+        current_page.update_background(image_path)

@@ -29,8 +29,8 @@ class PopupTitleBar(QWidget):
         self.title.setStyleSheet("""
             QLabel {
                 font: bold 14px; 
-                margin-left: 60px;
                 color: white;
+                background-color: transparent;
             }
         """)
 

@@ -1,3 +1,6 @@
+import os
+import re
+
 from PyQt6.QtCore import Qt, QPoint, pyqtSignal
 from PyQt6.QtGui import QMouseEvent
 from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout, QPushButton
@@ -8,50 +11,78 @@ from gui_assets.popups.add_widget_popup import AddWidgetPopup
 
 
 class Page(QWidget):
-    def __init__(self, parent, image_path=None):
-        random_hex1 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
-        random_hex2 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
+    def __init__(self, parent, image_path="page_backgrounds/wallpaper2.jpg"):
+
         super().__init__(parent)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-
+        self.image_path = image_path
         self.frame = QFrame(self)
         self.frame.setFixedSize(800, 480)   #frame size equal to the size of pi screen
 
-        self.frame.setFrameShape(QFrame.Shape.Box)
+        self.frame.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         frame_layout = QVBoxLayout(self.frame)
         frame_layout.setContentsMargins(0, 0, 0, 0)
         self.frame.setLayout(frame_layout)
-        if image_path:
-            self.frame.setStyleSheet(f"""
-                QFrame {{
-                    background-image: url({image_path});
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    border: 2px solid darkgray;
-            }}""")
-        else: #default to static background
-            self.frame.setStyleSheet(f"""
-            QFrame {{
-                background: qlineargradient(
-                    x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #{random_hex1},
-                    stop: 1 #{random_hex2}
-                );
-                border: 2px solid darkgray;
-            }}""")
+        self.set_background(self.image_path)
+
         self.page_grid = PageGrid(self)
         frame_layout.addWidget(self.page_grid)
 
         layout.addWidget(self.frame)
 
         self.setLayout(layout)
+
     def show_add_widget_popup(self):
         self.popup = AddWidgetPopup(self, self.page_grid)
         self.popup.exec()
+
+    def set_background(self, image_path):
+        """set the page background to the given image or default to random gradient."""
+        if image_path and os.path.exists(image_path):  # Ensure the file exists
+            self.frame.setStyleSheet(f"""
+                QFrame {{
+                    background-image: url({image_path});
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                    border: 2px solid darkgray;
+                }}
+            """)
+            print("background updated")
+        else:
+            #default gradient background if no image is set
+            random_hex1 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
+            random_hex2 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
+            self.frame.setStyleSheet(f"""
+                QFrame {{
+                    background: qlineargradient(
+                        x1: 0, y1: 0, x2: 0, y2: 1,
+                        stop: 0 #{random_hex1},
+                        stop: 1 #{random_hex2}
+                    );
+                    border: 2px solid darkgray;
+                }}
+            """)
+        self.update()
+
+    def update_background(self, image_path):
+        """update the background if signal is received"""
+        if os.path.exists(image_path):  #ensure the file exists before setting it
+            self.image_path = image_path  #store the image path
+            self.image_path.replace("\\","/")
+            print(f"updated image path - {self.image_path}")
+            print("updating background")
+            self.set_background(self.image_path)  #apply background change
+            print(f"Image file found - {self.image_path}")
+        else:
+            self.image_path = image_path
+            print(f"Error: Image file not found - {self.image_path}")
+            self.image_path = None
+
 
 
 class PageGrid(QWidget):
@@ -217,6 +248,15 @@ class ButtonWidget(QPushButton):
         self.startPos = None
         self.last_valid_position = position if position else QPoint(0, 0)
         self.move(self.last_valid_position)
+        self.setStyleSheet(
+            f"QPushButton {{border-radius: 8px;background-color: #f0f0f0;border: None;}} QPushButton:hover {{ background-color: #cccccc;}}")
+        global_signal_dispatcher.selected_button.connect(self.showSelected)
+
+    def mouseDoubleClickEvent(self,event):
+        """Handle double-click to rename the tab."""
+        if event.button() == Qt.MouseButton.LeftButton: #if left click twice
+            global_signal_dispatcher.selected_button.emit(self)
+        super().mouseDoubleClickEvent(event)
 
     def mousePressEvent(self, event: QMouseEvent):
         """mouse event handling for initializing dragging the widget."""
@@ -247,5 +287,12 @@ class ButtonWidget(QPushButton):
             else: #if position is invalid revert to old position from press event
                 self.parent.save_widget_position(self, self.last_valid_position)  #restore old position
                 self.move(self.last_valid_position)  #revert to old position
+
+
+    def showSelected(self, selected_button):
+        if self == selected_button:
+            self.setStyleSheet(re.sub(r'border:.*?;', 'border: 4px solid green;', self.styleSheet()))
+        else:
+            self.setStyleSheet(re.sub(r'border:.*?;', 'border: None;', self.styleSheet()))
 
 
