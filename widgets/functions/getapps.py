@@ -1,7 +1,6 @@
 import os
 import subprocess
 
-
 def get_apps():
     # Get the directory of the current Python script
     script_dir = os.path.dirname(os.path.abspath(__file__))
