@@ -52,6 +52,7 @@ class Page(QWidget):
         layout.addWidget(self.frame)
 
         self.setLayout(layout)
+
     def show_add_widget_popup(self):
         self.popup = AddWidgetPopup(self, self.page_grid)
         self.popup.exec()
@@ -82,8 +83,8 @@ class PageGrid(QWidget):
 
         signal_dispatcher.update_position.connect(self.remove_widget_position)
 
-    def add_widget(self, widget_type, size_multiplier = (1,1), position = None):
-        available_pos = self.find_first_available_position() if not position else position
+    def add_widget(self, widget_type, size_multiplier, position = None):
+        available_pos = self.find_first_available_position(size_multiplier) if not position else position
 
         #add all widgets we create here (e.g. Spotify
         if available_pos:
@@ -127,9 +128,9 @@ class PageGrid(QWidget):
                 self.positions[(cell_x, cell_y)] = widget
                 occupied_positions.append((cell_x, cell_y))
 
-        print(f"Widget saved at positions: {occupied_positions}")
+        #print(f"Widget saved at positions: {occupied_positions}")
 
-    def is_position_available(self, pos, size_multiplier=(1, 1)):
+    def is_position_available(self, pos, size_multiplier):
         """Check every grid cell occupied by size_multiplier dimensions."""
         for row_offset in range(size_multiplier[1]):  # Vertical span
             for col_offset in range(size_multiplier[0]):  # Horizontal span
@@ -169,7 +170,7 @@ class PageGrid(QWidget):
         #returns a true value if the number of cells taken exceeds max cell count
         return len(self.widgets) >= 28
 
-    def find_first_available_position(self, size_multiplier=(1, 1)):
+    def find_first_available_position(self, size_multiplier):
         """Find the first available position in the grid for a widget to be placed."""
         # Loop through all rows and columns
         for row in range(self.rows - size_multiplier[1] + 1):  # Adjust for vertical span
@@ -181,7 +182,7 @@ class PageGrid(QWidget):
                 )
 
                 # Check if the calculated position is available
-                if self.is_position_available(pos, size_multiplier=size_multiplier):
+                if self.is_position_available(pos, size_multiplier):
                     return pos
 
         return None  # No valid position found
@@ -192,13 +193,13 @@ class PageGrid(QWidget):
         for key in to_remove:
             del self.positions[key]
 
-        print(f"Removed positions for widget: {to_remove}")
+        #print(f"Removed positions for widget: {to_remove}")
 
 
 
 class ButtonWidget(QPushButton):
     """draggable button widget with custom sizing parameters, users can select button size"""
-    def __init__(self, parent, cell_size, size_multiplier=(1, 1), position=None):
+    def __init__(self, parent, cell_size, size_multiplier, position):
         super().__init__(parent)
         self.parent = parent
         self.grid_size = cell_size
@@ -214,12 +215,17 @@ class ButtonWidget(QPushButton):
         self.setStyleSheet(f"QPushButton {{border-radius: 15px;background-color: #f0f0f0;border: 2px solid #737373;}} QPushButton:hover {{ background-color: #cccccc;}}")
 
         signal_dispatcher.selected_button.connect(self.showSelected)
+        self.appID = None
+
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.startPos = event.pos()
             self.last_valid_position = self.pos()
             signal_dispatcher.selected_button.emit(self)
+            print(self.appID)
+            if self.appID is not None:
+                signal_dispatcher.function_press.emit(self.appID, 1)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
@@ -230,19 +236,19 @@ class ButtonWidget(QPushButton):
         if event.button() == Qt.MouseButton.LeftButton:
             # Step 1: Get the snapped position
             snapped_pos = self.parent.get_snapped_position(self.pos(), self.size_multiplier)
-            print(f"Snapped Position: {snapped_pos}")
+            #print(f"Snapped Position: {snapped_pos}")
 
             # Step 2: Temporarily remove old positions
             self.parent.remove_widget_position(self)
 
             # Step 3: Check if the snapped position is valid
             if self.parent.is_position_available(snapped_pos, self.size_multiplier):
-                print(f"Position valid, moving to {snapped_pos}")
+                #print(f"Position valid, moving to {snapped_pos}")
                 self.move(snapped_pos)
                 self.parent.save_widget_position(self, snapped_pos)  # Save the new position
                 self.last_valid_position = snapped_pos  # Update last valid position
             else:
-                print(f"Position invalid, reverting to {self.last_valid_position}")
+                #print(f"Position invalid, reverting to {self.last_valid_position}")
                 self.parent.save_widget_position(self, self.last_valid_position)  # Restore old position
                 self.move(self.last_valid_position)  # Revert to old position
 

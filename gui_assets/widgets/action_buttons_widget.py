@@ -2,10 +2,14 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QGridLayout
 
 from gui_assets.buttons_sliders_etc.action_button import ActionButton
+from gui_assets.buttons_sliders_etc.page import signal_dispatcher
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
+from widgets.functions.getapps import get_apps, AppSelectionDialog
+from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
 
 
+signal_dispatcher = global_signal_dispatcher
 class ActionButtonsWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -16,6 +20,9 @@ class ActionButtonsWidget(QWidget):
         label = SideBarLabel(self, "Actions")
         label.setFixedHeight(25)
         layout.addWidget(label, 0, 0, 1, 4)
+
+        self.button = None
+
         #define buttons
         on_press_btn = ActionButton(
             self,
@@ -52,6 +59,10 @@ class ActionButtonsWidget(QWidget):
             tooltip="Add a new action"
         )
         layout.addWidget(add_action_btn,2,0,1,4)
+
+        signal_dispatcher.selected_button.connect(self.selected_button)
+        add_action_btn.clicked.connect(self.show_app_selection)
+
         self.setLayout(layout)
 
     def button_selected(self):
@@ -63,4 +74,16 @@ class ActionButtonsWidget(QWidget):
             else:
                 button.setChecked(False)
                 button.setEnabled(True)
-                
+
+    def show_app_selection(self):
+        apps = get_apps()
+        dialog = AppSelectionDialog(apps, self)
+        if dialog.exec():
+            selected_app = dialog.get_selected_app()
+            if selected_app:
+                # Emit signal with selected app ID
+                print("Selected app: ", selected_app)
+                self.button.appID = selected_app
+
+    def selected_button(self, selected_button):
+        self.button = selected_button

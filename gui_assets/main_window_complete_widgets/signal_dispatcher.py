@@ -7,6 +7,7 @@ class SignalDispatcher(QObject):
     add_widget_signal = pyqtSignal()
     selected_button = pyqtSignal(QPushButton)
     update_position = pyqtSignal(QPushButton)
-
+    function_press = pyqtSignal(str,int)
+    #function_press = pyqtSignal()
 # Create a global dispatcher instance
 global_signal_dispatcher = SignalDispatcher()

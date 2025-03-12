@@ -1,8 +1,9 @@
 import PyQt6
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QColor, QPixmap, QIcon
-from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QPushButton, QDialog, QColorDialog, QInputDialog
-
+from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QPushButton, QDialog, QColorDialog, \
+    QInputDialog, QFileDialog
+import os
 import re
 from gui_assets.buttons_sliders_etc.QToggle import QToggle
 from gui_assets.buttons_sliders_etc.button_preview import ButtonPreview
@@ -130,7 +131,7 @@ class AppearanceWidget(QWidget):
             print("No button selected for editing.")
 
     def edit_icon(self):
-        image_path = "gui_assets\gui_icons\Spotify.png"
+        image_path = self.chooseIcon()
         if self.button:
             if image_path:
                 pixmap = QPixmap(image_path)
@@ -158,3 +159,11 @@ class AppearanceWidget(QWidget):
             signal_dispatcher.update_position.emit(self.button)
             self.button.deleteLater()
             self.button = None
+
+    def chooseIcon(self):
+        options = QFileDialog.Option.DontUseNativeDialog
+        downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+        #change "" to downloads_folder to open downloads
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select Icon", "","Image Files (*.png *.jpg *.bmp);;All Files (*)", options=options)
+        if file_path:
+            return file_path

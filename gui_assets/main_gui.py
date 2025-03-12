@@ -13,6 +13,8 @@ from gui_assets.main_window_complete_widgets.signal_dispatcher import global_sig
 from gui_assets.main_window_complete_widgets.top_bar import TopBar
 from gui_assets.widgets import appearance_widget
 
+from widgets.functions.button_functions import execButtonPress, runFunction
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -82,6 +84,9 @@ class MainWindow(QMainWindow):
 
         global_signal_dispatcher.add_widget_signal.connect(self.show_add_widget_popup)
 
+        global_signal_dispatcher.function_press.connect(execButtonPress)
+        #print("Signal connected:", global_signal_dispatcher.function_press.receivers() > 0)
+
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
         main_window.setLayout(title_bar_layout)
@@ -90,7 +95,7 @@ class MainWindow(QMainWindow):
     def add_new_page(self):
         """Add a new page to the page container when called"""
         page_shadow = ShadowFX(self, self.color) #decalre shadow fx
-        page= Page(self) #set page to page class
+        page = Page(self) #set page to page class
         page.setGraphicsEffect(page_shadow) #add shadow fx
         self.pages.append(page) #add page to list
         self.page_container.addWidget(page) #add page to page container
