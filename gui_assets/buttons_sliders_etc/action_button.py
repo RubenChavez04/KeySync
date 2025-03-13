@@ -28,3 +28,4 @@ class ActionButton(QToolButton):
                 color: white;
                 }
             """)
+

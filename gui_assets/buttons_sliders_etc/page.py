@@ -288,7 +288,6 @@ class ButtonWidget(QPushButton):
                 self.parent.save_widget_position(self, self.last_valid_position)  #restore old position
                 self.move(self.last_valid_position)  #revert to old position
 
-
     def showSelected(self, selected_button):
         if self == selected_button:
             self.setStyleSheet(re.sub(r'border:.*?;', 'border: 4px solid green;', self.styleSheet()))

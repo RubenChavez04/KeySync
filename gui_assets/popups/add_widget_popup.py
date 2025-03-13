@@ -63,3 +63,5 @@ class AddWidgetPopup(QDialog):
         """add a widget to the grid"""
         self.grid.add_widget(widget_type, size_multiplier)
         self.close()
+
+

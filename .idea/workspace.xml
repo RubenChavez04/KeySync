@@ -8,19 +8,12 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/action_button.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/action_button.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/popup_title_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/popup_title_bar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/signal_dispatcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/signal_dispatcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/page_backgrounds/wallpaper1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/page_backgrounds/wallpaper2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/page_backgrounds/wallpaper2.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/InstalledApps.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/getapps_ps1.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/getapps_ps1.ps1" afterDir="false" />
     </list>
-    <list id="e487ed90-2f89-4c3c-8262-1ade416fa44b" name="Changes by logan" comment="">
-      <change beforePath="$PROJECT_DIR$/widgets/functions/button_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/button_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/functions/getapps.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/getapps.py" afterDir="false" />
+    <list id="1b7dcf7a-16e9-4746-9d5b-3aea41d66115" name="Changes by logan" comment="">
+      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/widgets/action_buttons_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/widgets/action_buttons_widget.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +21,9 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExportToHTMLSettings">
-    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../PythonProject1\exportToHTML" />
+    <option name="printScope" value="1" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/exportToHTML" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -65,37 +60,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "PowerShell.getapps.ps1.executor": "Run",
-    "PowerShell.getapps_ps1.ps1.executor": "Run",
-    "Python.QToggle.executor": "Run",
-    "Python.buttonFunction.executor": "Run",
-    "Python.button_functions.executor": "Run",
-    "Python.getapps.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main_gui.executor": "Run",
-    "Python.server (1).executor": "Run",
-    "Python.server.executor": "Run",
-    "Python.side_bar.executor": "Run",
-    "Python.test.executor": "Run",
-    "Python.test2.executor": "Run",
-    "Python.transfer_icons.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/chave/PycharmProjects/PythonProject1/gui_assets/page_backgrounds",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;PowerShell.getapps.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.getapps_ps1.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.QToggle.executor&quot;: &quot;Run&quot;,
+    &quot;Python.buttonFunction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.button_functions.executor&quot;: &quot;Run&quot;,
+    &quot;Python.getapps.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.server.executor&quot;: &quot;Run&quot;,
+    &quot;Python.side_bar.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.transfer_icons.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/chave/PycharmProjects/PythonProject1/gui_assets/page_backgrounds&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\page_backgrounds" />
@@ -282,6 +277,10 @@
       <workItem from="1740984564605" duration="6720000" />
       <workItem from="1741130639482" duration="4985000" />
       <workItem from="1741209847267" duration="6529000" />
+      <workItem from="1741312876859" duration="143000" />
+      <workItem from="1741472626357" duration="2480000" />
+      <workItem from="1741643890468" duration="6847000" />
+      <workItem from="1741820092331" duration="2508000" />
     </task>
     <task id="LOCAL-00001" summary="Setup">
       <option name="closed" value="true" />
@@ -411,7 +410,23 @@
       <option name="project" value="LOCAL" />
       <updated>1740629628179</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Setup">
+      <option name="closed" value="true" />
+      <created>1741312944885</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1741312944885</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Changes by logan">
+      <option name="closed" value="true" />
+      <created>1741312976467</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1741312976467</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -439,7 +454,7 @@
     <SUITE FILE_PATH="coverage/PythonProject1$getapps.coverage" NAME="getapps Coverage Results" MODIFIED="1738893218977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Widgets/Functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$server__1_.coverage" NAME="server (1) Coverage Results" MODIFIED="1739134985882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1740986658888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1741220960896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1741825639575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$side_bar.coverage" NAME="side_bar Coverage Results" MODIFIED="1739088077916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/main_window" />
     <SUITE FILE_PATH="coverage/PythonProject1$test.coverage" NAME="test Coverage Results" MODIFIED="1740972182313" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$server.coverage" NAME="server Coverage Results" MODIFIED="1739134489755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

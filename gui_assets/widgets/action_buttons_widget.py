@@ -63,4 +63,5 @@ class ActionButtonsWidget(QWidget):
             else:
                 button.setChecked(False)
                 button.setEnabled(True)
-                
+
+

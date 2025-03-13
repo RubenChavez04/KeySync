@@ -8,3 +8,4 @@ $csvPath = "$PSScriptRoot\InstalledApps.csv"
 Get-StartApps | Select-Object Name, AppID | Export-Csv -Path $csvPath -NoTypeInformation
 
 #We can run this script in python using os.system("put script here")
+
