@@ -2,6 +2,8 @@ from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QSizePolicy, QHBoxLayout, QLabel, QToolButton
 
+from gui_assets.signal_dispatcher import global_signal_dispatcher
+
 
 class TitleBar(QWidget):
     # constructor
@@ -60,6 +62,7 @@ class TitleBar(QWidget):
         close_icon.addFile("gui_assets/gui_icons/Close-256.ico")
         self.close_button.setIcon(close_icon)
         #if close is pressed close the program
+        self.close_button.clicked.connect(global_signal_dispatcher.close_app_signal.emit)
         self.close_button.clicked.connect(self.window().close)
 
         # sdd close and minimize buttons to the title bar

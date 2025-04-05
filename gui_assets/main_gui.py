@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
     QMainWindow, QVBoxLayout, QWidget, QGridLayout,
@@ -9,12 +9,12 @@ from gui_assets.buttons_sliders_etc.page import Page
 from gui_assets.buttons_sliders_etc.shadow_fx import ShadowFX
 from gui_assets.buttons_sliders_etc.title_bar import TitleBar
 from gui_assets.main_window_complete_widgets.side_bar import SideBar
-from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
+from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.main_window_complete_widgets.top_bar import TopBar
 from gui_assets.popups.page_background_selection import ChangePageBackgroundDialog
-from gui_assets.widgets import appearance_widget
-
-
+from widgets.functions.button_functions import exec_button_press
+import json
+import os
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -80,7 +80,9 @@ class MainWindow(QMainWindow):
 
         #connect the tabs of the current page
         self.top_bar.tab_bar.tab_changed.connect(self.switch_or_add_page) #go to switch or add page when state change
-        self.add_new_page() #add a default page
+
+        #run button function
+        global_signal_dispatcher.function_press.connect(exec_button_press)
 
         #show popup to add widgets
         global_signal_dispatcher.add_widget_signal.connect(self.show_add_widget_popup)
@@ -88,11 +90,28 @@ class MainWindow(QMainWindow):
         #show popup to change page background
         global_signal_dispatcher.change_page_background_signal.connect(self.show_background_dialog)
         global_signal_dispatcher.image_selected_signal.connect(self.update_page_background)
+        global_signal_dispatcher.close_app_signal.connect(self.close_app)
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
         main_window.setLayout(title_bar_layout)
         self.setCentralWidget(main_window)
+
+    def init(self, bypass=False):
+        file_path = "saved_pages.json"
+        if not bypass:
+            if os.path.exists(file_path):
+                print(f"{file_path} exists")
+                self.restore_all_pages()
+                return
+            else:
+                self.add_new_page()
+        if bypass:
+            self.add_new_page()
+
+    def close_app(self):
+        self.save_all_pages_data()
+        self.window().close()
 
     def add_new_page(self):
         """Add a new page to the page container when called"""
@@ -102,10 +121,15 @@ class MainWindow(QMainWindow):
         self.pages.append(page) #add page to list
         self.page_container.addWidget(page) #add page to page container
 
-    def switch_or_add_page(self,index):
+    def switch_or_add_page(self,index, restore=False):
         """When a tab is changed or added, switch to page that is indexed with tab, else add a new page"""
+        if not restore:
+            self.blockSignals(False)
+        if restore:
+            self.blockSignals(True)
         if index >= len(self.pages): #check if page exists with current amount of tabs
             self.add_new_page() #add a new page
+
         self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
 
     def show_add_widget_popup(self):
@@ -122,3 +146,84 @@ class MainWindow(QMainWindow):
         """Update the background of the current page."""
         current_page = self.pages[self.page_container.currentIndex()]
         current_page.update_background(image_path)
+
+    def save_all_pages_data(self):
+        page_save_path = "saved_pages.json"
+        all_pages_data = {
+            "pages":[]
+        }
+
+        for page in self.pages:
+            page_data = page.save_page_data()
+            all_pages_data["pages"].append(page_data)
+
+        try:
+            with open(page_save_path, "w") as save_file:
+                json.dump(all_pages_data, save_file, indent=4)
+            print(f"All page data saved to {page_save_path}")
+        except IOError as e:
+            print(f"Error saving page data{e}")
+
+    def restore_all_pages(self, filepath="saved_pages.json"):
+        """
+        Restore all pages and their widgets from a JSON file.
+        """
+        try:
+            with open(filepath, "r") as file:
+                all_pages_data = json.load(file)
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"Error loading file {filepath}: {e}")
+            self.init(bypass=True)
+            return
+
+        # Validate the structure of the JSON data
+        if not all_pages_data.get("pages"):
+            print(f"Error: Missing 'pages' key in {filepath}")
+            self.init(bypass=True)
+            return
+
+        try:
+
+            # Rebuild pages using the saved data
+            for index, page_data in enumerate(all_pages_data["pages"]):
+                # Ensure there's a specific page for this index
+                self.switch_or_add_page(index, restore = True)
+                print(index)
+                # Access the newly added or existing page
+                page = self.pages[index]
+                page.image_path = page_data.get("image_path", "")  # Handle missing keys gracefully
+                page.set_background(page.image_path)
+                if index == 0:
+                    self.top_bar.tab_bar.init_first_tab()
+                else:
+                    self.top_bar.tab_bar.add_new_tab()
+
+                # Restore widgets on the page
+                for widget_data in page_data.get("widgets", []):  # Default to empty list if widgets key is missing
+                    try:
+                        widget_type = widget_data["type"]
+                        position = QPoint(*widget_data["position"])
+                        size_multiplier = tuple(widget_data["size_multiplier"])
+                        appID = widget_data.get("appID", None)
+                        color = widget_data.get("color")
+                        label = widget_data.get("label")
+                        image_path = widget_data.get("image_path")
+                        print(color)
+
+                        # Call PageGrid's add_widget method to add widgets
+                        page.page_grid.add_widget(widget_type, size_multiplier, position, color, label, image_path)
+                        # Optionally assign appID and style_sheet
+                        last_widget = page.page_grid.widgets[-1]
+                        last_widget.appID = appID
+                    except (KeyError, TypeError) as e:
+                        print(f"Skipped restoring a widget due to invalid data: {widget_data}. Error: {e}")
+
+        except Exception as e:
+            print(f"Unexpected error while restoring pages: {e}")
+        self.blockSignals(False)
+        self.top_bar.tab_bar.change_tab(0)
+        self.update()
+
+
+
+

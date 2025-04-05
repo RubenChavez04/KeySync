@@ -4,6 +4,7 @@ import psutil
 import webbrowser
 import pandas
 
+shellpid = []
 appList = []
 buttonFunctionList = []
 
@@ -29,15 +30,20 @@ def get_child_shell(app):
     child_pid = children[0].pid
     return child_pid
 
-def run_function(app,function):
+def run_function(app, function):
     filepath = get_file_path(app)
-    if filepath == "Unrecognized File":
-        print("Uh oh")
-    else:
-        if function == 'Open':
-            open_app(app,filepath)
-        elif function == 'Close':
-            close_app(app)
+    if function == 'Open':
+        if filepath.startswith("URL "):  # Given from getFilePath, will start with 'URL '
+            webbrowser.open(filepath[4:])  # Start reading after 'URL ' to open the actual URL
+        else:  # Else, it's either a normal exe or a microsoft app, run normally with the MSA path
+            try:
+                os.startfile(filepath)
+            except Exception as e:
+                print(f"Failed to start file using os.startfile: {e}")
+                shell_process = subprocess.Popen([filepath], shell=True, close_fds=True)
+                update_shellpid(app, shell_process.pid)
+    elif function == 'Close':
+        close_app(app)
 
 def open_app(app,filepath):
     if ".exe" in filepath:
@@ -85,10 +91,27 @@ def get_app_name(button_id):
 def get_button_function(button_id,press_type):
     return buttonFunctionList[button_id][press_type]
 
-def exec_button_press(button_id, press_type):
-    app = get_app_name(button_id)
-    function = get_button_function(button_id, press_type+1)
-    run_function(app,function)
+def exec_button_press(app_id, pressType):
+    print(f'Executing button press for {app_id}')
+    # Extract app name from app id assuming it follows Microsoft AppName_xyz!
+    if '!' in app_id:
+        app_name = app_id.split('!')[0].split('.')[-1].replace('_', ' ')
+    else:
+        app_name = app_id
+
+    # Update button function list if app doesn't exist
+    if not any(app_name in sublist for sublist in buttonFunctionList):
+        buttonFunctionList.append([app_name, 'Open', 'Close'])
+        shellpid.append([app_name])
+
+    # Add to appList if not present
+    if not any(app_name in sublist for sublist in appList):
+        appList.append([app_name, app_id])
+
+    function = 'Open' if pressType == 1 else 'Close'
+    print("Running function...")
+    run_function(app_name, function)
+    print('Button Pressed')
 
 def read_file():
     path_to_this_file = os.path.dirname(os.path.abspath(__file__))
@@ -103,5 +126,3 @@ def update_lists():
 
 update_lists()
 run_function("Ultimate Chicken Horse","Open")
-
-

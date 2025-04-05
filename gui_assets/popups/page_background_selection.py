@@ -1,13 +1,12 @@
-import sys
 import os
 import shutil
 from PyQt6.QtWidgets import (
-    QApplication, QDialog, QVBoxLayout, QPushButton, QFileDialog,
+    QDialog, QVBoxLayout, QPushButton, QFileDialog,
     QScrollArea, QWidget, QHBoxLayout
 )
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QSize
-from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
+from gui_assets.signal_dispatcher import global_signal_dispatcher
 
 
 class ChangePageBackgroundDialog(QDialog):

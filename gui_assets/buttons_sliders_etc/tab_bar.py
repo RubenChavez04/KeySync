@@ -1,6 +1,6 @@
 from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtWidgets import QPushButton, QLineEdit, QWidget, QVBoxLayout, QFrame, QScrollArea, QHBoxLayout
-
+import os
 
 class TabButton(QPushButton):
     """Custom tab button class to handle double-click renaming."""
@@ -98,7 +98,7 @@ class TabBar(QWidget):
         self.current_tab_index = 0  #track currently active tab
 
         #initialize the tab bar
-        self.init_first_tab()
+        self.init()
 
         #styling the frame containing everything
         self.tabs_frame.setStyleSheet("""
@@ -116,6 +116,13 @@ class TabBar(QWidget):
                 border: none; /* Removes any border that creates dark areas */
             }
         """)
+    def init(self):
+        file_path = "saved_pages.json"
+        if os.path.exists(file_path):
+            print(f"{file_path} exists")
+            return
+        else:
+            self.init_first_tab()
 
     def init_first_tab(self):
         """Initialize the first tab and the add button."""
@@ -187,6 +194,7 @@ class TabBar(QWidget):
     def change_tab(self, index):
         """Change the active tab."""
         #get tab index
+        print(f"changing to tab index: {index}")
         self.current_tab_index = index
         #emit tab changed signal for parent widget
         self.tab_changed.emit(index)

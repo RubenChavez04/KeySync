@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QWidget, QGridLayout
 
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.tab_bar import TabBar
-from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
+from gui_assets.signal_dispatcher import global_signal_dispatcher
 
 
 class TopBar(QWidget):

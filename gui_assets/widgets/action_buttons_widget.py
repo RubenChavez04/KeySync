@@ -4,6 +4,8 @@ from PyQt6.QtWidgets import QWidget, QGridLayout
 from gui_assets.buttons_sliders_etc.action_button import ActionButton
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
+from gui_assets.signal_dispatcher import global_signal_dispatcher
+from widgets.functions.getapps import get_apps, AppSelectionDialog
 
 
 class ActionButtonsWidget(QWidget):
@@ -51,8 +53,11 @@ class ActionButtonsWidget(QWidget):
             text= "+",
             tooltip="Add a new action"
         )
+        add_action_btn.clicked.connect(self.show_app_selection)
         layout.addWidget(add_action_btn,2,0,1,4)
         self.setLayout(layout)
+        self.button=None
+        global_signal_dispatcher.selected_button.connect(self.selected_button)
 
     def button_selected(self):
         selected_button = self.sender()
@@ -64,4 +69,15 @@ class ActionButtonsWidget(QWidget):
                 button.setChecked(False)
                 button.setEnabled(True)
 
+    def show_app_selection(self):
+        apps = get_apps()
+        dialog = AppSelectionDialog(apps, self)
+        if dialog.exec():
+            selected_app = dialog.get_selected_app()
+            if selected_app:
+                # Emit signal with selected app ID
+                print("Selected app: ", selected_app)
+                self.button.appID = selected_app
 
+    def selected_button(self, selected_button):
+        self.button = selected_button

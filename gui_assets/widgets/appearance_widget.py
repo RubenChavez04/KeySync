@@ -1,12 +1,13 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QPushButton, QDialog
+from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel
 
 from gui_assets.buttons_sliders_etc.QToggle import QToggle
 from gui_assets.buttons_sliders_etc.button_preview import ButtonPreview
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.sidebar_button_mini import SideBarToolButtonMini
 from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
+from gui_assets.signal_dispatcher import global_signal_dispatcher
 
 
 class AppearanceWidget(QWidget):
@@ -15,6 +16,7 @@ class AppearanceWidget(QWidget):
 
     # ----------Appearance Section----------#
         # Add a header for Appearance
+        self.button = None
         appearance_header = SideBarLabel(self, "Appearance")
         appearance_header.setFixedHeight(25)
         layout = QGridLayout()
@@ -26,6 +28,7 @@ class AppearanceWidget(QWidget):
         self.button_preview = ButtonPreview(self)
         layout.addWidget(self.button_preview, 1, 0)
         layout.addWidget(appearance_header, 0, 0,1,2)
+
         # add appearance section buttons
         add_label_button = SideBarToolButton(
             self,
@@ -33,27 +36,38 @@ class AppearanceWidget(QWidget):
             tooltip="Add a label to your button",
             font_size= 12
         )
+        add_label_button.clicked.connect(global_signal_dispatcher.add_label_signal.emit)
+
         variable_button = SideBarToolButtonMini(
             self,
             text="(X)",
             tooltip="Add a variable to your button",
             italic=True
         )
+
+
         delete_button = SideBarToolButtonMini(
             self,
             image_path="gui_assets/gui_icons/trash.ico",
             tooltip="Delete the button"
         )
+        delete_button.clicked.connect(global_signal_dispatcher.delete_button_signal.emit)
+
         add_icon_button = SideBarToolButtonMini(
             self,
             image_path="gui_assets/gui_icons/image.ico",
             tooltip="Add a image to your button"
         )
+        add_icon_button.clicked.connect(global_signal_dispatcher.add_icon_signal.emit)
+
         change_color_button = SideBarToolButtonMini(
             self,
             image_path="gui_assets/gui_icons/Color.ico",
             tooltip="Change the color of your button"
         )
+
+        change_color_button.clicked.connect(global_signal_dispatcher.change_color_signal.emit)
+
         # set them in a specific layout
         appearance_button_layout = QGridLayout()
         appearance_button_layout.setContentsMargins(0, 0, 0, 0)
@@ -98,7 +112,12 @@ class AppearanceWidget(QWidget):
         layout.addLayout(appearance_button_layout, 1, 1)
         self.setLayout(layout)
 
+        #update preview button appearance
         self.state_toggler.stateChanged.connect(self.update_button_state)
+
+        #get signal for selected button
+        global_signal_dispatcher.selected_button.connect(self.selected_button)
+        self.button = None
 
     def update_button_state(self, state):
         if self.state_toggler.isChecked():
@@ -106,7 +125,8 @@ class AppearanceWidget(QWidget):
         else:
             self.button_preview.update_style("Off")
 
-
+    def selected_button(self, selected_button):
+        self.button = selected_button
 
 
 

@@ -1,13 +1,12 @@
 import os
-import re
 
 from PyQt6.QtCore import Qt, QPoint, pyqtSignal
-from PyQt6.QtGui import QMouseEvent
-from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout, QPushButton
+from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout
 import random
 
-from gui_assets.main_window_complete_widgets.signal_dispatcher import global_signal_dispatcher
+from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.popups.add_widget_popup import AddWidgetPopup
+from widgets.ButtonWidget import ButtonWidget
 
 
 class Page(QWidget):
@@ -83,6 +82,24 @@ class Page(QWidget):
             print(f"Error: Image file not found - {self.image_path}")
             self.image_path = None
 
+    def save_page_data(self):
+        data = {
+            "image_path": self.image_path,
+            "widgets":[]
+        }
+
+        for widget in self.page_grid.widgets:
+            widget_data = {
+                "type": widget.__class__.__name__,
+                "position": (widget.pos().x(), widget.pos().y()),
+                "size_multiplier": widget.size_multiplier,
+                "appID": widget.appID,
+                "color": widget.color,
+                "label": widget.label,
+                "image_path": widget.image_path
+            }
+            data["widgets"].append(widget_data)
+        return data
 
 
 class PageGrid(QWidget):
@@ -108,30 +125,48 @@ class PageGrid(QWidget):
         self.widgets = []   #list of added widgets
         self.positions = {} #dictionary to track widgets
 
-    def add_widget(self, widget_type, size_multiplier = (1,1), position = None):
-        """add a widget to the grid, gets called in the pop up"""
-        available_pos = self.find_first_available_position() if not position else position
+        global_signal_dispatcher.remove_widget_signal.connect(self.remove_widget)
 
-        #add all widgets we create here (e.g. Spotify
-        if available_pos:
-            if widget_type == "Spotify":
-                #button for now
-                widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos)
-            else:
-                widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos)
+    def add_widget(self, widget_type, size_multiplier=(1, 1), position=None, color="#f0f0f0", label="",image_path= None):
+        """Add a widget to the grid, gets called in the pop-up or during restoration."""
+        if position is None:
+            position = self.find_first_available_position(size_multiplier)
+        if not position or not isinstance(position, QPoint):
+            print(f"Invalid widget position: {position}. Skipping.")
+            return
+        if not isinstance(size_multiplier, tuple) or len(size_multiplier) != 2:
+            print(f"Invalid size_multiplier: {size_multiplier}. Skipping.")
+            return
 
-            widget.move(available_pos)  #move the widget to the first available position
-            self.widgets.append(widget) #add widget to widget list
-            self.save_widget_position(widget, available_pos)    #save the widgets position to stop widget overlapping
-            widget.show()   #show the widget, updates just the widget
+        available_pos = position if position else self.find_first_available_position(size_multiplier)
+        if not available_pos:
+            print("No available position for widget. Grid might be full. Skipping.")
+            return
 
-            if self.is_grid_full():         # check if grid is full
-                self.grid_full.emit(True)   # if full emit true signal, to be used for disabling add widget button
-                pass
-            else:
-                self.grid_full.emit(False)  # else emit false signal
+        if widget_type == "Spotify":
+            # Example: Add logic specific to Spotify widgets
+            widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos, color, label, image_path)
+        elif widget_type == "1x1 Button" or "2x2 Button" or "ButtonWidget":
+            print(color)
+            try:
+                widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos, color, label, image_path)
+            except Exception as e:
+                print(f"Error occurred while adding widget {e}")
+                return
+
+            print("widget added")
         else:
-            print("Page is full!")
+            print(f"Unknown widget type: {widget_type}. Skipping.")
+            return
+
+        # Proceed with widget placement
+        widget.move(available_pos)
+        self.widgets.append(widget)
+        self.save_widget_position(widget, available_pos)
+        widget.show()
+
+        # Check if grid is full
+        self.grid_full.emit(self.is_grid_full())
 
     def save_widget_position(self, widget, pos):
         """save positions for all cells occupied by the widget."""
@@ -230,68 +265,14 @@ class PageGrid(QWidget):
             #remove the widgets position, so it can be reoccupied by future widgets
             del self.positions[key]
 
+    def remove_widget(self, widget):
+        if widget in self.widgets:
+            self.widgets.remove(widget)
+            print(f"{widget} removed")
+        self.remove_widget_position(widget)
 
-class ButtonWidget(QPushButton):
-    """draggable button widget with custom sizing parameters, users can select button size"""
-    def __init__(self, parent, cell_size, size_multiplier=(1, 1), position=None):
-        #needed a size multiplier for determining col and row span [0] is col [1] is row
-        super().__init__(parent)
-        #define parent grid
-        self.parent = parent
-        self.grid_size = cell_size
-        self.size_multiplier = size_multiplier
-        if size_multiplier == (1,1):
-            self.setFixedSize(cell_size, cell_size)
-        else:
-            self.setFixedSize(cell_size * size_multiplier[0] + (size_multiplier[0]*13)-13, #width = 100 * (how much columns to take) + spacing
-                              cell_size * size_multiplier[1] + (size_multiplier[1]*20)-20)
-        self.startPos = None
-        self.last_valid_position = position if position else QPoint(0, 0)
-        self.move(self.last_valid_position)
-        self.setStyleSheet(
-            f"QPushButton {{border-radius: 8px;background-color: #f0f0f0;border: None;}} QPushButton:hover {{ background-color: #cccccc;}}")
-        global_signal_dispatcher.selected_button.connect(self.showSelected)
 
-    def mouseDoubleClickEvent(self,event):
-        """Handle double-click to rename the tab."""
-        if event.button() == Qt.MouseButton.LeftButton: #if left click twice
-            global_signal_dispatcher.selected_button.emit(self)
-        super().mouseDoubleClickEvent(event)
 
-    def mousePressEvent(self, event: QMouseEvent):
-        """mouse event handling for initializing dragging the widget."""
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.startPos = event.pos() #get mouse position
-            self.last_valid_position = self.pos()#save old position for invalid widget placement
 
-    def mouseMoveEvent(self, event: QMouseEvent):
-        """mouse event handling for dragging the widget."""
-        if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
-            new_pos = self.mapToParent(event.pos() - self.startPos) #calculate mouse position based on initial mouse position
-            self.move(self.parent.get_snapped_position(new_pos, self.size_multiplier)) #get a snapped position relative to the mouse pos
-
-    def mouseReleaseEvent(self, event: QMouseEvent):
-        """mouse event handling for releasing the widget and saving its pos if valid"""
-        if event.button() == Qt.MouseButton.LeftButton:
-            #get the snapped position for widget
-            snapped_pos = self.parent.get_snapped_position(self.pos(), self.size_multiplier)
-
-            #temporarily remove old positions, so widget can be moved 1 col over if needed
-            self.parent.remove_widget_position(self)
-
-            #check if the snapped position is valid to prevent overlapping
-            if self.parent.is_position_available(snapped_pos, self.size_multiplier): #if the position in grid is valid
-                self.move(snapped_pos)  #move the widget to the snapped position
-                self.parent.save_widget_position(self, snapped_pos)  #save the new position
-                self.last_valid_position = snapped_pos  #update last valid position
-            else: #if position is invalid revert to old position from press event
-                self.parent.save_widget_position(self, self.last_valid_position)  #restore old position
-                self.move(self.last_valid_position)  #revert to old position
-
-    def showSelected(self, selected_button):
-        if self == selected_button:
-            self.setStyleSheet(re.sub(r'border:.*?;', 'border: 4px solid green;', self.styleSheet()))
-        else:
-            self.setStyleSheet(re.sub(r'border:.*?;', 'border: None;', self.styleSheet()))
 
 

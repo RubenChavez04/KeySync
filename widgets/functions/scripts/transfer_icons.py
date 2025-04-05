@@ -11,13 +11,3 @@ def get_icons(folder_path):
             pass
     return all_paths
 
-def send_icons(folder_path):
-    all_paths = get_icons(folder_path)
-    for path in range(len(all_paths)):
-        scp_command = f'scp "{all_paths[path]}" rubchave@10.0.6.151:/home/rubchave/gui_icons/'
-        print(scp_command)
-        output = subprocess.run(f'{scp_command} & 7477', shell=True, capture_output = True, text=True)
-        print(output.stdout)
-
-send_icons(r'C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons')
-
