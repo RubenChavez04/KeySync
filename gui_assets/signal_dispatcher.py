@@ -22,8 +22,14 @@ class SignalDispatcher(QObject):
     change_color_signal = pyqtSignal()
     selected_button = pyqtSignal(QPushButton)
 
+    #page delete signal
+    tab_deleted_signal = pyqtSignal()
+
     #close signal
     close_app_signal = pyqtSignal()
+
+    #server/client signals
+    websocket_send_message = pyqtSignal(str)
 
     #raspi button signal
     raspi_button_signal = pyqtSignal()

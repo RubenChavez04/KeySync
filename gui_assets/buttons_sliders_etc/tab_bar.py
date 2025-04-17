@@ -1,10 +1,13 @@
 from PyQt6.QtCore import pyqtSignal, Qt
-from PyQt6.QtWidgets import QPushButton, QLineEdit, QWidget, QVBoxLayout, QFrame, QScrollArea, QHBoxLayout
+from PyQt6.QtWidgets import QPushButton, QLineEdit, QWidget, QVBoxLayout, QFrame, QScrollArea, QHBoxLayout, QMenu
 import os
+
+from gui_assets.signal_dispatcher import global_signal_dispatcher
 
 class TabButton(QPushButton):
     """Custom tab button class to handle double-click renaming."""
     renamed = pyqtSignal(str)  #signal emitted when the tab is renamed
+    deleted = pyqtSignal(QPushButton)
 
     def __init__(self, text, parent=None):
         super().__init__(text, parent)
@@ -22,12 +25,21 @@ class TabButton(QPushButton):
                 color: white;
             }
         """)
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.RightButton:
+            self.show_menu(event.pos())
+        else:
+            super().mousePressEvent(event)
 
-    def mouseDoubleClickEvent(self, event):
-        """Handle double-click to rename the tab."""
-        if event.button() == Qt.MouseButton.LeftButton: #if left click twice
-            self.rename_tab() #call rename method
-        super().mouseDoubleClickEvent(event)
+    def show_menu(self, pos):
+        menu = QMenu(self)
+        rename_action = menu.addAction("Rename")
+        rename_action.triggered.connect(self.rename_tab)
+
+        delete_action = menu.addAction("Delete Page")
+        delete_action.triggered.connect(lambda: self.deleted.emit(self))
+
+        menu.exec(self.mapToGlobal(pos))
 
     def rename_tab(self):
         """Switch the button temporarily to a QLineEdit for renaming."""
@@ -48,6 +60,7 @@ class TabButton(QPushButton):
 
         line_edit.editingFinished.connect(finish_renaming)
         line_edit.show()
+
 
 class TabBar(QWidget):
     tab_changed = pyqtSignal(int)  #signal emitted when a tab index is changed
@@ -144,6 +157,8 @@ class TabBar(QWidget):
         btn.setFixedSize(self.button_width, self.button_height)
         #switch to the newly created tab
         btn.clicked.connect(lambda: self.change_tab(self.tab_buttons.index(btn)))
+
+        btn.deleted.connect(self.remove_tab)
         return btn #return the tab button
 
     def create_add_button(self) -> QPushButton:
@@ -221,3 +236,29 @@ class TabBar(QWidget):
             #opposite as left
             scroll_bar.setValue(scroll_bar.value() + 20)
         event.accept()
+
+    def remove_tab(self, tab_button: TabButton):
+        """Remove a tab from the bar."""
+        index = self.tab_buttons.index(tab_button)  # Find index of the tab to be removed
+
+        # Disconnect any signals associated with the tab
+        tab_button.deleted.disconnect(self.remove_tab)
+        tab_button.clicked.disconnect()
+
+        # Remove the tab from internal tracking
+        self.tab_buttons.pop(index)  # Remove button from the list
+        self.tabs_layout.removeWidget(tab_button)  # Remove button from the layout
+        tab_button.deleteLater()  # Clean up the tab button object
+
+        # Emit a signal to notify other components to clean up the corresponding page
+        global_signal_dispatcher.tab_deleted_signal.emit()
+
+        # Adjust active tab index
+        if self.current_tab_index == index:
+            self.current_tab_index = max(0, index - 1)
+            if self.tab_buttons:
+                self.set_active_tab(self.tab_buttons[self.current_tab_index])
+
+        # Update other components about the change
+        self.tab_changed.emit(self.current_tab_index)
+

@@ -6,13 +6,15 @@ import random
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.popups.add_widget_popup import AddWidgetPopup
-from widgets.ButtonWidget import ButtonWidget
+from widgets.button_widget import ButtonWidget
+from widgets.spotify_widget.spotify_widget import SpotifyWidget
 
 
 class Page(QWidget):
     def __init__(self, parent, image_path="page_backgrounds/wallpaper2.jpg"):
 
         super().__init__(parent)
+        self.index = None
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
@@ -34,10 +36,11 @@ class Page(QWidget):
         layout.addWidget(self.frame)
 
         self.setLayout(layout)
+        global_signal_dispatcher.tab_deleted_signal.connect(self.delete_page)
 
     def show_add_widget_popup(self):
-        self.popup = AddWidgetPopup(self, self.page_grid)
-        self.popup.exec()
+        popup = AddWidgetPopup(self, self.page_grid)
+        popup.exec()
 
     def set_background(self, image_path):
         """set the page background to the given image or default to random gradient."""
@@ -89,17 +92,30 @@ class Page(QWidget):
         }
 
         for widget in self.page_grid.widgets:
-            widget_data = {
-                "type": widget.__class__.__name__,
-                "position": (widget.pos().x(), widget.pos().y()),
-                "size_multiplier": widget.size_multiplier,
-                "appID": widget.appID,
-                "color": widget.color,
-                "label": widget.label,
-                "image_path": widget.image_path
-            }
-            data["widgets"].append(widget_data)
+            widget_type = widget.__class__.__name__
+            if widget_type == "ButtonWidget":
+                widget_data = {
+                    "type": widget_type,
+                    "position": (widget.pos().x(), widget.pos().y()),
+                    "size_multiplier": widget.size_multiplier,
+                    "color": widget.color,
+                    "label": widget.label,
+                    "image_path": widget.image_path,
+                    "functions": widget.functions
+                }
+                data["widgets"].append(widget_data)
+            elif widget_type == "SpotifyWidget":
+                widget_data = {
+                    "type": widget_type
+                }
         return data
+
+    def delete_page(self):
+        for widget in self.page_grid.widgets:
+            widget.delete_widget()
+        self.page_grid.widgets.clear()
+        self.page_grid.deleteLater()
+        self.deleteLater()
 
 
 class PageGrid(QWidget):
@@ -143,9 +159,9 @@ class PageGrid(QWidget):
             print("No available position for widget. Grid might be full. Skipping.")
             return
 
-        if widget_type == "Spotify":
+        if widget_type == "SpotifyWidget":
             # Example: Add logic specific to Spotify widgets
-            widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos, color, label, image_path)
+            widget = SpotifyWidget(self, self.cell_size, size_multiplier, available_pos, color)
         elif widget_type == "1x1 Button" or "2x2 Button" or "ButtonWidget":
             print(color)
             try:

@@ -1,8 +1,8 @@
 from PyQt6.QtCore import Qt, QPoint
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QAction, QIcon
 from PyQt6.QtWidgets import (
     QMainWindow, QVBoxLayout, QWidget, QGridLayout,
-    QStackedLayout
+    QStackedLayout, QMenu, QSystemTrayIcon
 )
 
 from gui_assets.buttons_sliders_etc.page import Page
@@ -27,6 +27,30 @@ class MainWindow(QMainWindow):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.color = QColor(0, 0, 0, 150)
         self.shadow = ShadowFX(self, self.color)
+
+        #System Tray stuff, used when you "close" the application,
+        # system tray is where user can actually end application
+        self.is_hidden_to_tray = False
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(QIcon(
+            "gui_assets/gui_icons/trash.ico"
+        ))
+        self.tray_icon.setToolTip("KeySync")
+        #Tray menu
+        self.tray_menu = QMenu()
+        #Tray menu restore
+        restore_action = QAction("Restore", self)
+        restore_action.triggered.connect(self.restore_from_tray)
+        self.tray_menu.addAction(restore_action)
+        #tray menu quit app
+        quit_action = QAction("Quit",self)
+        quit_action.triggered.connect(self.close_app)
+        self.tray_menu.addAction(quit_action)
+
+        self.tray_icon.setContextMenu(self.tray_menu)
+        self.tray_icon.activated.connect(self.on_tray_icon_activated)
+        self.tray_icon.show()
+
         side_bar_shadow = ShadowFX(self, self.color)
         top_bar_shadow = ShadowFX(self, self.color)
 
@@ -90,7 +114,8 @@ class MainWindow(QMainWindow):
         #show popup to change page background
         global_signal_dispatcher.change_page_background_signal.connect(self.show_background_dialog)
         global_signal_dispatcher.image_selected_signal.connect(self.update_page_background)
-        global_signal_dispatcher.close_app_signal.connect(self.close_app)
+        global_signal_dispatcher.close_app_signal.connect(self.close_event)
+        global_signal_dispatcher.tab_deleted_signal.connect(self.handle_tab_deletion)
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
@@ -109,14 +134,47 @@ class MainWindow(QMainWindow):
         if bypass:
             self.add_new_page()
 
+    def close_event(self):
+        """
+        This method is called when the user tries to close the window.
+        Instead of closing, we'll minimize the app to the system tray.
+        """
+        # Minimize to the system tray instead of quitting
+        if not self.is_hidden_to_tray:
+            self.hide()  # Hide the main application window
+            self.tray_icon.showMessage(
+                "KeySync is running",
+                "The app is still running in the background. Click the tray icon to restore it.",
+                QSystemTrayIcon.MessageIcon.Information,
+                3000
+            )
+            self.is_hidden_to_tray = True
+
+    def on_tray_icon_activated(self, reason):
+        """
+        Handle clicks on the system tray icon.
+        """
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:
+            # Single left click: Restore the app
+            if self.isHidden():
+                self.restore_from_tray()
+
+    def restore_from_tray(self):
+        self.is_hidden_to_tray = False
+        self.showNormal()
+        self.activateWindow()
+
     def close_app(self):
+        self.tray_icon.hide()
         self.save_all_pages_data()
         self.window().close()
 
     def add_new_page(self):
         """Add a new page to the page container when called"""
+        pages_len = len(self.pages)
         page_shadow = ShadowFX(self, self.color) #decalre shadow fx
         page= Page(self) #set page to page class
+        page.index = pages_len
         page.setGraphicsEffect(page_shadow) #add shadow fx
         self.pages.append(page) #add page to list
         self.page_container.addWidget(page) #add page to page container
@@ -131,6 +189,13 @@ class MainWindow(QMainWindow):
             self.add_new_page() #add a new page
 
         self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
+
+    def handle_tab_deletion(self):
+        if self.pages:
+            current_index = self.page_container.currentIndex()
+            page_to_remove = self.pages.pop(current_index)
+            self.page_container.removeWidget(page_to_remove)
+            page_to_remove.deleteLater()
 
     def show_add_widget_popup(self):
         #get the current page from index and show popup for respective page
@@ -176,7 +241,7 @@ class MainWindow(QMainWindow):
             self.init(bypass=True)
             return
 
-        # Validate the structure of the JSON data
+        #validate the JSON data
         if not all_pages_data.get("pages"):
             print(f"Error: Missing 'pages' key in {filepath}")
             self.init(bypass=True)
@@ -184,45 +249,45 @@ class MainWindow(QMainWindow):
 
         try:
 
-            # Rebuild pages using the saved data
+            #get all data and reimplement all the data
             for index, page_data in enumerate(all_pages_data["pages"]):
                 # Ensure there's a specific page for this index
                 self.switch_or_add_page(index, restore = True)
                 print(index)
                 # Access the newly added or existing page
                 page = self.pages[index]
-                page.image_path = page_data.get("image_path", "")  # Handle missing keys gracefully
+                page.image_path = page_data.get("image_path", "")
                 page.set_background(page.image_path)
                 if index == 0:
                     self.top_bar.tab_bar.init_first_tab()
                 else:
                     self.top_bar.tab_bar.add_new_tab()
 
-                # Restore widgets on the page
-                for widget_data in page_data.get("widgets", []):  # Default to empty list if widgets key is missing
+                #restore widgets on a page
+                for widget_data in page_data.get("widgets", []):  #default to empty list if widgets key is missing
                     try:
                         widget_type = widget_data["type"]
                         position = QPoint(*widget_data["position"])
                         size_multiplier = tuple(widget_data["size_multiplier"])
-                        appID = widget_data.get("appID", None)
+                        functions = widget_data.get("functions")
                         color = widget_data.get("color")
                         label = widget_data.get("label")
                         image_path = widget_data.get("image_path")
                         print(color)
 
-                        # Call PageGrid's add_widget method to add widgets
+                        #call pagegrid add_widget method to add widgets back to page
                         page.page_grid.add_widget(widget_type, size_multiplier, position, color, label, image_path)
                         # Optionally assign appID and style_sheet
                         last_widget = page.page_grid.widgets[-1]
-                        last_widget.appID = appID
+                        last_widget.appID = functions
                     except (KeyError, TypeError) as e:
                         print(f"Skipped restoring a widget due to invalid data: {widget_data}. Error: {e}")
 
         except Exception as e:
             print(f"Unexpected error while restoring pages: {e}")
-        self.blockSignals(False)
-        self.top_bar.tab_bar.change_tab(0)
-        self.update()
+        self.blockSignals(False)    #unblock signals after restoration
+        self.top_bar.tab_bar.change_tab(0) #index tab to first page
+        self.update()   #update to ensure everything is loaded properly
 
 
 

@@ -50,9 +50,13 @@ class AddWidgetPopup(QDialog):
         }""")
         self.container_layout.addWidget(self.widget_btn_label,0,0,1,3, alignment=Qt.AlignmentFlag.AlignLeft)
         i=0
-        for widget_type, size in [("1x1 Button", (1, 1)), ("2x2 Button", (2, 2)), ("Spotify Widget", (4, 2))]:
+        for display_name, widget_type, size in [
+            ("1x1 Button", "ButtonWidget", (1, 1)),
+            ("2x2 Button", "ButtonWidget",(2, 2)),
+            ("Spotify Widget", "SpotifyWidget", (4, 2))
+        ]:
             i=i+1
-            btn = SideBarToolButton(self, text=widget_type)
+            btn = SideBarToolButton(self, text=display_name)
             btn.clicked.connect(lambda _, t=widget_type, s=size: self.add_widget(t, s))
             self.container_layout.addWidget(btn,1,i)
 
