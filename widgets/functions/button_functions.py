@@ -45,13 +45,13 @@ def run_function(app, function):
     elif function == 'Close':
         close_app(app)
 
-def open_app(app,filepath):
+def open_app(filepath):
     if ".exe" in filepath:
         shell_process = subprocess.Popen(filepath, shell=True, close_fds=True)
-        for i in range(len(appList)):
+        """for i in range(len(appList)):
             if appList[i][0] == app:
                 appList[i][2] = shell_process.pid
-                break
+                break"""
     elif filepath.startswith("URL "):  #Given from get_file_path, will start with 'URL '
         webbrowser.open(filepath[4:])
     elif filepath.startswith("Steam "):
@@ -125,4 +125,3 @@ def update_lists():
         appList.append([df["Name"][i],df["AppID"][i],'pid'])
 
 update_lists()
-run_function("Ultimate Chicken Horse","Open")

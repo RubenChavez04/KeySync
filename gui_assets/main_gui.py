@@ -12,6 +12,7 @@ from gui_assets.main_window_complete_widgets.side_bar import SideBar
 from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.main_window_complete_widgets.top_bar import TopBar
 from gui_assets.popups.page_background_selection import ChangePageBackgroundDialog
+from server import shutdown_server
 from widgets.functions.button_functions import exec_button_press
 import json
 import os
@@ -168,6 +169,7 @@ class MainWindow(QMainWindow):
         self.tray_icon.hide()
         self.save_all_pages_data()
         self.window().close()
+        shutdown_server()
 
     def add_new_page(self):
         """Add a new page to the page container when called"""

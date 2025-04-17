@@ -55,6 +55,7 @@ class ButtonWidget(QPushButton):
         global_signal_dispatcher.selected_button.connect(self.selected_button)
 
 
+
     def edit_color(self):
         if self.button_selected==self:
             color = QColorDialog.getColor(initial=QColor(255, 255, 255), title="Select Color")

@@ -1,0 +1,105 @@
+from spotipy import Spotify
+from spotipy.oauth2 import SpotifyOAuth
+from PyQt6.QtWidgets import QInputDialog, QMessageBox
+import webbrowser
+
+class SpotifyIntegration:
+    def __init__(self, client_id, client_secret, redirect_uri, scope=None):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.redirect_uri = redirect_uri
+        self.scope = scope or "user-read-playback-state user-modify-playback-state user-read-currently-playing"
+        self.cache_path = ".cache" #No clue if this is a secure way to do things
+        self.sp = None
+        self.sp_oauth = None
+
+    def authenticate(self, parent=None):
+        # Initialize Spotify OAuth
+        self.sp_oauth = SpotifyOAuth(
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            redirect_uri=self.redirect_uri,
+            scope=self.scope,
+            cache_path = self.cache_path
+        )
+
+
+        token_info = self.sp_oauth.get_cached_token()
+        if token_info:
+            self.sp = Spotify(auth=token_info["access_token"])
+            QMessageBox.information(parent, "Spotify", "Spotify account linked successfully!") #Remove this in the future
+            return
+
+        auth_url = self.sp_oauth.get_authorize_url()
+        print("Opening browser for Spotify authentication")
+        webbrowser.open(auth_url)
+
+        response_url, ok = QInputDialog.getText(
+            parent,
+            "Spotify Authentication",
+            "Paste the URL from the opened browser:"
+        )
+
+        if not ok or not response_url:
+            QMessageBox.warning(parent, "Spotify Error", "Authentication canceled or invalid URL.")
+            return
+
+        try:
+            code = self.sp_oauth.parse_response_code(response_url)
+            token_info = self.sp_oauth.get_access_token(code)
+
+            # Save authcode and initialize Spotify client
+            self.sp = Spotify(auth=token_info["access_token"])
+            QMessageBox.information(parent, "Spotify", "Spotify account linked successfully!")
+        except Exception as e:
+            QMessageBox.critical(parent, "Spotify Error", f"Authentication failed: {str(e)}")
+
+    def get_current_playing(self):
+        self.refresh_token()
+        if not self.sp:
+            print("Spotify is not authenticated. Please authenticate first.")
+            return None
+        current_track = self.sp.current_user_playing_track()
+        if current_track:
+            return {
+                "name": current_track["item"]["name"],
+                "artist": ", ".join(artist["name"] for artist in current_track["item"]["artists"]),
+                "album": current_track["item"]["album"]["name"],
+                "progress_ms": current_track["progress_ms"],
+                "duration_ms": current_track["item"]["duration_ms"],
+                "album_art_url": current_track["item"]["album"]["images"][0]["url"],
+            }
+        return None
+
+    def play_pause(self):
+        self.refresh_token()
+        if not self.sp:
+            print("Spotify is not authenticated. Please authenticate first.")
+            return
+        playback = self.sp.current_playback()
+        if playback and playback["is_playing"]:
+            self.sp.pause_playback()
+            print("Playback paused.")
+        else:
+            self.sp.start_playback()
+            print("Playback started.")
+
+    def refresh_token(self):
+        if not self.sp_oauth:
+            print("SpotifyOAuth not initialized.")
+            return
+
+        token_info = self.sp_oauth.get_cached_token()
+        if token_info and self.sp_oauth.is_token_expired(token_info):
+            print("Access token expired. Refreshing...")
+            try:
+                token_info = self.sp_oauth.refresh_access_token(token_info["refresh_token"])
+                self.sp = Spotify(auth=token_info["access_token"])
+                print("Access token refreshed.")
+            except Exception as e:
+                print(f"Failed to refresh access token: {e}")
+        else:
+            pass
+
+
+
