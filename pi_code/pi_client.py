@@ -4,7 +4,7 @@ import os
 from pi_code.signal_dispatcher_pi import pi_signal_dispatcher
 
 server_address = "ws://10.0.6.190:1738"
-save_path = "home/rubchave/KeySync/gui_stuff"
+save_path = "client_assets"
 files_updated = False
 websocket_connection = None
 
@@ -53,11 +53,12 @@ async def websocket_client():
         try:
             print(f"Attempting to connect to {server_address}")
             async with websockets.connect(server_address) as websocket:
+                print(f"Connected to {server_address}")
                 websocket_connection = websocket
-                asyncio.create_task(receive_file(websocket))
                 if not files_updated:
                     await send_message("files")
                     files_updated = True
+                await receive_file(websocket)
         except Exception as e:
             print(f"Error occured while connecting to server.\n"
                   f"Error: {e}\nRetrying in 5 seconds...")

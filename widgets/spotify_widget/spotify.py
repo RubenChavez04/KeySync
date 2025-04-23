@@ -1,7 +1,11 @@
+import json
+import time
+
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 from PyQt6.QtWidgets import QInputDialog, QMessageBox
 import webbrowser
+import timeit
 
 class SpotifyIntegration:
     def __init__(self, client_id, client_secret, redirect_uri, scope=None):
@@ -27,7 +31,7 @@ class SpotifyIntegration:
         token_info = self.sp_oauth.get_cached_token()
         if token_info:
             self.sp = Spotify(auth=token_info["access_token"])
-            QMessageBox.information(parent, "Spotify", "Spotify account linked successfully!") #Remove this in the future
+            #QMessageBox.information(parent, "Spotify", "Spotify account linked successfully!") #Remove this in the future
             return
 
         auth_url = self.sp_oauth.get_authorize_url()
@@ -87,19 +91,32 @@ class SpotifyIntegration:
     def refresh_token(self):
         if not self.sp_oauth:
             print("SpotifyOAuth not initialized.")
-            return
+            return None
 
         token_info = self.sp_oauth.get_cached_token()
-        if token_info and self.sp_oauth.is_token_expired(token_info):
-            print("Access token expired. Refreshing...")
+
+        if not token_info:
+            print("No cached token found. Please authenticate again.")
+            return None
+
+        if self.sp_oauth.is_token_expired(token_info):
+            print("Access token expired. Attempting to refresh...")
             try:
-                token_info = self.sp_oauth.refresh_access_token(token_info["refresh_token"])
-                self.sp = Spotify(auth=token_info["access_token"])
-                print("Access token refreshed.")
+                token_info = self.sp_oauth.refresh_access_token(token_info['refresh_token'])
+
+                # Write updated token to cache (manually)
+                with open(self.cache_path, "w") as f:
+                    import json
+                    json.dump(token_info, f)
+
+                self.sp = Spotify(auth=token_info['access_token'])
+                print("Access token refreshed successfully.")
+                return token_info['access_token']
             except Exception as e:
                 print(f"Failed to refresh access token: {e}")
+                return None
         else:
-            pass
-
-
+            # Token is still valid
+            self.sp = Spotify(auth=token_info['access_token'])
+            return token_info['access_token']
 

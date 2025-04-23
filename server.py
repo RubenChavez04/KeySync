@@ -17,7 +17,7 @@ json_confirmation = None
 
 file_base_path = r"C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons"
 json_path = r"C:\Users\chave\PycharmProjects\PythonProject1\saved_pages.json"
-initial_file_path = r"This path doesn't exist yet but when it does, put it here :D"
+initial_file_path = r"C:\Users\chave\PycharmProjects\PythonProject1\pi_assets"
 
 async def send_initial_files(websocket):
     all_paths = get_icons(initial_file_path)
@@ -98,7 +98,6 @@ async def main_server():
     await server.wait_closed()
     print("Server shut down.")
     sys.exit(-1)
-
 
 global_signal_dispatcher.websocket_send_message.connect(lambda msg: asyncio.create_task(send_message(msg)))
 

@@ -13,7 +13,7 @@ from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.main_window_complete_widgets.top_bar import TopBar
 from gui_assets.popups.page_background_selection import ChangePageBackgroundDialog
 from server import shutdown_server
-from widgets.functions.button_functions import exec_button_press
+from widgets.functions.launch_close_app import exec_button_press
 import json
 import os
 
@@ -275,13 +275,12 @@ class MainWindow(QMainWindow):
                         color = widget_data.get("color")
                         label = widget_data.get("label")
                         image_path = widget_data.get("image_path")
-                        print(color)
 
                         #call pagegrid add_widget method to add widgets back to page
                         page.page_grid.add_widget(widget_type, size_multiplier, position, color, label, image_path)
                         # Optionally assign appID and style_sheet
                         last_widget = page.page_grid.widgets[-1]
-                        last_widget.appID = functions
+                        last_widget.functions = functions
                     except (KeyError, TypeError) as e:
                         print(f"Skipped restoring a widget due to invalid data: {widget_data}. Error: {e}")
 

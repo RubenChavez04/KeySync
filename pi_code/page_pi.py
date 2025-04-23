@@ -76,9 +76,6 @@ class Page(QWidget):
 
 
 class PageGrid(QWidget):
-    """
-    Client-side grid layout for adding and displaying widgets on the page.
-    """
     grid_full = pyqtSignal(bool)
 
     def __init__(self, frame):
@@ -86,7 +83,6 @@ class PageGrid(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)  # Transparent background
         self.setContentsMargins(0, 0, 0, 0)
 
-        # Grid and layout configurations
         self.frame = frame
         self.rows = 4
         self.cols = 7
@@ -96,17 +92,13 @@ class PageGrid(QWidget):
         self.top_bottom_margins = 10
         self.left_right_margins = 11
 
-        self.setFixedSize(800, 480)  # Match frame size
+        self.setFixedSize(800, 480)
 
-        # Data structures for widgets
         self.widgets = []
         self.positions = {}
 
     def add_widget(self, widget_type, size_multiplier=(1, 1), position=None, color="#f0f0f0", label="",
                    image_path=None):
-        """
-        Add a widget to the grid at a specific position or the next available position.
-        """
         if position is None:
             position = self.find_first_available_position(size_multiplier)
         if not position or not isinstance(position, QPoint):
@@ -125,8 +117,7 @@ class PageGrid(QWidget):
         else:
             print(f"Unknown widget type: {widget_type}. Skipping.")
             return
-
-        # Move and display the widget
+        #move and display the widget
         widget.move(position)
         self.widgets.append(widget)
         self.save_widget_position(widget, position)
@@ -134,60 +125,40 @@ class PageGrid(QWidget):
 
 
     def save_widget_position(self, widget, pos):
-        """
-        Save the positions occupied by the widget in the grid.
-        """
         size_multiplier = widget.size_multiplier  # Dimensions of the widget
         for row_offset in range(size_multiplier[1]):
             for col_offset in range(size_multiplier[0]):
-                # Calculate each cell's position
+                #calculate each cell's position
                 cell_x = pos.x() + col_offset * (self.cell_size + self.horizontal_spacing)
                 cell_y = pos.y() + row_offset * (self.cell_size + self.vertical_spacing)
-
-                # Skip if out of grid bounds
+                #skip if out of grid bounds
                 if cell_x < self.left_right_margins or cell_y < self.top_bottom_margins or \
                         cell_x >= (self.cols * (self.cell_size + self.horizontal_spacing)) or \
                         cell_y >= (self.rows * (self.cell_size + self.vertical_spacing)):
                     continue
-
-                # Mark the cell as occupied
+                #mark the cell as occupied
                 self.positions[(cell_x, cell_y)] = widget
 
-    def is_grid_full(self):
-        """
-        Check if the grid is completely occupied.
-        """
-        return len(self.widgets) >= 28
-
     def find_first_available_position(self, size_multiplier=(1, 1)):
-        """
-        Find the first available position in the grid for a widget.
-        """
         for row in range(self.rows - size_multiplier[1] + 1):
             for col in range(self.cols - size_multiplier[0] + 1):
-                # Calculate the top-left position for the widget
+                #calculate the top-left position for the widget
                 pos = QPoint(
                     self.left_right_margins + col * (self.cell_size + self.horizontal_spacing),
                     self.top_bottom_margins + row * (self.cell_size + self.vertical_spacing),
                 )
-
-                # Check if the position is valid
+                #check if the position is valid
                 if self.is_position_available(pos, size_multiplier):
                     return pos
-
         return None
 
     def is_position_available(self, pos, size_multiplier=(1, 1)):
-        """
-        Check whether a specific grid position is available.
-        """
         for row_offset in range(size_multiplier[1]):
             for col_offset in range(size_multiplier[0]):
-                # Calculate the position of each cell within the widget’s size
+                #calculate the position of each cell within the widget’s size
                 cell_x = pos.x() + col_offset * (self.cell_size + self.horizontal_spacing)
                 cell_y = pos.y() + row_offset * (self.cell_size + self.vertical_spacing)
 
-                # Validate grid bounds
                 if cell_x < self.left_right_margins or \
                         cell_y < self.top_bottom_margins or \
                         cell_x >= (self.cols * (self.cell_size + self.horizontal_spacing)) or \
@@ -197,5 +168,4 @@ class PageGrid(QWidget):
                 # Check whether the cell is already occupied
                 if (cell_x, cell_y) in self.positions:
                     return False
-
         return True

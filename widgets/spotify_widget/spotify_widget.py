@@ -1,25 +1,33 @@
-import requests
-from PyQt6.QtCore import Qt, QPoint, pyqtSignal, QTimer
+from PyQt6.QtCore import Qt, QPoint, QTimer, QThreadPool
 from PyQt6.QtGui import QMouseEvent, QIcon, QPixmap, QTransform, QColor
-from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout, QPushButton, QInputDialog, QProgressBar, QSlider, \
+from PyQt6.QtWidgets import QPushButton, QSlider, \
     QLabel, QMessageBox, QGraphicsDropShadowEffect
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
 from widgets.spotify_widget.spotify import SpotifyIntegration
+from widgets.spotify_widget.spotify_tasker import SpotifyThreads
+from widgets.widget_asset_functions import create_rounded_icon, selected_button
+from widgets.spotify_widget.spotify_signals import spotify_signals
+import json
 
 class SpotifyWidget(QPushButton):
-    def __init__(self, parent, cell_size, size_multiplier=(1, 1), position=None, color="#f0f0f0"):
+    def __init__(self, parent, cell_size, size_multiplier=(4, 2), position=None, color="#f0f0f0"):
         #needed a size multiplier for determining col and row span [0] is col [1] is row
         super().__init__(parent)
+        #variables
         self.button_selected = None
-        #define parent grid
+        self.current_track_temp = None
+        self.current_album_art_url = None
+        self.whats_playing = None
+        self.is_playing_temp = None
+        self.color1 = None
+        self.color2 = None
+        self.artist = None
         self.parent = parent
         self.grid_size = cell_size
         self.size_multiplier = size_multiplier
-        if size_multiplier == (1,1):
-            self.setFixedSize(cell_size, cell_size)
-        else:
-            self.setFixedSize(cell_size * size_multiplier[0] + (size_multiplier[0]*13)-13, #width = 100 * (how much columns to take) + spacing
+
+        self.setFixedSize(cell_size * size_multiplier[0] + (size_multiplier[0]*13)-13, #width = 100 * (how much columns to take) + spacing
                               cell_size * size_multiplier[1] + (size_multiplier[1]*20)-20)
         self.width = cell_size * size_multiplier[0] + (size_multiplier[0]*13)-13
         self.height = cell_size * size_multiplier[1] + (size_multiplier[1]*20)-20
@@ -32,15 +40,13 @@ class SpotifyWidget(QPushButton):
         self.setStyleSheet(
             f"QPushButton {{border-radius: 8px;background-color: {self.color};border: None;}} QPushButton:hover {{ background-color: #cccccc;}}")
         print("Initializing spotify widget")
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_progress_slider)
-        self.spotify = SpotifyIntegration(
-            client_id="bc32cd5b33a8461db27327ed3ac05db4",
-            client_secret="bf49813610eb4b1ab5648468a157d948",
-            redirect_uri="http://localhost:2266/callback"
-        )
-        self.setToolTip("Link Spotify Account")
+        self.thread_pool = QThreadPool()
 
+        self.spotify_tasker = SpotifyThreads.get_instance()  # Get the singleton instance
+        self.spotify_tasker.run_in_thread()  # Move the tasker to its own thread and start
+
+        self.spotify_tasker.start()  # Start running tasks periodically
+        self.spotify = self.spotify_tasker.spotify
         if not self.spotify.sp:
             print("Spotify client not authenticated. Attempting to authenticate...")
             try:
@@ -53,152 +59,124 @@ class SpotifyWidget(QPushButton):
             current_track = self.spotify.get_current_playing()
             print(current_track['progress_ms'])
 
-        # Add playback visual button
-        self.playback_button = QPushButton(self)
-        self.playback_button.setFixedSize(40, 40)
-        self.playback_button.setStyleSheet("""
-                            QPushButton {
-                                border-radius: 20px;
-                                background-color: #1DB954;
-                                border: 2px solid #1DB954;
-                                padding-left: 5px;
-                            }
-                            QPushButton:hover {
-                                background-color: #1ED760;
-                            }
-                        """)
-        self.playback_button.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.playback_button.setToolTip("Playback Control")
-        self.playback_button.move(199, 140)
-        print("playback before icon")
-        play_icon = QIcon("gui_assets/gui_icons/play_icon.png")
-        self.playback_button.setIcon(play_icon)
-        self.playback_button.setIconSize(self.playback_button.size() / 2)
-        self.playback_button.clicked.connect(self.toggle_playback)
-
-
         # Add album art label
         self.album_art_label = QLabel(self)
-        self.album_art_label.setFixedSize(100, 100)
-        self.album_art_label.move(
-            (self.album_art_label.width() - self.album_art_label.width()) // 2,
-            self.album_art_label.height()  - 225
-        )
+        self.album_art_label.setFixedSize(163, 163)
+        self.album_art_label.move(7, 7)
         self.album_art_label.setStyleSheet("""
-                            QLabel { 
-                                background-color: transparent;
-                                border: none;
-                            }
-                        """)
+            QLabel { 
+                background-color: transparent;
+                border: none;
+            }
+        """)
         print("album art added")
+
         # Add track name label
-        self.track_name_label = QLabel("No Track Playing",self)
-        self.track_name_label.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.track_name_label.setFixedSize(439 - 20, 20)
-        self.track_name_label.move(10, 220 - 130)  # Position above the playback button
-        self.track_name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.track_name_label = QLabel("No Track Playing", self)
+        self.track_name_label.setFixedSize(250, 25)
+        self.track_name_label.move(180, 5)
+        self.track_name_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self.track_name_label.setStyleSheet("""
-                            QLabel {
-                                background-color: #000000;
-                                border: none;
-                                font-weight: bold;
-                                font-size: 14px;
-                                color: black;
-                            }
-                        """)
+            QLabel {
+                background-color: transparent;
+                border: none;
+                font-weight: bold;
+                font-size: 21px;
+                color: white;
+            }
+        """)
+        track_shadow = create_drop_shadow()
+        self.track_name_label.setGraphicsEffect(track_shadow)
         print("Track name added")
         # Add artist name label
-        self.artist_name_label = QLabel("",self)
-        self.artist_name_label.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.artist_name_label.setFixedSize(439 - 20, 20)
-        self.artist_name_label.move(10, 110)  # Position below the song name
-        self.artist_name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.artist_name_label = QLabel("", self)
+        self.artist_name_label.setFixedSize(250, 20)
+        self.artist_name_label.move(180, 30)
+        self.artist_name_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self.artist_name_label.setStyleSheet("""
-                            QLabel {
-                                background-color: #f0f0f0;
-                                border: none;
-                                font-size: 12px;
-                                color: black;
-                            }
-                        """)
+            QLabel {
+                background-color: transparent;
+                border: none;
+                font-size: 16px;
+                color: white;
+            }
+        """)
+        artist_shadow = create_drop_shadow()
+        self.artist_name_label.setGraphicsEffect(artist_shadow)
+        track_shadow = create_drop_shadow()
+        self.track_name_label.setGraphicsEffect(track_shadow)
         self.track_name_label.setAutoFillBackground(False)
         self.artist_name_label.setAutoFillBackground(True)
 
-        # Add previous song button
-        self.previous_button = QPushButton(self)
-        self.previous_button.setFixedSize(30, 30)
-        self.previous_button.setStyleSheet("""
-                            QPushButton {
-                                border-radius: 15px;
-                                background-color: #1DB954;
-                                border: 2px solid #1DB954;
-                                padding-right: 2px;
-                            }
-                            QPushButton:hover {
-                                background-color: #1ED760;
-                            }
-                        """)
-        self.previous_button.setToolTip("Previous Song")
-        self.previous_button.move(
-            (439 - 40) // 2 - 40,  # Position to the left of playback button
-            145
-        )
-        pixmap = QPixmap("gui_assets/gui_icons/skip_icon.png")
-        print("Pixmap made for skip")
-        transform = QTransform().rotate(180)
-        rotated_pixmap = pixmap.transformed(transform)
-        rotated_icon = QIcon(rotated_pixmap)
-        self.previous_button.setIcon(rotated_icon)
-        self.previous_button.setIconSize(self.previous_button.size() / 2)
-        self.previous_button.clicked.connect(self.previous_song)
+        #Define playback control parameters
+        playback_fixed_size = int(40)
+        playback_x = 285
+        playback_y = 120
+        playback_spacing_x = int(50*1.7)
+        playback_spacing_y = int(-50 * 1.2)
 
-        print("previous song added")
-
-        #Add next song button
-        self.next_button = QPushButton(self)
-        self.next_button.setFixedSize(30, 30)
-        self.next_button.setStyleSheet("""
-                            QPushButton {
-                                border-radius: 15px;
-                                background-color: #1DB954;
-                                border: 2px solid #1DB954;
-                                padding-left: 4px; 
-                            }
-                            QPushButton:hover {
-                                background-color: #1ED760;
-                            }
-                        """)
-        self.next_button.setToolTip("Next Song")
-        self.next_button.move(
-            (439 - 40) // 2 + 50,  #Put to the right of playback button
-            220 - 75
+        # Add play/pause button
+        self.playback_button = self.create_playback_button(
+            "gui_assets/gui_icons/play_icon.png",
+            self.toggle_playback,
+            playback_fixed_size,
+            (playback_x, playback_y)
         )
-        skip_icon = QIcon("gui_assets/gui_icons/skip_icon.png")
-        self.next_button.setIcon(skip_icon)
-        self.next_button.setIconSize(self.next_button.size() / 2)
-        self.next_button.clicked.connect(self.next_song)
-        print("next song added")
+
+        # Add previous button
+        self.previous_button = self.create_playback_button(
+            "gui_assets/gui_icons/skip_icon.png",
+            self.previous_song,
+            playback_fixed_size,
+            (playback_x-playback_spacing_x, playback_y),
+            True
+        )
+
+        # Add skip button
+        self.next_button = self.create_playback_button(
+            "gui_assets/gui_icons/skip_icon.png",
+            self.next_song,
+            playback_fixed_size,
+            (playback_x+playback_spacing_x, playback_y)
+        )
+
+        #Add shuffle button
+        self.shuffle_button = self.create_playback_button(
+            "gui_assets/gui_icons/shuffle_icon.png",
+            self.toggle_shuffle,
+            playback_fixed_size,
+            (playback_x - int(playback_spacing_x / 2), playback_y + playback_spacing_y)
+            )
+
+        # Add repeat button
+        self.repeat_button = self.create_playback_button(
+            "gui_assets/gui_icons/repeat_icon.png",
+            self.toggle_repeat,
+            playback_fixed_size,
+            (playback_x + int(playback_spacing_x / 2), playback_y + playback_spacing_y)
+        )
 
         # Add playback slider
         self.progress_slider = QSlider(Qt.Orientation.Horizontal, self)
         self.progress_slider.setFixedSize(439 - 100, 10)
         self.progress_slider.setStyleSheet("""
                                         QSlider::groove:horizontal {
-                                            border: 1px solid #737373;
+                                            border: 1px solid #000000;
                                             height: 8px;
-                                            background: #e0e0e0;
+                                            background: #000000;
                                             border-radius: 4px;
                                         }
                                         QSlider::handle:horizontal {
-                                            background: #1DB954;
-                                            border: 1px solid #1DB954;
+                                            background: #ffffff;
+                                            border: 1px solid #ffffff;
                                             width: 14px;
                                             height: 14px;
                                             margin: -3px 0;
                                             border-radius: 7px;
                                         }
                                         QSlider::sub-page:horizontal {
-                                            background: #1DB954;
+                                            background: #ffffff;
                                             border-radius: 4px;
                                         }
                                     """)
@@ -216,78 +194,117 @@ class SpotifyWidget(QPushButton):
         #Add progress label
         self.progress_label = QLabel("0:00", self)
         self.progress_label.setFixedSize(50, 20)
-        self.progress_label.move(15, 220 - 35)  # Position to the left of the slider
-        self.progress_label.setStyleSheet(self.label_stylesheet)
+        self.progress_label.move(15, 183)  # Position to the left of the slider
+        self.progress_label.setStyleSheet("""
+            QLabel {
+                background-color: transparent;
+                font-weight: bold;
+                color: white;
+            }
+        """)
+        progress_shadow = create_drop_shadow()
+        self.progress_label.setGraphicsEffect(progress_shadow)
         self.progress_label.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         #Add duration label
         self.duration_label = QLabel("0:00", self)
         self.duration_label.setFixedSize(50, 20)
-        self.duration_label.move(439 - 40, 220 - 35)  #Position to the right of the slider
-        self.duration_label.setStyleSheet(self.label_stylesheet)
+        self.duration_label.move(390, 183)  #Position to the right of the slider
+        self.duration_label.setStyleSheet("""
+            QLabel {
+                background-color: transparent;
+                font-weight: bold;
+                color: white;
+            }
+        """)
+        duration_shadow = create_drop_shadow()
+        self.duration_label.setGraphicsEffect(duration_shadow)
         self.duration_label.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        self.timer.start(1000)  # Update once a second
+        #self.timer.start(1000)
+        #self.update_slider_timer.start(1000)
+        self.toggle_playback(init=True)
+        global_signal_dispatcher.delete_button_signal.connect(self.delete_widget)
+        global_signal_dispatcher.selected_button.connect(lambda btn: selected_button(self,btn))
+        spotify_signals.album_art_update.connect(self.update_widget)
+        spotify_signals.slider_update.connect(self.update_slider)
 
-
-    def toggle_playback(self):
+    def toggle_playback(self,init=False):
         if not self.spotify.sp:
             print("Spotify client not authenticated. Please authenticate first.")
             return
         try:
-            self.spotify.play_pause()
-            self.update_progress_slider()
+            if init:
+                playback = self.spotify.sp.current_playback()
+                if playback and playback["is_playing"]:
+                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/pause_icon.png"))
+                else:
+                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/play_icon.png"))
+            else:
+                self.spotify.play_pause()
+                playback = self.spotify.sp.current_playback()
+                if playback and playback["is_playing"]:
+                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/pause_icon.png"))
+                else:
+                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/play_icon.png"))
         except Exception as e:
             print(f"Playback toggle failed: {str(e)}")
             QMessageBox.critical(self, "Spotify Error", f"Playback toggle failed: {str(e)}")
 
-    def update_progress_slider(self):
-        if not self.spotify.sp:
-            return
-        try:
-            current_track = self.spotify.get_current_playing()
-            if current_track:
-                progress = current_track["progress_ms"]
-                duration = current_track["duration_ms"]
-
-                # Update slider
-                self.progress_slider.setMaximum(duration)
-                self.progress_slider.setValue(progress)
-
-                # Update labels
-                self.progress_label.setText(f"{progress // 60000}:{(progress // 1000) % 60:02}")
-                self.duration_label.setText(f"{duration // 60000}:{(duration // 1000) % 60:02}")
-
-                # Update track name
-                self.track_name_label.setText(current_track["name"])
-
-                self.artist_name_label.setText(current_track["artist"])
-
-                self.album_art_label.setFixedSize(75, 75)  # New size for album art
-                self.album_art_label.move(
-                    (439 - self.album_art_label.width()) // 2,  # Center horizontally
-                    220 - self.playback_button.height() - 170  # Adjust position if needed
-                )
-
-                # Update album art
-                album_art_url = current_track.get("album_art_url")
-                if album_art_url:
-                    image = QPixmap()
-                    image.loadFromData(requests.get(album_art_url).content)
-                    scaled_image = image.scaled(
-                        self.album_art_label.size(),
-                        Qt.AspectRatioMode.KeepAspectRatio,
-                        Qt.TransformationMode.SmoothTransformation
-                    )
-                    self.album_art_label.setPixmap(scaled_image)
-                else:
-                    self.album_art_label.clear()
+    def update_slider(self, data):
+        progress = data.get("progress", 0)
+        is_playing = bool(data.get("is_playing"))
+        if is_playing != self.is_playing_temp:
+            self.is_playing_temp = is_playing
+            if is_playing:
+                self.playback_button.setIcon(QIcon("gui_assets/gui_icons/pause_icon.png"))
             else:
-                self.track_name_label.setText("No Track Playing")
-                self.artist_name_label.setText("")
-                self.album_art_label.clear()
-        except Exception as e:
-            print(f"Failed to update progress slider: {str(e)}")
+                self.playback_button.setIcon(QIcon("gui_assets/gui_icons/play_icon.png"))
+        self.progress_slider.setValue(progress)
+        self.progress_label.setText(f"{progress // 60000}:{(progress // 1000) % 60:02}")
+
+    def update_widget(self, data):
+        image_data = data.get("image_data")
+        palette = data.get("palette")
+        name = data.get("name")
+        self.artist = data.get("artist")
+        duration = data.get("duration")
+
+        if image_data:
+            # Update the album art image
+            image = QPixmap()
+            image.loadFromData(image_data)
+            rounded_pixmap = create_rounded_icon(image, self.album_art_label.size(), radius=5)
+            self.album_art_label.setPixmap(rounded_pixmap)
+        if palette:
+            try:
+                # Extract the main two colors from the palette
+                self.color1 = "#{:02x}{:02x}{:02x}".format(*palette[0])
+                self.color2 = "#{:02x}{:02x}{:02x}".format(*palette[1])
+
+                # Update the background gradient with the extracted colors
+                self.setStyleSheet(f"""
+                       QPushButton {{
+                           border-radius: 8px;
+                           border: none;
+                           background: qlineargradient(
+                               spread:pad,
+                               x1: 0, y1: 0, x2: 0, y2: 1,
+                               stop: 0 {self.color1},
+                               stop: 1 {self.color2}
+                           );
+                       }}
+                   """)
+            except Exception as e:
+                print(f"Failed to apply ColorThief colors: {str(e)}")
+        if name:
+            self.track_name_label.setText(name)
+            self.whats_playing = name
+        if self.artist:
+            self.artist_name_label.setText(self.artist)
+        if duration:
+            self.progress_slider.setMaximum(duration)
+            self.duration_label.setText(f"{duration // 60000}:{(duration // 1000) % 60:02}")
 
     def set_playback_position(self):
         if not self.spotify.sp:
@@ -305,7 +322,6 @@ class SpotifyWidget(QPushButton):
         try:
             self.spotify.sp.previous_track()
             print("Skipped to previous track.")
-            self.update_progress_slider()
         except Exception as e:
             print(f"Failed to skip to previous track: {str(e)}")
 
@@ -316,28 +332,49 @@ class SpotifyWidget(QPushButton):
         try:
             self.spotify.sp.next_track()
             print("Skipped to next track.")
-            self.update_progress_slider()
         except Exception as e:
             print(f"Failed to skip to next track: {str(e)}")
 
+    def toggle_shuffle(self):
+        if not self.spotify.sp:
+            return
+        try:
+            current = self.spotify.sp.current_playback()
+            if not current:
+                print("No active playback found.")
+                return
 
-    def selected_button(self, button_selected):
-        self.button_selected = button_selected
+            shuffle_state = current["shuffle_state"]
+            device_id = current["device"]["id"]
 
-        if self.button_selected == self:
-            # Set shadow effect for an external border
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setColor(QColor(0, 255, 42, 255))  # Border/Outline color
-            shadow.setBlurRadius(30)  # Remove blur, make a solid border
-            shadow.setOffset(0, 0)  # Center the border around the widget
-            shadow.setXOffset(0)  # No offset along X-axis
-            shadow.setYOffset(0)  # No offset along Y-axis
+            self.spotify.sp.shuffle(not shuffle_state, device_id=device_id)
+            print(f"Shuffle {'enabled' if not shuffle_state else 'disabled'} on device {device_id}")
+        except Exception as e:
+            print(f"Failed to toggle shuffle: {str(e)}")
 
-            self.setGraphicsEffect(shadow)  # Apply the effect
-        else:
-            # Remove shadow effect when deselected
-            self.setGraphicsEffect(None)
-        self.update()
+    def toggle_repeat(self):
+        if not self.spotify.sp:
+            return
+        try:
+            current = self.spotify.sp.current_playback()
+            repeat_state = current["repeat_state"] if current else "off"
+
+            if repeat_state == "off":
+                new_state = "context"
+            elif repeat_state == "context":
+                new_state = "track"
+            else:
+                new_state = "off"
+
+            self.spotify.sp.repeat(new_state)
+            print(f"Repeat set to {new_state}")
+        except Exception as e:
+            print(f"Failed to toggle repeat: {str(e)}")
+
+    def delete_widget(self):
+        if self.button_selected==self:
+            self.deleteLater()
+            global_signal_dispatcher.remove_widget_signal.emit(self)
 
     def mouseDoubleClickEvent(self,event):
         """Handle double-click to rename the tab."""
@@ -349,8 +386,9 @@ class SpotifyWidget(QPushButton):
     def mousePressEvent(self, event: QMouseEvent):
         """mouse event handling for initializing dragging the widget."""
         if event.button() == Qt.MouseButton.LeftButton:
-            self.startPos = event.pos() #get mouse position
+            self.startPos = self.pos() #get mouse position
             self.last_valid_position = self.pos()#save old position for invalid widget placement
+
 
 
     def mouseMoveEvent(self, event: QMouseEvent):
@@ -358,13 +396,13 @@ class SpotifyWidget(QPushButton):
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
             new_pos = self.mapToParent(event.pos() - self.startPos) #calculate mouse position based on initial mouse position
             self.move(self.parent.get_snapped_position(new_pos, self.size_multiplier)) #get a snapped position relative to the mouse pos
+            self.parent.update()
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         """mouse event handling for releasing the widget and saving its pos if valid"""
         if event.button() == Qt.MouseButton.LeftButton:
             #get the snapped position for widget
             snapped_pos = self.parent.get_snapped_position(self.pos(), self.size_multiplier)
-
             #temporarily remove old positions, so widget can be moved 1 col over if needed
             self.parent.remove_widget_position(self)
 
@@ -376,3 +414,41 @@ class SpotifyWidget(QPushButton):
             else: #if position is invalid revert to old position from press event
                 self.parent.save_widget_position(self, self.last_valid_position)  #restore old position
                 self.move(self.last_valid_position)  #revert to old position
+        self.parent.update()
+
+    def create_playback_button(self, icon_path, click_callback, size, position, rotate = False):
+        button = QPushButton(self)
+        button.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        button.setFixedSize(size,size)
+        button.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        """)
+        button.move(*position)
+        button.setGraphicsEffect(
+            create_drop_shadow()
+        )
+        button.setIconSize(button.size())
+        button.clicked.connect(click_callback)
+        if rotate:
+            pixmap = QPixmap(icon_path)
+            transform = QTransform().rotate(180)
+            rotated_pixmap = pixmap.transformed(transform)
+            rotated_icon = QIcon(rotated_pixmap)
+            button.setIcon(rotated_icon)
+        else:
+            button.setIcon(QIcon(icon_path))
+
+        return button
+
+def create_drop_shadow():
+    shadow = QGraphicsDropShadowEffect()
+    shadow.setBlurRadius(13)
+    shadow.setOffset(1, 1)
+    shadow.setColor(QColor(0, 0, 0, 200))
+    return shadow

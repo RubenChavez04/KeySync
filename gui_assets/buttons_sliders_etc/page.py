@@ -2,7 +2,6 @@ import os
 
 from PyQt6.QtCore import Qt, QPoint, pyqtSignal
 from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout
-import random
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.popups.add_widget_popup import AddWidgetPopup
@@ -57,15 +56,9 @@ class Page(QWidget):
             print("background updated")
         else:
             #default gradient background if no image is set
-            random_hex1 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
-            random_hex2 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
             self.frame.setStyleSheet(f"""
                 QFrame {{
-                    background: qlineargradient(
-                        x1: 0, y1: 0, x2: 0, y2: 1,
-                        stop: 0 #{random_hex1},
-                        stop: 1 #{random_hex2}
-                    );
+                    background: black;
                     border: 2px solid darkgray;
                 }}
             """)
@@ -106,8 +99,11 @@ class Page(QWidget):
                 data["widgets"].append(widget_data)
             elif widget_type == "SpotifyWidget":
                 widget_data = {
-                    "type": widget_type
+                    "type": widget_type,
+                    "position": (widget.pos().x(), widget.pos().y()),
+                    "size_multiplier": widget.size_multiplier
                 }
+                data["widgets"].append(widget_data)
         return data
 
     def delete_page(self):

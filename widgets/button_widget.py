@@ -6,6 +6,8 @@ from PyQt6.QtGui import QMouseEvent, QPixmap, QIcon, QColor, QPainter, QPainterP
 from PyQt6.QtWidgets import QPushButton, QInputDialog, QFileDialog, QColorDialog, QGraphicsDropShadowEffect
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
+from widgets.widget_asset_functions import selected_button, create_rounded_icon
+
 
 class ButtonWidget(QPushButton):
     """draggable button widget with custom sizing parameters, users can select button size"""
@@ -52,8 +54,7 @@ class ButtonWidget(QPushButton):
         global_signal_dispatcher.change_color_signal.connect(self.edit_color)
         global_signal_dispatcher.delete_button_signal.connect(self.delete_widget)
         global_signal_dispatcher.add_icon_signal.connect(self.edit_icon)
-        global_signal_dispatcher.selected_button.connect(self.selected_button)
-
+        global_signal_dispatcher.selected_button.connect(lambda btn: selected_button(self,btn))
 
 
     def edit_color(self):
@@ -61,13 +62,11 @@ class ButtonWidget(QPushButton):
             color = QColorDialog.getColor(initial=QColor(255, 255, 255), title="Select Color")
             self.color = color.name()
             if color.isValid():
-                print(f"Hex color code: {self.color}")
                 self.setStyleSheet(
                     re.sub(r'background-color:.*?;', f'background-color: {self.color};', self.styleSheet()))
 
     def edit_button_text(self):
         if self.button_selected==self:
-            print("Edit button called")
             # When add label is pressed allow user to input new label
             new_text, ok = QInputDialog.getText(self, "Edit Button Text", "Enter new text:")
             if ok and new_text:
@@ -86,7 +85,7 @@ class ButtonWidget(QPushButton):
                     # Create a rounded pixmap from the original pixmap
                     button_size = QSize(self.width, self.height)  # Match button size or adjust as needed
                     radius = 8  # Adjust the corner radius as required
-                    rounded_pixmap = self.create_rounded_icon(pixmap, button_size, radius)
+                    rounded_pixmap = create_rounded_icon(pixmap, button_size, radius)
 
                     # Set the rounded pixmap as the icon
                     icon = QIcon(rounded_pixmap)
@@ -95,39 +94,6 @@ class ButtonWidget(QPushButton):
                 else:
                     print("Failed to load image or no image path")
 
-    def create_rounded_icon(self, pixmap: QPixmap, size: QSize, radius: int) -> QPixmap:
-        """
-        Create a QPixmap with rounded corners that fully covers the button.
-
-        :param pixmap: Original pixmap to be rounded.
-        :param size: Size of the resulting rendered pixmap.
-        :param radius: Radius for rounded corners.
-        :return: Rounded QPixmap that fully covers the button.
-        """
-        # create a transparent pixmap for the rounded icon
-        rounded_pixmap = QPixmap(size)
-        rounded_pixmap.fill(Qt.GlobalColor.transparent)  # Transparent background
-
-        # scale the original pixmap to exactly match the button size (ignores aspect ratio)
-        scaled_pixmap = pixmap.scaled(size, Qt.AspectRatioMode.IgnoreAspectRatio,
-                                      Qt.TransformationMode.SmoothTransformation)
-
-        # use QPainter to draw the rounded corner image
-        painter = QPainter(rounded_pixmap)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
-
-        # clip the drawing area to a rounded rectangle
-        path = QPainterPath()
-        rect_f = rounded_pixmap.rect().toRectF()  # converts QRect to QRectF
-        path.addRoundedRect(rect_f, radius, radius)  # round the corners with the radius param
-        painter.setClipPath(path)
-
-        # draw the scaled pixmap over the clipped rounded rectangle
-        painter.drawPixmap(0, 0, scaled_pixmap)
-
-        painter.end()
-        return rounded_pixmap
 
     def choose_icon(self):
         downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -139,26 +105,9 @@ class ButtonWidget(QPushButton):
 
     def delete_widget(self):
         if self.button_selected==self:
-            self.deleteLater()
+            self.button_selected = None
             global_signal_dispatcher.remove_widget_signal.emit(self)
-
-    def selected_button(self, button_selected):
-        self.button_selected = button_selected
-
-        if self.button_selected == self:
-            # Set shadow effect for an external border
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setColor(QColor(0, 255, 42, 255))  # Border/Outline color
-            shadow.setBlurRadius(30)  # Remove blur, make a solid border
-            shadow.setOffset(0, 0)  # Center the border around the widget
-            shadow.setXOffset(0)  # No offset along X-axis
-            shadow.setYOffset(0)  # No offset along Y-axis
-
-            self.setGraphicsEffect(shadow)  # Apply the effect
-        else:
-            # Remove shadow effect when deselected
-            self.setGraphicsEffect(None)
-        self.update()
+            self.deleteLater()
 
     def mouseDoubleClickEvent(self,event):
         """Handle double-click to rename the tab."""
@@ -171,17 +120,15 @@ class ButtonWidget(QPushButton):
         """mouse event handling for initializing dragging the widget."""
         if event.button() == Qt.MouseButton.LeftButton:
             self.startPos = event.pos() #get mouse position
+            self.raise_()
             self.last_valid_position = self.pos()#save old position for invalid widget placement
-        if event.button() == Qt.MouseButton.RightButton:
-            print(self.appID)
-            if self.appID is not None:
-                global_signal_dispatcher.function_press.emit(self.appID, 1)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         """mouse event handling for dragging the widget."""
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
             new_pos = self.mapToParent(event.pos() - self.startPos) #calculate mouse position based on initial mouse position
             self.move(self.parent.get_snapped_position(new_pos, self.size_multiplier)) #get a snapped position relative to the mouse pos
+            self.parent.update()
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         """mouse event handling for releasing the widget and saving its pos if valid"""
@@ -200,4 +147,5 @@ class ButtonWidget(QPushButton):
             else: #if position is invalid revert to old position from press event
                 self.parent.save_widget_position(self, self.last_valid_position)  #restore old position
                 self.move(self.last_valid_position)  #revert to old position
+            self.parent.update()
 

@@ -13,8 +13,8 @@
                         2,
                         2
                     ],
-                    "color": "#ff55ff",
-                    "label": "",
+                    "color": "#c30fff",
+                    "label": "Next Page",
                     "image_path": null,
                     "functions": {
                         "On_Press": [],
@@ -33,7 +33,87 @@
                         2,
                         2
                     ],
-                    "color": "#ff0000",
+                    "color": "#9f29ff",
+                    "label": "",
+                    "image_path": null,
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        10
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": null,
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": null,
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": null,
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
                     "label": "",
                     "image_path": null,
                     "functions": {
@@ -50,10 +130,10 @@
                         250
                     ],
                     "size_multiplier": [
-                        1,
-                        1
+                        2,
+                        2
                     ],
-                    "color": "#f0f0f0",
+                    "color": "#55aaff",
                     "label": "",
                     "image_path": null,
                     "functions": {
@@ -62,6 +142,37 @@
                         "Long_Press": [],
                         "Long_Press_Release": []
                     }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        463,
+                        250
+                    ],
+                    "size_multiplier": [
+                        2,
+                        2
+                    ],
+                    "color": "#8bffe2",
+                    "label": "",
+                    "image_path": null,
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "SpotifyWidget",
+                    "position": [
+                        237,
+                        10
+                    ],
+                    "size_multiplier": [
+                        4,
+                        2
+                    ]
                 }
             ]
         },
@@ -87,6 +198,17 @@
                         "Long_Press": [],
                         "Long_Press_Release": []
                     }
+                },
+                {
+                    "type": "SpotifyWidget",
+                    "position": [
+                        124,
+                        10
+                    ],
+                    "size_multiplier": [
+                        4,
+                        2
+                    ]
                 }
             ]
         }

@@ -5,28 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="caacc398-e183-47bf-801e-fefa9e88d20a" name="Changes" comment="Setup">
-      <change afterPath="$PROJECT_DIR$/pi_code/page_backgrounds/wallpaper2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pi_code/page_backgrounds/wallpaperdemo1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/tab_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/tab_bar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/signal_dispatcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/signal_dispatcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/widgets/action_buttons_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/widgets/action_buttons_widget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_pages.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/ButtonWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/button_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page_backgrounds/wallpaper2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/wallpaper2.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page_backgrounds/wallpaperdemo1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/wallpaperdemo1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/main_gui_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/main_gui_pi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/page_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/page_pi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/pi_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/pi_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/pi_widgets/button_widget_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/pi_widgets/button_widget_pi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/saved_pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/button_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/button_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/functions/button_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/launch_close_app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/functions/function_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/function_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/functions/scripts/websocket_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/scripts/websocket_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" afterDir="false" />
     </list>
-    <list id="16c022fc-1215-49ce-8c8c-9b8ec6a4f292" name="Changes by brayd" comment="">
-      <change beforePath="$PROJECT_DIR$/widgets/ButtonWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/button_widget.py" afterDir="false" />
-    </list>
-    <list id="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" name="Changes by logan" comment="">
+    <list id="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" name="Changes by logan" comment="Changes by logan">
       <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/functions/button_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/button_functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +44,17 @@
         <option value="PowerShell File" />
         <option value="Python Script" />
       </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
     </option>
   </component>
   <component name="Git.Settings">
@@ -65,47 +76,11 @@
     <setting file="file://$PROJECT_DIR$/widgets/functions/button_functions.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/widgets/button_widget.py">
-      <ranges>
-        <range start1="3" end1="7" start2="3" end2="6" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="10" end1="11" start2="9" end2="9" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="27" end1="27" start2="25" end2="27" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="36" end1="37" start2="36" end2="42" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="47" end1="48" start2="52" end2="53" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="50" end1="50" start2="55" end2="56" changelist="16c022fc-1215-49ce-8c8c-9b8ec6a4f292" />
-        <range start1="56" end1="57" start2="62" end2="62" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="72" end1="74" start2="77" end2="79" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="76" end1="76" start2="81" end2="82" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="79" end1="86" start2="85" end2="94" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="89" end1="89" start2="97" end2="131" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="90" end1="91" start2="132" end2="132" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="93" end1="95" start2="134" end2="136" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="98" end1="99" start2="139" end2="140" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="103" end1="110" start2="144" end2="157" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="111" end1="113" start2="158" end2="161" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-      </ranges>
-    </file>
     <file path="$PROJECT_DIR$/gui_assets/main_gui.py">
       <ranges>
-        <range start1="1" end1="2" start2="1" end2="2" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="4" end1="5" start2="4" end2="5" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="14" end1="14" start2="14" end2="15" changelist="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" />
-        <range start1="29" end1="29" start2="30" end2="54" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="92" end1="93" start2="117" end2="119" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="111" end1="111" start2="137" end2="167" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="112" end1="112" start2="168" end2="169" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="114" end1="114" start2="171" end2="172" changelist="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" />
-        <range start1="117" end1="117" start2="175" end2="176" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="119" end1="119" start2="178" end2="179" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="133" end1="133" start2="193" end2="200" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="178" end1="179" start2="245" end2="246" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="186" end1="187" start2="253" end2="254" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="193" end1="194" start2="260" end2="261" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="200" end1="202" start2="267" end2="269" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="206" end1="207" start2="273" end2="274" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="212" end1="213" start2="279" end2="280" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="216" end1="217" start2="283" end2="284" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="222" end1="225" start2="289" end2="292" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
+        <range start1="15" end1="16" start2="15" end2="16" changelist="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" />
+        <range start1="277" end1="278" start2="277" end2="277" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
+        <range start1="283" end1="284" start2="282" end2="283" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
       </ranges>
     </file>
   </component>
@@ -118,59 +93,62 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "PowerShell.getapps.ps1.executor": "Run",
-    "PowerShell.getapps_ps1.ps1.executor": "Run",
-    "Python.GPT_Server.executor": "Run",
-    "Python.QToggle.executor": "Run",
-    "Python.buttonFunction.executor": "Run",
-    "Python.button_functions.executor": "Run",
-    "Python.button_widget_pi.executor": "Run",
-    "Python.function_handler.executor": "Run",
-    "Python.getapps.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main_gui.executor": "Run",
-    "Python.main_pi.executor": "Run",
-    "Python.server (1).executor": "Run",
-    "Python.server.executor": "Run",
-    "Python.side_bar.executor": "Run",
-    "Python.test.executor": "Run",
-    "Python.test2.executor": "Run",
-    "Python.transfer_icons.executor": "Run",
-    "Python.transfer_json.executor": "Run",
-    "Python.websocket_client.executor": "Run",
-    "Python.websocket_server_test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/chave/PycharmProjects/PythonProject1/pi_code",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;PowerShell.getapps.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.getapps_ps1.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.GPT_Server.executor&quot;: &quot;Run&quot;,
+    &quot;Python.QToggle.executor&quot;: &quot;Run&quot;,
+    &quot;Python.buttonFunction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.button_functions.executor&quot;: &quot;Run&quot;,
+    &quot;Python.button_widget_pi.executor&quot;: &quot;Run&quot;,
+    &quot;Python.function_handler.executor&quot;: &quot;Run&quot;,
+    &quot;Python.getapps.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_pi.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pi_client.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.server.executor&quot;: &quot;Run&quot;,
+    &quot;Python.side_bar.executor&quot;: &quot;Run&quot;,
+    &quot;Python.spotify.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.transfer_icons.executor&quot;: &quot;Run&quot;,
+    &quot;Python.transfer_json.executor&quot;: &quot;Run&quot;,
+    &quot;Python.websocket_client.executor&quot;: &quot;Run&quot;,
+    &quot;Python.websocket_server_test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/chave/PycharmProjects/PythonProject1/gui_assets/gui_icons&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_code" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\page_backgrounds" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons" />
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_assets" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\page_backgrounds" />
-      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\popups\page_backgrounds" />
-      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\popups" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="button_functions" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="launch_close_app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonProject1" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -184,7 +162,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/widgets/functions/button_functions.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\chave\PycharmProjects\PythonProject1\widgets\functions\launch_close_app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -290,7 +268,7 @@
         <item itemvalue="Python.main" />
         <item itemvalue="Python.server" />
         <item itemvalue="Python.websocket_client" />
-        <item itemvalue="Python.button_functions" />
+        <item itemvalue="Python.launch_close_app" />
         <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
@@ -384,7 +362,16 @@
       <workItem from="1744407829653" duration="4960000" />
       <workItem from="1744653216269" duration="18641000" />
       <workItem from="1744751498952" duration="17451000" />
-      <workItem from="1744837335627" duration="16737000" />
+      <workItem from="1744837335627" duration="23729000" />
+      <workItem from="1744950405299" duration="255000" />
+      <workItem from="1744950998183" duration="1096000" />
+      <workItem from="1745024184201" duration="53000" />
+      <workItem from="1745188907708" duration="12005000" />
+      <workItem from="1745271695455" duration="9738000" />
+      <workItem from="1745283505572" duration="7504000" />
+      <workItem from="1745297739985" duration="11075000" />
+      <workItem from="1745353744610" duration="142000" />
+      <workItem from="1745374099419" duration="4844000" />
     </task>
     <task id="LOCAL-00001" summary="Setup">
       <option name="closed" value="true" />
@@ -554,7 +541,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743813755402</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Setup">
+      <option name="closed" value="true" />
+      <created>1744857723063</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1744857723064</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Changes by brayd">
+      <option name="closed" value="true" />
+      <created>1744857735043</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1744857735043</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -572,9 +575,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changes by logan" />
     <MESSAGE value="Setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Setup" />
+    <MESSAGE value="Changes by logan" />
+    <MESSAGE value="Changes by brayd" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes by brayd" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -597,15 +601,16 @@
     <SUITE FILE_PATH="coverage/PythonProject1$server__1_.coverage" NAME="server (1) Coverage Results" MODIFIED="1739134985882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1740986658888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
     <SUITE FILE_PATH="coverage/PythonProject1$GPT_Server.coverage" NAME="GPT_Server Coverage Results" MODIFIED="1744164547981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1744852150551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1745377157407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$side_bar.coverage" NAME="side_bar Coverage Results" MODIFIED="1739088077916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/main_window" />
     <SUITE FILE_PATH="coverage/PythonProject1$test.coverage" NAME="test Coverage Results" MODIFIED="1740972182313" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PythonProject1$server.coverage" NAME="server Coverage Results" MODIFIED="1744758458661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$server.coverage" NAME="server Coverage Results" MODIFIED="1745189234315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$function_handler.coverage" NAME="function_handler Coverage Results" MODIFIED="1744755302547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />
+    <SUITE FILE_PATH="coverage/PythonProject1$pi_client.coverage" NAME="pi_client Coverage Results" MODIFIED="1745189902427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code" />
     <SUITE FILE_PATH="coverage/PythonProject1$buttonFunction.coverage" NAME="buttonFunction Coverage Results" MODIFIED="1738536942217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$main_gui.coverage" NAME="main_gui Coverage Results" MODIFIED="1738916143908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets" />
     <SUITE FILE_PATH="coverage/PythonProject1$transfer_icons.coverage" NAME="transfer_icons Coverage Results" MODIFIED="1740769052483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
     <SUITE FILE_PATH="coverage/PythonProject1$transfer_json.coverage" NAME="transfer_json Coverage Results" MODIFIED="1743981685144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main_pi.coverage" NAME="main_pi Coverage Results" MODIFIED="1744768854851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main_pi.coverage" NAME="main_pi Coverage Results" MODIFIED="1744863537631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code" />
   </component>
 </project>

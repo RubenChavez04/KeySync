@@ -1,5 +1,5 @@
 from gui_assets.signal_dispatcher import global_signal_dispatcher
-from widgets.functions.button_functions import *
+from widgets.functions.launch_close_app import *
 #from KeySync import entire_project
 #entire_project.run()
 
@@ -8,6 +8,8 @@ Example message:
 Launch App:{app file path}
 
 """
+
+global_signal_dispatcher.handle_function_signal.connect(lambda function: handle_message(function))
 def handle_message(message):
     colon_start = message.find(":")
     selected_function = message[0:colon_start]

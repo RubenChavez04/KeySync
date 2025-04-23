@@ -32,7 +32,8 @@ class SignalDispatcher(QObject):
     websocket_send_message = pyqtSignal(str)
 
     #raspi button signal
-    raspi_button_signal = pyqtSignal()
+    handle_function_signal = pyqtSignal(str)
+
 
 #create a global dispatcher instance for calling in other py files
 global_signal_dispatcher = SignalDispatcher()
