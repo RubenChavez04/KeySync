@@ -3,59 +3,34 @@ from PyQt6.QtCore import Qt
 import winreg
 import csv
 import subprocess
+import wmi
 
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QPushButton
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QPushButton, QInputDialog, QFileDialog, QMessageBox
 
-'''
-def get_apps():
-    # Get the directory of the current Python script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+apps_dict = {}
 
-    # Define the relative path to your .ps1 script inside the project
-    ps1_file_path = os.path.join(script_dir, "scripts", "getapps_ps1.ps1")  # Example: /scripts/example.ps1
-
-    # Run the PowerShell script
-    result = subprocess.run(["powershell.exe", "-ExecutionPolicy", "Bypass", "-File", ps1_file_path],
-                            capture_output=True, text=True)
-
-    # Handle the result
-    if result.returncode == 0:
-        print("PowerShell script executed successfully!")
-        print(result.stdout)
-    else:
-        print(f"Error running script: {result.stderr}")
-'''
-
-'''
-def get_apps():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(script_dir, "scripts", "InstalledApps.csv")
-    apps_list = []
-
-    try:
-        with open(csv_path, 'r', encoding='utf-8-sig') as file:
-            csv_reader = csv.DictReader(file)
-            first_row = next(csv_reader)
-            print(f"CSV columns: {first_row.keys()}")  # Debug: print column names
-            apps_list.append((first_row['Name'], first_row['AppID']))  # Add first row to list
-            for row in csv_reader:
-                apps_list.append((row['Name'], row['AppID']))
-        return sorted(apps_list, key=lambda x: x[0].lower())  # Sort by name case-insensitive
-    except FileNotFoundError:
-        print(f"Error: {csv_path} not found")
-        return []
-    except KeyError as e:
-        print(f"Error: Missing column in CSV file - {e}")
-        return []
-'''
-
+def get_largest_exe_in_subfolders(folder):
+    largest_exe = None
+    largest_size = 0
+    for root, _, files in os.walk(folder):
+        for file in files:
+            if file.endswith(".exe"):
+                exe_path = os.path.join(root, file)
+                file_size = os.path.getsize(exe_path)
+                if file_size > largest_size:
+                    largest_exe = exe_path
+                    largest_size = file_size
+    return largest_exe
 
 def get_apps():
+    global apps_dict
+    if apps_dict:
+        return sorted([(name, path) for name, path in apps_dict.items() if path.endswith(".exe")], key=lambda x: x[0].lower())
+
     uninstall_keys = [
         r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
         r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
     ]
-    apps_list = []
 
     for uninstall_key in uninstall_keys:
         for hive in [winreg.HKEY_LOCAL_MACHINE, winreg.HKEY_CURRENT_USER]:
@@ -66,23 +41,27 @@ def get_apps():
                         with winreg.OpenKey(key, sub_key_name) as sub_key:
                             try:
                                 display_name = winreg.QueryValueEx(sub_key, "DisplayName")[0]
-                                try:
-                                    main_exe = winreg.QueryValueEx(sub_key, "DisplayIcon")[0]
-                                    if "uninstall" in main_exe.lower() or not main_exe.endswith(".exe"):
-                                        install_location = winreg.QueryValueEx(sub_key, "InstallLocation")[0]
-                                        if install_location:
-                                            main_exe = os.path.join(install_location, display_name + ".exe")
-                                except FileNotFoundError:
-                                    install_location = winreg.QueryValueEx(sub_key, "InstallLocation")[0]
-                                    if install_location:
-                                        main_exe = os.path.join(install_location, display_name + ".exe")
-                                apps_list.append((display_name, main_exe))
-                            except FileNotFoundError:
+                                install_location = winreg.QueryValueEx(sub_key, "InstallLocation")[0].strip('"')
+                                if install_location:
+                                    top_level_exes = [
+                                        file for file in os.listdir(install_location)
+                                        if file.endswith(".exe") and "uninstall" not in file.lower() and file.lower() not in ["unins000.exe", "update.exe"]
+                                    ]
+                                    if top_level_exes:
+                                        for file in top_level_exes:
+                                            exe_path = os.path.join(install_location, file)
+                                            if display_name not in apps_dict:
+                                                apps_dict[display_name] = exe_path
+                                    else:
+                                        largest_exe = get_largest_exe_in_subfolders(install_location)
+                                        if largest_exe:
+                                            apps_dict[display_name] = largest_exe
+                            except (FileNotFoundError, KeyError, OSError):
                                 pass
             except FileNotFoundError:
                 continue
-    return sorted(apps_list, key=lambda x: x[0].lower())
 
+    return [(name, path) for name, path in apps_dict.items() if path.endswith(".exe")]
 
 class AppSelectionDialog(QDialog):
     def __init__(self, apps, parent=None):
@@ -96,9 +75,14 @@ class AppSelectionDialog(QDialog):
         layout.addWidget(self.list_widget)
 
         # Add selection button
-        select_button = QPushButton("Select")
+        select_button = QPushButton("Select Application")
         select_button.clicked.connect(self.accept)
         layout.addWidget(select_button)
+
+        # Add button to add a new app
+        add_button = QPushButton("Add New Application")
+        add_button.clicked.connect(self.add_new_app)
+        layout.addWidget(add_button)
 
         self.setLayout(layout)
         self.apps = apps  # Store full app data
@@ -127,5 +111,19 @@ class AppSelectionDialog(QDialog):
             return self.apps[index][1]  # Return the AppID of selected item
         return None
 
-#if __name__ == "__main__":
-    #get_apps()
+    def add_new_app(self):
+        # Get display name
+        display_name, ok = QInputDialog.getText(self, "Add New App", "Enter display name:")
+        if ok and display_name:
+            # Get file path
+            file_path, _ = QFileDialog.getOpenFileName(self, "Select Executable", "",
+                                                       "Executable Files (*.exe);;All Files (*)")
+            if file_path and file_path.endswith(".exe"):
+                global apps_dict
+                apps_dict[display_name] = file_path  # Add new app to the dictionary
+                self.apps.append((display_name, file_path))
+                self.apps = sorted(self.apps, key=lambda x: x[0].lower())  # Re-sort the list
+                self.list_widget.clear()
+                self.list_widget.addItems([app[0] for app in self.apps])
+            else:
+                QMessageBox.warning(self, "Invalid File", "Please select a valid executable file.")
