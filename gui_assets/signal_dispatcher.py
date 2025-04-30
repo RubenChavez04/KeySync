@@ -9,6 +9,7 @@ class SignalDispatcher(QObject):
     image_selected_signal = pyqtSignal(str) #image path signal
     page_full_signal = pyqtSignal(bool)
     save_pages_signal = pyqtSignal()
+    tab_renamed_signal = pyqtSignal(str, int)
 
     #button customization signals used for
     icon_file_signal = pyqtSignal(str)

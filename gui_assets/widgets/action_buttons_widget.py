@@ -5,6 +5,7 @@ from gui_assets.buttons_sliders_etc.action_button import ActionButton
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
 from gui_assets.popups.add_action_popup import SelectFunctionPopup
+from gui_assets.popups.select_page_popup import SelectPagePopup
 from gui_assets.signal_dispatcher import global_signal_dispatcher
 from widgets.functions.getapps import get_apps, AppSelectionDialog
 
@@ -12,6 +13,7 @@ from widgets.functions.getapps import get_apps, AppSelectionDialog
 class ActionButtonsWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.parent = parent
         layout = QGridLayout()
         layout.setContentsMargins(0,0,0,0)
         layout.setHorizontalSpacing(10)
@@ -90,8 +92,20 @@ class ActionButtonsWidget(QWidget):
         action_type = self.get_checked_action_key()
         functions_list = ["Change Page","Launch App","Function 3"]
         dialog = SelectFunctionPopup(self,functions_list)
+        print(f"ActionButtonsWidget Parent: {type(self.parent)}")
+        print(f"Parent's Parent: {type(self.parent.parent)}")
         if dialog.exec():
             selected_function = dialog.selected_function
+            if selected_function == "Change Page":
+                # Show the page selection popup
+                page_popup = SelectPagePopup(self, self.parent.parent.pages)  # Pass the `pages` list from MainWindow
+                if page_popup.exec():  # If selection is made
+                    selected_page_index = page_popup.selected_page_index
+                    print(f"Selected Page Index: {selected_page_index}")  # Debug: Selected Index
+                    if (action_type is not None) and (self.button is not None) and (selected_page_index is not None) is not None:
+                        print(selected_page_index)
+                        self.button.functions[action_type].append(f"Change_Page:{selected_page_index}")
+
             if selected_function == "Launch App":
                 app = self.show_app_selection()
                 if app is None:

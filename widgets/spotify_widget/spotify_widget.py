@@ -378,8 +378,6 @@ class SpotifyWidget(QPushButton):
             self.startPos = self.pos() #get mouse position
             self.last_valid_position = self.pos()#save old position for invalid widget placement
 
-
-
     def mouseMoveEvent(self, event: QMouseEvent):
         """mouse event handling for dragging the widget."""
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:

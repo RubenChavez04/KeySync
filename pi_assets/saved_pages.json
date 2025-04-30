@@ -1,8 +1,9 @@
 {
     "pages": [
         {
-            "image_path": "page_backgrounds/wallpaper2.jpg",
+            "image_path": null,
             "color": "black",
+            "name": "Main/Home",
             "widgets": [
                 {
                     "type": "SpotifyWidget",
@@ -29,7 +30,9 @@
                     "label": "",
                     "image_path": null,
                     "functions": {
-                        "On_Press": [],
+                        "On_Press": [
+                            "Change_Page:0"
+                        ],
                         "On_Press_Release": [],
                         "Long_Press": [],
                         "Long_Press_Release": []
@@ -69,17 +72,32 @@
                     "label": "",
                     "image_path": null,
                     "functions": {
-                        "On_Press": [],
+                        "On_Press": [
+                            "Change_Page:2",
+                            "Change Page"
+                        ],
                         "On_Press_Release": [],
                         "Long_Press": [],
                         "Long_Press_Release": []
                     }
+                },
+                {
+                    "type": "WeatherWidget",
+                    "position": [
+                        11,
+                        250
+                    ],
+                    "size_multiplier": [
+                        2,
+                        2
+                    ]
                 }
             ]
         },
         {
-            "image_path": "page_backgrounds/wallpaper2.jpg",
+            "image_path": null,
             "color": "black",
+            "name": "Apps",
             "widgets": [
                 {
                     "type": "ButtonWidget",
@@ -93,7 +111,7 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": null,
+                    "image_path": "C:/Users/chave/Downloads/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/256x256 Icons/App - Spotify.png",
                     "functions": {
                         "On_Press": [],
                         "On_Press_Release": [],
@@ -113,7 +131,7 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": null,
+                    "image_path": "C:/Users/chave/Downloads/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/256x256 Icons/App - Chrome.png",
                     "functions": {
                         "On_Press": [],
                         "On_Press_Release": [],

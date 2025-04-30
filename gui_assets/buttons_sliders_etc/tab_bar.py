@@ -6,12 +6,12 @@ from gui_assets.signal_dispatcher import global_signal_dispatcher
 
 class TabButton(QPushButton):
     """Custom tab button class to handle double-click renaming."""
-    renamed = pyqtSignal(str)  #signal emitted when the tab is renamed
     deleted = pyqtSignal(QPushButton)
 
-    def __init__(self, text, parent=None):
+    def __init__(self, text, parent):
         super().__init__(text, parent)
         self.setCheckable(True)
+        self.parent = parent
         self.setStyleSheet("""
             QPushButton {
                 background-color: #d9d9d9;
@@ -55,8 +55,9 @@ class TabButton(QPushButton):
             new_text = line_edit.text()
             self.setText(new_text)
             line_edit.deleteLater()
+            index = self.parent.tab_buttons.index(self)
             self.show()  #show the button again after renaming
-            self.renamed.emit(new_text) #emit signal for text change
+            global_signal_dispatcher.tab_renamed_signal.emit(new_text, index)
 
         line_edit.editingFinished.connect(finish_renaming)
         line_edit.show()

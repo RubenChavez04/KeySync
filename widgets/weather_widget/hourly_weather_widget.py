@@ -42,7 +42,6 @@ class HourlyWeatherWidget(QWidget):
         now = datetime.now()
         current_hour = now.strftime("%I%p")
         current_hour = current_hour.lstrip("0") #remove leading zero for comparison
-        current_hour = "12PM"
         current_index = hours.index(current_hour)
         next_hours = hours[current_index:current_index+6]
         next_temps = hourly_temp[current_index:current_index+6]

@@ -36,6 +36,7 @@ class GetWeatherInfo(QRunnable):
                 "current_weather_code":int(current_weather.get("weather_code")),
                 "current_wind_speed":int(current_weather.get("wind_speed_10m"))
             }
+            print(int(current_weather.get("weather_code")))
             save_path = "pi_assets/weather_data.json"
             with open(save_path, "w") as f:
                 json.dump(weather_data, f, indent=4)

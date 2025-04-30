@@ -140,7 +140,7 @@ class WeatherWidget(QStackedWidget):
     def mouseMoveEvent(self, event: QMouseEvent):
         """mouse event handling for dragging the widget."""
         if event.buttons() == Qt.MouseButton.LeftButton and self.startPos:
-            new_pos = self.mapToParent(event.pos() - self.startPos) #calculate mouse position based on initial mouse position
+            new_pos = self.mapToParent(event.pos()) #calculate mouse position based on initial mouse position
             self.move(self.parent.get_snapped_position(new_pos, self.size_multiplier)) #get a snapped position relative to the mouse pos
             self.parent.update()
 

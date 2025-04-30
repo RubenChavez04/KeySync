@@ -5,16 +5,22 @@ import requests_cache
 import pandas as pd
 from retry_requests import retry
 
+import geocoder
+def get_coordinates():
+    # Get location based on your public IP
+    g = geocoder.ip('me')
+    return g.latlng  # Returns [latitude, longitude]
+
 class OpenMeteoClient:
     def __init__(self):
         self.cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
         self.retry_session = retry(self.cache_session, retries=5, backoff_factor=0.2)
         self.client = openmeteo_requests.Client(session=self.retry_session)
-
+        coords = get_coordinates()
         self.url = "https://api.open-meteo.com/v1/forecast"
         self.params = {
-            "latitude": 33.47983,
-            "longitude": -101.92548,
+            "latitude": coords[0],
+            "longitude": coords[1],
             "daily": ["precipitation_probability_max", "temperature_2m_min", "temperature_2m_max","sunrise", "sunset"],
             "hourly": ["temperature_2m", "precipitation_probability", "wind_speed_10m", "weather_code"],
             "current": ["wind_speed_10m", "temperature_2m", "weather_code", "is_day"],

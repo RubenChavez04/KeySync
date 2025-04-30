@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QDialog, QVBoxLayout, QPushButton, QWidget, QGridLay
 from gui_assets.buttons_sliders_etc.popup_title_bar import PopupTitleBar
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.title_bar import TitleBar
+from widgets.media_widget.media_widget import MediaWidget
 
 
 class AddWidgetPopup(QDialog):
@@ -54,7 +55,8 @@ class AddWidgetPopup(QDialog):
             ("1x1 Button", "ButtonWidget", (1, 1)),
             ("2x2 Button", "ButtonWidget", (2, 2)),
             ("Spotify Widget", "SpotifyWidget", (4, 2)),
-            ("Weather Widget", "WeatherWidget", (2, 2))
+            ("Weather Widget", "WeatherWidget", (2, 2)),
+            ("Media Widget", "MediaWidget", (2,2))
         ]:
             i=i+1
             btn = SideBarToolButton(self, text=display_name)

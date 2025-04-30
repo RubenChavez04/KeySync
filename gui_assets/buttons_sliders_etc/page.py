@@ -1,20 +1,23 @@
 import os
 
 from PyQt6.QtCore import Qt, QPoint, pyqtSignal
+from PyQt6.QtGui import QPixmap, QBrush
 from PyQt6.QtWidgets import QWidget, QFrame, QSizePolicy, QVBoxLayout
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.popups.add_widget_popup import AddWidgetPopup
 from widgets.button_widget import ButtonWidget
+from widgets.media_widget.media_widget import MediaWidget
 from widgets.spotify_widget.spotify_widget import SpotifyWidget
 from widgets.weather_widget.weather_widget import WeatherWidget
 
 
 class Page(QWidget):
-    def __init__(self, parent, image_path="page_backgrounds/wallpaper2.jpg"):
+    def __init__(self, parent, image_path=None, name=None):
 
         super().__init__(parent)
         self.index = None
+        self.name=name
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
@@ -46,15 +49,13 @@ class Page(QWidget):
     def set_background(self, image_path):
         """set the page background to the given image or default to random gradient."""
         if image_path and os.path.exists(image_path):  # Ensure the file exists
-            self.frame.setStyleSheet(f"""
-                QFrame {{
-                    background-image: url({image_path});
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size: cover;
-                    border: 2px solid darkgray;
-                }}
-            """)
+            pixmap = QPixmap(image_path)
+            scaled_pixmap = pixmap.scaled(self.frame.size(), Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation)
+            palette = self.frame.palette()
+            palette.setBrush(self.frame.backgroundRole(), QBrush(scaled_pixmap))
+            self.frame.setPalette(palette)
+            self.frame.setAutoFillBackground(True)
+
             print("background updated")
         else:
             #default gradient background if no image is set
@@ -66,11 +67,10 @@ class Page(QWidget):
             """)
         self.update()
 
-    def update_background(self, image_path):
+    def update_background(self, color, image_path):
         """update the background if signal is received"""
         if os.path.exists(image_path):  #ensure the file exists before setting it
             self.image_path = image_path  #store the image path
-            self.image_path.replace("\\","/")
             print(f"updated image path - {self.image_path}")
             print("updating background")
             self.set_background(self.image_path)  #apply background change
@@ -84,6 +84,7 @@ class Page(QWidget):
         data = {
             "image_path": self.image_path,
             "color": self.color,
+            "name": self.name,
             "widgets":[]
         }
 
@@ -108,6 +109,13 @@ class Page(QWidget):
                 }
                 data["widgets"].append(widget_data)
             elif widget_type == "WeatherWidget":
+                widget_data = {
+                    "type": widget_type,
+                    "position": (widget.pos().x(), widget.pos().y()),
+                    "size_multiplier": widget.size_multiplier
+                }
+                data["widgets"].append(widget_data)
+            elif widget_type == "MediaWidget":
                 widget_data = {
                     "type": widget_type,
                     "position": (widget.pos().x(), widget.pos().y()),
@@ -166,8 +174,11 @@ class PageGrid(QWidget):
             return
 
         if widget_type == "SpotifyWidget":
-            # Example: Add logic specific to Spotify widgets
-            widget = SpotifyWidget(self, self.cell_size, size_multiplier, available_pos)
+            try:
+                widget = SpotifyWidget(self, self.cell_size, size_multiplier, available_pos)
+            except Exception as e:
+                print(f"Error occurred while adding widget {e}")
+                return
         elif widget_type == "ButtonWidget":
             try:
                 widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos, color, label, image_path)
@@ -177,6 +188,12 @@ class PageGrid(QWidget):
         elif widget_type == "WeatherWidget":
             try:
                 widget = WeatherWidget(self, self.cell_size, size_multiplier, available_pos)
+            except Exception as e:
+                print(f"Error occurred while adding widget {e}")
+                return
+        elif widget_type == "MediaWidget":
+            try:
+                widget = MediaWidget(self, self.cell_size, size_multiplier, available_pos)
             except Exception as e:
                 print(f"Error occurred while adding widget {e}")
                 return

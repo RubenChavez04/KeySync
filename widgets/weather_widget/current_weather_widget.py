@@ -11,7 +11,6 @@ from widgets.weather_widget.weather_signals import weather_signals
 
 from datetime import datetime, time
 
-
 class CurrentWeatherWidget(QWidget):
     def __init__(self,parent,size_x,size_y,weather_client):
         super().__init__(parent)
@@ -20,7 +19,6 @@ class CurrentWeatherWidget(QWidget):
         self.is_day_temp = None
         self.setFixedSize(size_x,size_y)
         self.setContentsMargins(0,0,0,0)
-
         #create weather labels
         self.current_temp_label = self.create_label(
             "000°",

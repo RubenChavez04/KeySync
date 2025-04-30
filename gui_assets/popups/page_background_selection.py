@@ -7,10 +7,12 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QSize
 from gui_assets.signal_dispatcher import global_signal_dispatcher
+from pathlib import Path
+
 
 
 class ChangePageBackgroundDialog(QDialog):
-    def __init__(self, project_folder="page_backgrounds"):
+    def __init__(self, project_folder="pi_assets/page_backgrounds"):
         super().__init__()
 
         # Setup UI
@@ -48,6 +50,7 @@ class ChangePageBackgroundDialog(QDialog):
         for file_name in os.listdir(self.project_folder): #for each file in backgrounds directory
             if file_name.lower().endswith((".png", ".jpg", ".jpeg", ".svg", ".gif")): #ensure they are images
                 image_path = os.path.join(self.project_folder, file_name) #get the image path
+                image_path = image_path.replace("\\","/")
                 self.add_image_button(image_path) #add the image button
 
     def import_images(self):
@@ -58,22 +61,27 @@ class ChangePageBackgroundDialog(QDialog):
 
         if file_dialog.exec(): #while the dialog is executed
             selected_files = file_dialog.selectedFiles() #get selected files
+            print(f"import images: {selected_files}")
             self.save_and_display_images(selected_files) #save selected files
+
 
     def save_and_display_images(self, file_paths):
         """save any newly imported images and """
         for file_path in file_paths: #for each selected file from import
             file_name = os.path.basename(file_path) #get the file name
             dest_path = os.path.join(self.project_folder, file_name) #append directory
+            dest_path = dest_path.replace("\\","/")
+            print(f"first dest {dest_path}")
 
             #copy image to background directory only if it doesn't exist to prevent copies
             if not os.path.exists(dest_path):
                 shutil.copy(file_path, dest_path) #copy file to background directory
-
+            print(f"save and display{dest_path}")
             self.add_image_button(dest_path) #add the newly imported image as a button
 
     def add_image_button(self, image_path):
         """adds the image as a push button so users can preview which image to select"""
+        print(f"add image button {image_path}")
         button = QPushButton()
         pixmap = QPixmap(image_path)
 

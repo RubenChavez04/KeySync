@@ -5,50 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="caacc398-e183-47bf-801e-fefa9e88d20a" name="Changes" comment="Setup">
-      <change afterPath="$PROJECT_DIR$/pi_code/pi_widgets/spotify_widget/spotify_widget_pi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.cache.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/.cache.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ssh/key" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ssh/key.pub" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ssh/key1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ssh/key1.pub" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ssh/laptopkey" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ssh/laptopkey.pub" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/action_button.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/action_button.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/button_preview.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/sidebar_button.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/sidebar_button.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/pause_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/pause_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/play_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/play_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/repeat_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/repeat_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/shuffle_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/shuffle_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/skip_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/skip_icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/tab_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/tab_bar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/side_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/side_bar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/popups/page_background_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/page_background_selection.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/signal_dispatcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/signal_dispatcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/home/rubchave/KeySync/gui_stuff/wallpaper2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/home/rubchave/KeySync/gui_stuff/wallpaperdemo1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/main_gui_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/main_gui_pi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/page_backgrounds/wallpaper2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/page_backgrounds/wallpaperdemo1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/page_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/page_pi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/pi_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/pi_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/pi_widgets/spotify_widget/spotify_widget.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/saved_pages.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/signal_dispatcher_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/signal_dispatcher_pi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_pages.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_tasker.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_tasker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_thread_tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_thread_tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/weather_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/weather_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/widget_asset_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/widget_asset_functions.py" afterDir="false" />
-    </list>
-    <list id="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" name="Changes by logan" comment="Changes by logan">
+      <change beforePath="$PROJECT_DIR$/gui_assets/widgets/action_buttons_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/widgets/action_buttons_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_assets/saved_pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/saved_pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_assets/spotify_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/spotify_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_assets/weather_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/weather_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/current_weather_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/current_weather_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/hourly_weather_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/hourly_weather_widget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/weather_widget/open_meteo_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/open_meteo_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/weather_tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/weather_tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/weather_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/weather_widget.py" afterDir="false" />
+    </list>
+    <list id="2494e66c-874e-42d0-b75c-0df1fece2b67" name="Changes by brayd" comment="">
+      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -405,7 +383,7 @@
       <workItem from="1745798389772" duration="1056000" />
       <workItem from="1745806472607" duration="13087000" />
       <workItem from="1745886781732" duration="4716000" />
-      <workItem from="1745962245071" duration="2780000" />
+      <workItem from="1745962245071" duration="22064000" />
     </task>
     <task id="LOCAL-00001" summary="Setup">
       <option name="closed" value="true" />
@@ -599,7 +577,23 @@
       <option name="project" value="LOCAL" />
       <updated>1745384917376</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Setup">
+      <option name="closed" value="true" />
+      <created>1745977789313</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1745977789313</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Changes by logan">
+      <option name="closed" value="true" />
+      <created>1745977819512</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1745977819512</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -617,10 +611,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changes by logan" />
     <MESSAGE value="Changes by brayd" />
     <MESSAGE value="Setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Setup" />
+    <MESSAGE value="Changes by logan" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes by logan" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -650,7 +644,7 @@
     <SUITE FILE_PATH="coverage/PythonProject1$server__1_.coverage" NAME="server (1) Coverage Results" MODIFIED="1739134985882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$GPT_Server.coverage" NAME="GPT_Server Coverage Results" MODIFIED="1744164547981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
     <SUITE FILE_PATH="coverage/PythonProject1$weather.coverage" NAME="weather Coverage Results" MODIFIED="1745809497135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1745973298644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1745995543644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$test.coverage" NAME="test Coverage Results" MODIFIED="1745743958514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
     <SUITE FILE_PATH="coverage/PythonProject1$server.coverage" NAME="server Coverage Results" MODIFIED="1745189234315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$function_handler.coverage" NAME="function_handler Coverage Results" MODIFIED="1744755302547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />

@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
         title_bar_layout.addWidget(title_bar) #add title bar to layout
 
         #sidebar widget (Add this on the left of the frame)
-        side_bar = SideBar(self)  #declare sidebar
+        side_bar = SideBar(parent=self)  #declare sidebar
         side_bar.setGraphicsEffect(side_bar_shadow) #add sidebar shadow
         main_window_layout.setColumnStretch(0, 1)  #set a column stretch so that the sidebar fits
         main_window_layout.addWidget(side_bar, 0, 0, 2, 1)  #add sidebar to layout
@@ -118,11 +118,13 @@ class MainWindow(QMainWindow):
         global_signal_dispatcher.close_app_signal.connect(self.close_event)
         global_signal_dispatcher.tab_deleted_signal.connect(self.handle_tab_deletion)
         global_signal_dispatcher.save_pages_signal.connect(self.save_all_pages_data)
+        global_signal_dispatcher.tab_renamed_signal.connect(self.update_page_name)
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
         main_window.setLayout(title_bar_layout)
         self.setCentralWidget(main_window)
+        print(f"SideBar Parent: {type(side_bar.parent)}")  # Should print: <class 'main_gui.MainWindow'>
 
     def init(self, bypass=False):
         file_path = "pi_assets/saved_pages.json"
@@ -174,13 +176,12 @@ class MainWindow(QMainWindow):
 
     def add_new_page(self):
         """Add a new page to the page container when called"""
-        pages_len = len(self.pages)
         page_shadow = ShadowFX(self, self.color) #decalre shadow fx
         page= Page(self) #set page to page class
-        page.index = pages_len
         page.setGraphicsEffect(page_shadow) #add shadow fx
         self.pages.append(page) #add page to list
         self.page_container.addWidget(page) #add page to page container
+        page.name = f"Page {len(self.pages)}"
 
     def switch_or_add_page(self,index, restore=False):
         """When a tab is changed or added, switch to page that is indexed with tab, else add a new page"""
@@ -192,6 +193,11 @@ class MainWindow(QMainWindow):
             self.add_new_page() #add a new page
 
         self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
+
+    def update_page_name(self, new_name, index):
+        if index < len(self.pages):
+            self.pages[index].name = new_name
+            print(f"Name:{new_name} Index:{index}")
 
     def handle_tab_deletion(self):
         if self.pages:
@@ -260,12 +266,16 @@ class MainWindow(QMainWindow):
 
                 # Restore the page's background
                 page.image_path = page_data.get("image_path", "")
+                page.name = page_data.get("name", f"Page {index+1}")
                 page.set_background(page.image_path)
 
                 # Only add a new tab for restored pages
+                if index == 0:
+                    self.top_bar.tab_bar.tab_buttons[0].setText(page.name)
                 if len(self.top_bar.tab_bar.tab_buttons) <= index:
+                    print(f"index:{index} name:{page.name}")
                     self.top_bar.tab_bar.add_new_tab()
-                    self.top_bar.tab_bar.tab_buttons[-1].setText(f"Page {index + 1}")
+                    self.top_bar.tab_bar.tab_buttons[-1].setText(page.name)
 
                 # Restore widgets on the page
                 for widget_data in page_data.get("widgets", []):

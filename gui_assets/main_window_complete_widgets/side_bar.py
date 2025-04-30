@@ -10,6 +10,7 @@ from gui_assets.widgets.appearance_widget import AppearanceWidget
 class SideBar(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
+        self.parent = parent
         appearance_shadow = ShadowFX(self)
         actions_shadow = ShadowFX(self)
     #frame setup
@@ -37,7 +38,7 @@ class SideBar(QWidget):
         appearance_widget.setGraphicsEffect(appearance_shadow)
         frame_layout.addWidget(appearance_widget,0,0)
 
-        action_buttons = ActionButtonsWidget(frame)
+        action_buttons = ActionButtonsWidget(self)
         action_buttons.setGraphicsEffect(actions_shadow)
         frame_layout.addWidget(action_buttons,1,0)
 
