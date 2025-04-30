@@ -2,11 +2,14 @@ import asyncio
 import websockets
 import os
 from pi_code.signal_dispatcher_pi import pi_signal_dispatcher
+import time
 
 server_address = "ws://10.0.6.190:1738"
 save_path = "client_assets"
 files_updated = False
 websocket_connection = None
+spotify_updated = False
+weather_updated = False
 
 async def receive_file(websocket):
     global websocket_connection
@@ -16,18 +19,28 @@ async def receive_file(websocket):
                 incoming = await websocket.recv()
                 if "json?" in incoming:
                     await send_message("json")
+                if "progress" in incoming:
+                    pi_signal_dispatcher.update_spotify_progress.emit(incoming)
                 else:
                     file_name = incoming
                     print(f"Receiving file: {file_name}")
                     os.makedirs(save_path, exist_ok=True)
                     file_path = os.path.join(save_path, file_name)
+                    print("File path good")
                     with open(file_path, "wb") as file:
                         while True:
                             chunk = await websocket.recv()
                             if chunk == b"EOF":
+                                print("EOF recieved")
                                 break
                             file.write(chunk)
                     print(f"Saved {file_name}")
+                    if file_name == "spotify_data.json":
+                        pi_signal_dispatcher.update_spotify_widget.emit()
+                    if file_name == "saved_pages.json":
+                        pi_signal_dispatcher.update_pages.emit()
+                    if file_name == "weather_data.json":
+                        pi_signal_dispatcher.update_weather_widget.emit()
         except Exception as e:
             print(f"Exception receiving file: {e}")
     else:
@@ -49,6 +62,8 @@ async def send_message(message):
 async def websocket_client():
     global websocket_connection
     global files_updated
+    global spotify_updated
+    global weather_updated
     while True:
         try:
             print(f"Attempting to connect to {server_address}")
@@ -58,7 +73,22 @@ async def websocket_client():
                 if not files_updated:
                     await send_message("files")
                     files_updated = True
+                    await asyncio.sleep(2)
+                if not spotify_updated:
+                    await request_from_server("spotify_json")
+                    print("requesting initial spotify")
+                    pi_signal_dispatcher.update_spotify_widget.emit()
+                    spotify_updated = True
+                    await asyncio.sleep(2)
+                if not weather_updated:
+                    print("requesting initial weather")
+                    await request_from_server("weather_json")
+                    await receive_file(websocket)
+                    pi_signal_dispatcher.update_weather_widget.emit()
+                    weather_updated = True
+                    await asyncio.sleep(2)
                 await receive_file(websocket)
+
         except Exception as e:
             print(f"Error occured while connecting to server.\n"
                   f"Error: {e}\nRetrying in 5 seconds...")
@@ -74,8 +104,16 @@ async def handle_send_func_signal(message):
         print("Connection not available")
         asyncio.create_task(websocket_client())
 
+async def request_from_server(request):
+    global spotify_updated
+    global websocket_connection
+    if not spotify_updated and websocket_connection:
+        print("pi_client, requesting json")
+        asyncio.create_task(send_message(request))
+        print("pi_client, task created")
+    else:
+        print("Didn't make it")
+        print(f"Websocket_connection: {websocket_connection}")
+        print(f"Spotify updated {spotify_updated}")
 
 pi_signal_dispatcher.send_func_signal.connect(lambda msg: asyncio.create_task(handle_send_func_signal(msg)))
-
-if __name__ == "__main__":
-    asyncio.run(websocket_client())

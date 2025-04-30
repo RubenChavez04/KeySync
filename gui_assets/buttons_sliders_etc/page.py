@@ -7,6 +7,7 @@ from gui_assets.signal_dispatcher import global_signal_dispatcher
 from gui_assets.popups.add_widget_popup import AddWidgetPopup
 from widgets.button_widget import ButtonWidget
 from widgets.spotify_widget.spotify_widget import SpotifyWidget
+from widgets.weather_widget.weather_widget import WeatherWidget
 
 
 class Page(QWidget):
@@ -21,6 +22,7 @@ class Page(QWidget):
         self.image_path = image_path
         self.frame = QFrame(self)
         self.frame.setFixedSize(800, 480)   #frame size equal to the size of pi screen
+        self.color = "black"
 
         self.frame.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -81,6 +83,7 @@ class Page(QWidget):
     def save_page_data(self):
         data = {
             "image_path": self.image_path,
+            "color": self.color,
             "widgets":[]
         }
 
@@ -98,6 +101,13 @@ class Page(QWidget):
                 }
                 data["widgets"].append(widget_data)
             elif widget_type == "SpotifyWidget":
+                widget_data = {
+                    "type": widget_type,
+                    "position": (widget.pos().x(), widget.pos().y()),
+                    "size_multiplier": widget.size_multiplier
+                }
+                data["widgets"].append(widget_data)
+            elif widget_type == "WeatherWidget":
                 widget_data = {
                     "type": widget_type,
                     "position": (widget.pos().x(), widget.pos().y()),
@@ -157,16 +167,19 @@ class PageGrid(QWidget):
 
         if widget_type == "SpotifyWidget":
             # Example: Add logic specific to Spotify widgets
-            widget = SpotifyWidget(self, self.cell_size, size_multiplier, available_pos, color)
-        elif widget_type == "1x1 Button" or "2x2 Button" or "ButtonWidget":
-            print(color)
+            widget = SpotifyWidget(self, self.cell_size, size_multiplier, available_pos)
+        elif widget_type == "ButtonWidget":
             try:
                 widget = ButtonWidget(self, self.cell_size, size_multiplier, available_pos, color, label, image_path)
             except Exception as e:
                 print(f"Error occurred while adding widget {e}")
                 return
-
-            print("widget added")
+        elif widget_type == "WeatherWidget":
+            try:
+                widget = WeatherWidget(self, self.cell_size, size_multiplier, available_pos)
+            except Exception as e:
+                print(f"Error occurred while adding widget {e}")
+                return
         else:
             print(f"Unknown widget type: {widget_type}. Skipping.")
             return

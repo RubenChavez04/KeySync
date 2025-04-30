@@ -8,6 +8,7 @@ class SignalDispatcher(QObject):
     change_page_background_signal = pyqtSignal() #background button clicked signal
     image_selected_signal = pyqtSignal(str) #image path signal
     page_full_signal = pyqtSignal(bool)
+    save_pages_signal = pyqtSignal()
 
     #button customization signals used for
     icon_file_signal = pyqtSignal(str)
@@ -30,6 +31,16 @@ class SignalDispatcher(QObject):
 
     #server/client signals
     websocket_send_message = pyqtSignal(str)
+    websocket_send_pages = pyqtSignal()
+
+    #spotify widget global signals
+    websocket_send_spot = pyqtSignal()
+    websocket_send_spot_progress = pyqtSignal(str)
+    start_spotify_tasker = pyqtSignal()
+    stop_spotify_tasker = pyqtSignal()
+
+    #weather widget global signals
+    websocket_send_weather = pyqtSignal()
 
     #raspi button signal
     handle_function_signal = pyqtSignal(str)

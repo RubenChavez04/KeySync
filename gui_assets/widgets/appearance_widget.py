@@ -3,11 +3,11 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel
 
 from gui_assets.buttons_sliders_etc.QToggle import QToggle
-from gui_assets.buttons_sliders_etc.button_preview import ButtonPreview
 from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 from gui_assets.buttons_sliders_etc.sidebar_button_mini import SideBarToolButtonMini
 from gui_assets.buttons_sliders_etc.sidebar_label import SideBarLabel
 from gui_assets.signal_dispatcher import global_signal_dispatcher
+from widgets.weather_widget.weather_widget import WeatherWidget
 
 
 class AppearanceWidget(QWidget):
@@ -25,59 +25,56 @@ class AppearanceWidget(QWidget):
         layout.setHorizontalSpacing(10)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         # add the header to the frame
-        self.button_preview = ButtonPreview(self)
-        layout.addWidget(self.button_preview, 1, 0)
         layout.addWidget(appearance_header, 0, 0,1,2)
 
         # add appearance section buttons
-        add_label_button = SideBarToolButton(
+        self.add_label_button = SideBarToolButton(
             self,
             text="Add Label",
             tooltip="Add a label to your button",
             font_size= 12
         )
-        add_label_button.clicked.connect(global_signal_dispatcher.add_label_signal.emit)
+        self.add_label_button.clicked.connect(global_signal_dispatcher.add_label_signal.emit)
 
-        variable_button = SideBarToolButtonMini(
+        self.variable_button = SideBarToolButton(
             self,
             text="(X)",
             tooltip="Add a variable to your button",
             italic=True
         )
 
-
-        delete_button = SideBarToolButtonMini(
+        self.delete_button = SideBarToolButton(
             self,
             image_path="gui_assets/gui_icons/trash.ico",
             tooltip="Delete the button"
         )
-        delete_button.clicked.connect(global_signal_dispatcher.delete_button_signal.emit)
+        self.delete_button.clicked.connect(global_signal_dispatcher.delete_button_signal.emit)
 
-        add_icon_button = SideBarToolButtonMini(
+        self.add_icon_button = SideBarToolButton(
             self,
             image_path="gui_assets/gui_icons/image.ico",
             tooltip="Add a image to your button"
         )
-        add_icon_button.clicked.connect(global_signal_dispatcher.add_icon_signal.emit)
+        self.add_icon_button.clicked.connect(global_signal_dispatcher.add_icon_signal.emit)
 
-        change_color_button = SideBarToolButtonMini(
+        self.change_color_button = SideBarToolButton(
             self,
             image_path="gui_assets/gui_icons/Color.ico",
             tooltip="Change the color of your button"
         )
 
-        change_color_button.clicked.connect(global_signal_dispatcher.change_color_signal.emit)
+        self.change_color_button.clicked.connect(global_signal_dispatcher.change_color_signal.emit)
 
         # set them in a specific layout
-        appearance_button_layout = QGridLayout()
-        appearance_button_layout.setContentsMargins(0, 0, 0, 0)
-        appearance_button_layout.setSpacing(8)
-        appearance_button_layout.setHorizontalSpacing(10)
-        appearance_button_layout.addWidget(variable_button, 2, 1)
-        appearance_button_layout.addWidget(add_label_button, 0, 0, 1, 2)
-        appearance_button_layout.addWidget(delete_button, 2, 0)
-        appearance_button_layout.addWidget(change_color_button, 1, 0)
-        appearance_button_layout.addWidget(add_icon_button, 1, 1)
+
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(8)
+        layout.setHorizontalSpacing(10)
+        layout.addWidget(self.variable_button, 2, 1)
+        layout.addWidget(self.add_label_button, 1, 0)
+        layout.addWidget(self.delete_button, 3, 1)
+        layout.addWidget(self.change_color_button, 2, 0)
+        layout.addWidget(self.add_icon_button, 1, 1)
     # ----------State Section----------#
         self.state_toggler = QToggle(self)
         self.state_toggler.setFixedHeight(25)
@@ -108,25 +105,39 @@ class AppearanceWidget(QWidget):
         # add the button layout to the main sidebar layout
         # Preview Button Header & Button
 
-        appearance_button_layout.addLayout(state_layout, 3, 0, 1, 2)
-        layout.addLayout(appearance_button_layout, 1, 1)
+        layout.addLayout(state_layout, 3, 0)
         self.setLayout(layout)
 
         #update preview button appearance
-        self.state_toggler.stateChanged.connect(self.update_button_state)
 
         #get signal for selected button
         global_signal_dispatcher.selected_button.connect(self.selected_button)
         self.button = None
+        self.delete_button.setDisabled(True)
+        self.variable_button.setDisabled(True)
+        self.add_icon_button.setDisabled(True)
+        self.change_color_button.setDisabled(True)
+        self.add_label_button.setDisabled(True)
+        self.state_toggler.setDisabled(True)
 
-    def update_button_state(self, state):
-        if self.state_toggler.isChecked():
-            self.button_preview.update_style("On")
-        else:
-            self.button_preview.update_style("Off")
 
     def selected_button(self, selected_button):
-        self.button = selected_button
-
-
-
+        print(selected_button.__class__.__name__)
+        if str(selected_button.__class__.__name__) in ["SpotifyWidget","WeatherWidget"]:
+            print(str(selected_button.__class__.__name__))
+            print("disabled")
+            self.delete_button.setDisabled(False)
+            self.variable_button.setDisabled(True)
+            self.add_icon_button.setDisabled(True)
+            self.change_color_button.setDisabled(True)
+            self.add_label_button.setDisabled(True)
+            self.state_toggler.setDisabled(True)
+        else:
+            print("re-enabled")
+            self.delete_button.setDisabled(False)
+            self.variable_button.setDisabled(False)
+            self.add_icon_button.setDisabled(False)
+            self.change_color_button.setDisabled(False)
+            self.add_label_button.setDisabled(False)
+            self.state_toggler.setDisabled(False)
+        self.update()

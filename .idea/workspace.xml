@@ -5,28 +5,50 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="caacc398-e183-47bf-801e-fefa9e88d20a" name="Changes" comment="Setup">
+      <change afterPath="$PROJECT_DIR$/pi_code/pi_widgets/spotify_widget/spotify_widget_pi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ssh/key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ssh/key.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ssh/key1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ssh/key1.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ssh/laptopkey" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ssh/laptopkey.pub" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/action_button.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/action_button.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/button_preview.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/sidebar_button.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/buttons_sliders_etc/sidebar_button.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/pause_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/pause_icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/play_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/play_icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/repeat_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/repeat_icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/shuffle_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/shuffle_icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/gui_icons/skip_icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/client_assets/skip_icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_window_complete_widgets/top_bar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/popups/add_widget_popup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui_assets/signal_dispatcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/signal_dispatcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/page_backgrounds/wallpaper2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/wallpaper2.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/page_backgrounds/wallpaperdemo1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pi_assets/wallpaperdemo1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/widgets/appearance_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/home/rubchave/KeySync/gui_stuff/wallpaper2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/home/rubchave/KeySync/gui_stuff/wallpaperdemo1.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pi_code/main_gui_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/main_gui_pi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/page_backgrounds/wallpaper2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/page_backgrounds/wallpaperdemo1.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pi_code/page_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/page_pi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pi_code/pi_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/pi_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pi_code/pi_widgets/button_widget_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/pi_widgets/button_widget_pi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/saved_pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/pi_widgets/spotify_widget/spotify_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/saved_pages.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pi_code/signal_dispatcher_pi.py" beforeDir="false" afterPath="$PROJECT_DIR$/pi_code/signal_dispatcher_pi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_pages.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/button_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/button_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/functions/button_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/launch_close_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/functions/function_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/functions/function_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_tasker.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_tasker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_thread_tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_thread_tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/spotify_widget/spotify_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/weather_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/weather_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/widget_asset_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/widget_asset_functions.py" afterDir="false" />
     </list>
     <list id="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" name="Changes by logan" comment="Changes by logan">
-      <change beforePath="$PROJECT_DIR$/gui_assets/main_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_assets/main_gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/widgets/weather_widget/open_meteo_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgets/weather_widget/open_meteo_client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,15 +97,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/widgets/functions/button_functions.py" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/gui_assets/main_gui.py">
-      <ranges>
-        <range start1="15" end1="16" start2="15" end2="16" changelist="ae0aae32-a0c2-4db2-aabd-5683f9e9fcec" />
-        <range start1="277" end1="278" start2="277" end2="277" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-        <range start1="283" end1="284" start2="282" end2="283" changelist="caacc398-e183-47bf-801e-fefa9e88d20a" />
-      </ranges>
-    </file>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -102,11 +115,14 @@
     &quot;Python.buttonFunction.executor&quot;: &quot;Run&quot;,
     &quot;Python.button_functions.executor&quot;: &quot;Run&quot;,
     &quot;Python.button_widget_pi.executor&quot;: &quot;Run&quot;,
+    &quot;Python.current_weather_widget.executor&quot;: &quot;Run&quot;,
     &quot;Python.function_handler.executor&quot;: &quot;Run&quot;,
     &quot;Python.getapps.executor&quot;: &quot;Run&quot;,
+    &quot;Python.hourly_weather_widget.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;Python.main_gui.executor&quot;: &quot;Run&quot;,
     &quot;Python.main_pi.executor&quot;: &quot;Run&quot;,
+    &quot;Python.open_meteo_client.executor&quot;: &quot;Run&quot;,
     &quot;Python.pi_client.executor&quot;: &quot;Run&quot;,
     &quot;Python.server (1).executor&quot;: &quot;Run&quot;,
     &quot;Python.server.executor&quot;: &quot;Run&quot;,
@@ -116,6 +132,7 @@
     &quot;Python.test2.executor&quot;: &quot;Run&quot;,
     &quot;Python.transfer_icons.executor&quot;: &quot;Run&quot;,
     &quot;Python.transfer_json.executor&quot;: &quot;Run&quot;,
+    &quot;Python.weather.executor&quot;: &quot;Run&quot;,
     &quot;Python.websocket_client.executor&quot;: &quot;Run&quot;,
     &quot;Python.websocket_server_test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -123,7 +140,7 @@
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/chave/PycharmProjects/PythonProject1/gui_assets/gui_icons&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/chave/PycharmProjects/PythonProject1/pi_code/pi_widgets/weather_widget&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -135,16 +152,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_code\pi_widgets\weather_widget" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_code" />
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_code\pi_widgets" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\page_backgrounds" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1" />
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_code\client_assets" />
+      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_code" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets\gui_icons" />
       <recent name="C:\Users\chave\PycharmProjects\PythonProject1\pi_assets" />
-      <recent name="C:\Users\chave\PycharmProjects\PythonProject1" />
-      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\gui_assets" />
-      <recent name="C:\Users\chave\PycharmProjects\PythonProject1\page_backgrounds" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -194,6 +213,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main_pi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PythonProject1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pi_code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pi_code/main_pi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="server" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonProject1" />
       <option name="ENV_FILES" value="" />
@@ -209,29 +251,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PythonProject1" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -266,10 +285,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main_pi" />
         <item itemvalue="Python.server" />
         <item itemvalue="Python.websocket_client" />
         <item itemvalue="Python.launch_close_app" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -371,7 +390,22 @@
       <workItem from="1745283505572" duration="7504000" />
       <workItem from="1745297739985" duration="11075000" />
       <workItem from="1745353744610" duration="142000" />
-      <workItem from="1745374099419" duration="4844000" />
+      <workItem from="1745374099419" duration="21125000" />
+      <workItem from="1745396118410" duration="1496000" />
+      <workItem from="1745441554813" duration="5801000" />
+      <workItem from="1745450968839" duration="26323000" />
+      <workItem from="1745521447907" duration="637000" />
+      <workItem from="1745553885626" duration="194000" />
+      <workItem from="1745603874878" duration="9840000" />
+      <workItem from="1745630920018" duration="5454000" />
+      <workItem from="1745653864458" duration="1851000" />
+      <workItem from="1745691542690" duration="1072000" />
+      <workItem from="1745736672350" duration="8283000" />
+      <workItem from="1745776038419" duration="1128000" />
+      <workItem from="1745798389772" duration="1056000" />
+      <workItem from="1745806472607" duration="13087000" />
+      <workItem from="1745886781732" duration="4716000" />
+      <workItem from="1745962245071" duration="2780000" />
     </task>
     <task id="LOCAL-00001" summary="Setup">
       <option name="closed" value="true" />
@@ -557,7 +591,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744857735043</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Setup">
+      <option name="closed" value="true" />
+      <created>1745384917376</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1745384917376</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -575,10 +617,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Setup" />
     <MESSAGE value="Changes by logan" />
     <MESSAGE value="Changes by brayd" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes by brayd" />
+    <MESSAGE value="Setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Setup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -594,23 +636,27 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$button_functions.coverage" NAME="button_functions Coverage Results" MODIFIED="1741219346214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$button_widget_pi.coverage" NAME="button_widget_pi Coverage Results" MODIFIED="1744759974641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code/pi_widgets" />
+    <SUITE FILE_PATH="coverage/PythonProject1$current_weather_widget.coverage" NAME="current_weather_widget Coverage Results" MODIFIED="1745608763841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
     <SUITE FILE_PATH="coverage/PythonProject1$getapps.coverage" NAME="getapps Coverage Results" MODIFIED="1738893218977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Widgets/Functions" />
-    <SUITE FILE_PATH="coverage/PythonProject1$QToggle.coverage" NAME="QToggle Coverage Results" MODIFIED="1739089711949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/buttons_sliders_etc" />
-    <SUITE FILE_PATH="coverage/PythonProject1$websocket_client.coverage" NAME="websocket_client Coverage Results" MODIFIED="1743982185290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
     <SUITE FILE_PATH="coverage/PythonProject1$websocket_server_test.coverage" NAME="websocket_server_test Coverage Results" MODIFIED="1743729367871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$server__1_.coverage" NAME="server (1) Coverage Results" MODIFIED="1739134985882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1740986658888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$GPT_Server.coverage" NAME="GPT_Server Coverage Results" MODIFIED="1744164547981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1745377157407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$side_bar.coverage" NAME="side_bar Coverage Results" MODIFIED="1739088077916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/main_window" />
-    <SUITE FILE_PATH="coverage/PythonProject1$test.coverage" NAME="test Coverage Results" MODIFIED="1740972182313" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$open_meteo_client.coverage" NAME="open_meteo_client Coverage Results" MODIFIED="1745609806107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main_gui.coverage" NAME="main_gui Coverage Results" MODIFIED="1738916143908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main_pi.coverage" NAME="main_pi Coverage Results" MODIFIED="1745887089366" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code" />
+    <SUITE FILE_PATH="coverage/PythonProject1$QToggle.coverage" NAME="QToggle Coverage Results" MODIFIED="1739089711949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets/buttons_sliders_etc" />
+    <SUITE FILE_PATH="coverage/PythonProject1$hourly_weather_widget.coverage" NAME="hourly_weather_widget Coverage Results" MODIFIED="1745744439375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
+    <SUITE FILE_PATH="coverage/PythonProject1$websocket_client.coverage" NAME="websocket_client Coverage Results" MODIFIED="1743982185290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
+    <SUITE FILE_PATH="coverage/PythonProject1$server__1_.coverage" NAME="server (1) Coverage Results" MODIFIED="1739134985882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$GPT_Server.coverage" NAME="GPT_Server Coverage Results" MODIFIED="1744164547981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
+    <SUITE FILE_PATH="coverage/PythonProject1$weather.coverage" NAME="weather Coverage Results" MODIFIED="1745809497135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
+    <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1745973298644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$test.coverage" NAME="test Coverage Results" MODIFIED="1745743958514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/weather_widget" />
     <SUITE FILE_PATH="coverage/PythonProject1$server.coverage" NAME="server Coverage Results" MODIFIED="1745189234315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject1$function_handler.coverage" NAME="function_handler Coverage Results" MODIFIED="1744755302547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions" />
     <SUITE FILE_PATH="coverage/PythonProject1$pi_client.coverage" NAME="pi_client Coverage Results" MODIFIED="1745189902427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code" />
     <SUITE FILE_PATH="coverage/PythonProject1$buttonFunction.coverage" NAME="buttonFunction Coverage Results" MODIFIED="1738536942217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Functions" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main_gui.coverage" NAME="main_gui Coverage Results" MODIFIED="1738916143908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui_assets" />
     <SUITE FILE_PATH="coverage/PythonProject1$transfer_icons.coverage" NAME="transfer_icons Coverage Results" MODIFIED="1740769052483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
     <SUITE FILE_PATH="coverage/PythonProject1$transfer_json.coverage" NAME="transfer_json Coverage Results" MODIFIED="1743981685144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/widgets/functions/scripts" />
-    <SUITE FILE_PATH="coverage/PythonProject1$main_pi.coverage" NAME="main_pi Coverage Results" MODIFIED="1744863537631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pi_code" />
   </component>
 </project>

@@ -117,6 +117,7 @@ class MainWindow(QMainWindow):
         global_signal_dispatcher.image_selected_signal.connect(self.update_page_background)
         global_signal_dispatcher.close_app_signal.connect(self.close_event)
         global_signal_dispatcher.tab_deleted_signal.connect(self.handle_tab_deletion)
+        global_signal_dispatcher.save_pages_signal.connect(self.save_all_pages_data)
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
@@ -124,7 +125,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(main_window)
 
     def init(self, bypass=False):
-        file_path = "saved_pages.json"
+        file_path = "pi_assets/saved_pages.json"
         if not bypass:
             if os.path.exists(file_path):
                 print(f"{file_path} exists")
@@ -167,7 +168,7 @@ class MainWindow(QMainWindow):
 
     def close_app(self):
         self.tray_icon.hide()
-        self.save_all_pages_data()
+        self.save_all_pages_data(close=True)
         self.window().close()
         shutdown_server()
 
@@ -214,8 +215,8 @@ class MainWindow(QMainWindow):
         current_page = self.pages[self.page_container.currentIndex()]
         current_page.update_background(image_path)
 
-    def save_all_pages_data(self):
-        page_save_path = "saved_pages.json"
+    def save_all_pages_data(self,close=False):
+        page_save_path = "pi_assets/saved_pages.json"
         all_pages_data = {
             "pages":[]
         }
@@ -230,43 +231,44 @@ class MainWindow(QMainWindow):
             print(f"All page data saved to {page_save_path}")
         except IOError as e:
             print(f"Error saving page data{e}")
+        if not close:
+            global_signal_dispatcher.websocket_send_pages.emit()
 
-    def restore_all_pages(self, filepath="saved_pages.json"):
-        """
-        Restore all pages and their widgets from a JSON file.
-        """
+    def restore_all_pages(self, filepath="pi_assets/saved_pages.json"):
         try:
             with open(filepath, "r") as file:
                 all_pages_data = json.load(file)
         except (IOError, json.JSONDecodeError) as e:
             print(f"Error loading file {filepath}: {e}")
-            self.init(bypass=True)
+            self.init(bypass=True)  # If file doesn't exist, initialize a new page
             return
 
-        #validate the JSON data
+        # Validate the JSON data
         if not all_pages_data.get("pages"):
             print(f"Error: Missing 'pages' key in {filepath}")
-            self.init(bypass=True)
+            self.init(bypass=True)  # If 'pages' key is missing, initialize a new page
             return
 
         try:
-
-            #get all data and reimplement all the data
+            # Loop through all pages in JSON
             for index, page_data in enumerate(all_pages_data["pages"]):
-                # Ensure there's a specific page for this index
-                self.switch_or_add_page(index, restore = True)
-                print(index)
-                # Access the newly added or existing page
+                # Ensure the page exists in the stack layout
+                self.switch_or_add_page(index, restore=True)
+
+                # Access the newly added page
                 page = self.pages[index]
+
+                # Restore the page's background
                 page.image_path = page_data.get("image_path", "")
                 page.set_background(page.image_path)
-                if index == 0:
-                    self.top_bar.tab_bar.init_first_tab()
-                else:
-                    self.top_bar.tab_bar.add_new_tab()
 
-                #restore widgets on a page
-                for widget_data in page_data.get("widgets", []):  #default to empty list if widgets key is missing
+                # Only add a new tab for restored pages
+                if len(self.top_bar.tab_bar.tab_buttons) <= index:
+                    self.top_bar.tab_bar.add_new_tab()
+                    self.top_bar.tab_bar.tab_buttons[-1].setText(f"Page {index + 1}")
+
+                # Restore widgets on the page
+                for widget_data in page_data.get("widgets", []):
                     try:
                         widget_type = widget_data["type"]
                         position = QPoint(*widget_data["position"])
@@ -276,19 +278,24 @@ class MainWindow(QMainWindow):
                         label = widget_data.get("label")
                         image_path = widget_data.get("image_path")
 
-                        #call pagegrid add_widget method to add widgets back to page
+                        # Call `page_grid.add_widget` to restore widgets
                         page.page_grid.add_widget(widget_type, size_multiplier, position, color, label, image_path)
-                        # Optionally assign appID and style_sheet
+                        # Assign additional properties (if any)
                         last_widget = page.page_grid.widgets[-1]
                         last_widget.functions = functions
                     except (KeyError, TypeError) as e:
-                        print(f"Skipped restoring a widget due to invalid data: {widget_data}. Error: {e}")
+                        print(f"Error restoring widget data: {widget_data}. Error: {e}")
 
         except Exception as e:
             print(f"Unexpected error while restoring pages: {e}")
-        self.blockSignals(False)    #unblock signals after restoration
-        self.top_bar.tab_bar.change_tab(0) #index tab to first page
-        self.update()   #update to ensure everything is loaded properly
+
+        # Unblock signals after restoration and reset to the first tab
+        self.blockSignals(False)
+        self.top_bar.tab_bar.change_tab(0)
+        self.update()  # Ensure everything is rendered correctly
+        print("Finished restoring all pages")
+
+
 
 
 

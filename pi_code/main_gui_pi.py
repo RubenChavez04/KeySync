@@ -1,6 +1,5 @@
 from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedLayout
-from plumbum.cli import switch
 
 from pi_code.page_pi import Page  # Ensure the client-facing Page is imported
 from pi_code.signal_dispatcher_pi import pi_signal_dispatcher
@@ -44,7 +43,7 @@ class MainWindow(QMainWindow):
             print(index)
         self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
 
-    def restore_all_pages(self, filepath="saved_pages.json"):
+    def restore_all_pages(self, filepath="client_assets/saved_pages.json"):
         """restore the pages on client launch, soon whenever a new json file is sent"""
         try:
             with open(filepath, "r") as file:
@@ -71,19 +70,16 @@ class MainWindow(QMainWindow):
                 for widget_data in page_data.get("widgets", []):  #default to empty list if widgets key is missing
                     try:
                         widget_type = widget_data["type"]
-                        if widget_type == "ButtonWidget":
-                            position = QPoint(*widget_data["position"])
-                            size_multiplier = tuple(widget_data["size_multiplier"])
-                            functions = widget_data.get("functions")
-                            color = widget_data.get("color")
-                            label = widget_data.get("label")
-                            image_path = widget_data.get("image_path")
-                            #call pagegrid add_widget method to add widgets back to page
-                            page.page_grid.add_widget(widget_type, size_multiplier, position, color, label, image_path)
-                            last_widget = page.page_grid.widgets[-1]
-                            last_widget.functions = functions
-                        else:
-                            print(f"Skipping type:{widget_type} is invalid")
+                        position = QPoint(*widget_data["position"])
+                        size_multiplier = tuple(widget_data["size_multiplier"])
+                        color = widget_data.get("color")
+                        functions = widget_data.get("functions")
+                        label = widget_data.get("label")
+                        image_path = widget_data.get("image_path")
+                        #call pagegrid add_widget method to add widgets back to page
+                        page.page_grid.add_widget(widget_type, size_multiplier, position, color, label, image_path)
+                        last_widget = page.page_grid.widgets[-1]
+                        last_widget.functions = functions
                     except (KeyError, TypeError) as e:
                         print(f"Skipped restoring a widget due to invalid data: {widget_data}. Error: {e}")
         except Exception as e:

@@ -42,21 +42,22 @@ class TopBar(QWidget):
             tooltip="Preview the page with functionality",
             width=self.width
         )
-        settings_btn = SideBarToolButton(
+        save_btn = SideBarToolButton(
             self,
-            text="Settings",
+            text="Save Pages",
             width=self.width
         )
         self.tab_bar = TabBar(self)
 
         add_widget_btn.clicked.connect(global_signal_dispatcher.add_widget_signal.emit)
         change_background_btn.clicked.connect(global_signal_dispatcher.change_page_background_signal.emit)
+        save_btn.clicked.connect(global_signal_dispatcher.save_pages_signal.emit)
 
 
         btn_layout.addWidget(add_widget_btn, 0, 0, alignment=Qt.AlignmentFlag.AlignTop)
         btn_layout.addWidget(change_background_btn, 0, 1)
         btn_layout.addWidget(preview_btn, 0, 2)
-        btn_layout.addWidget(settings_btn, 0, 3)
+        btn_layout.addWidget(save_btn, 0, 3)
         main_layout.addLayout(btn_layout, 0, 0)
         main_layout.addWidget(self.tab_bar, 1, 0)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)

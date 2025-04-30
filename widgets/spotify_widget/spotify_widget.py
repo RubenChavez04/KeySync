@@ -1,14 +1,14 @@
-from PyQt6.QtCore import Qt, QPoint, QTimer, QThreadPool
+from PyQt6.QtCore import Qt, QPoint, QThreadPool
 from PyQt6.QtGui import QMouseEvent, QIcon, QPixmap, QTransform, QColor
 from PyQt6.QtWidgets import QPushButton, QSlider, \
     QLabel, QMessageBox, QGraphicsDropShadowEffect
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
-from widgets.spotify_widget.spotify import SpotifyIntegration
-from widgets.spotify_widget.spotify_tasker import SpotifyThreads
-from widgets.widget_asset_functions import create_rounded_icon, selected_button
 from widgets.spotify_widget.spotify_signals import spotify_signals
-import json
+from widgets.spotify_widget.spotify_tasker import SpotifyThreads
+from widgets.widget_asset_functions import create_rounded_icon, selected_button, create_drop_shadow,\
+    MarqueeLabel
+
 
 class SpotifyWidget(QPushButton):
     def __init__(self, parent, cell_size, size_multiplier=(4, 2), position=None, color="#f0f0f0"):
@@ -16,13 +16,7 @@ class SpotifyWidget(QPushButton):
         super().__init__(parent)
         #variables
         self.button_selected = None
-        self.current_track_temp = None
-        self.current_album_art_url = None
-        self.whats_playing = None
         self.is_playing_temp = None
-        self.color1 = None
-        self.color2 = None
-        self.artist = None
         self.parent = parent
         self.grid_size = cell_size
         self.size_multiplier = size_multiplier
@@ -34,19 +28,17 @@ class SpotifyWidget(QPushButton):
         self.startPos = None
         self.last_valid_position = position if position else QPoint(0, 0)
         self.move(self.last_valid_position)
-
         #set saved color on restore or use default if new
         self.color = color
         self.setStyleSheet(
             f"QPushButton {{border-radius: 8px;background-color: {self.color};border: None;}} QPushButton:hover {{ background-color: #cccccc;}}")
         print("Initializing spotify widget")
-        self.thread_pool = QThreadPool()
-
-        self.spotify_tasker = SpotifyThreads.get_instance()  # Get the singleton instance
-        self.spotify_tasker.run_in_thread()  # Move the tasker to its own thread and start
-
-        self.spotify_tasker.start()  # Start running tasks periodically
+        #get tasker instance
+        self.spotify_tasker = SpotifyThreads.get_instance()  #get the single instance
+        self.spotify_tasker.run_in_thread()  #move the instance to run in a thread, if it has not been already
+        self.spotify_tasker.start()  #start running the tasks
         self.spotify = self.spotify_tasker.spotify
+        print("spotify instance created")
         if not self.spotify.sp:
             print("Spotify client not authenticated. Attempting to authenticate...")
             try:
@@ -57,7 +49,9 @@ class SpotifyWidget(QPushButton):
                 QMessageBox.critical(self, "Spotify Error", f"Authentication failed: {str(e)}")
         else:
             current_track = self.spotify.get_current_playing()
-            print(current_track['progress_ms'])
+
+        print("spotify works or is not instanced")
+
 
         # Add album art label
         self.album_art_label = QLabel(self)
@@ -69,13 +63,10 @@ class SpotifyWidget(QPushButton):
                 border: none;
             }
         """)
-        print("album art added")
-
         # Add track name label
-        self.track_name_label = QLabel("No Track Playing", self)
+        self.track_name_label = MarqueeLabel("No track playing", self)
         self.track_name_label.setFixedSize(250, 25)
         self.track_name_label.move(180, 5)
-        self.track_name_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self.track_name_label.setStyleSheet("""
             QLabel {
                 background-color: transparent;
@@ -87,7 +78,6 @@ class SpotifyWidget(QPushButton):
         """)
         track_shadow = create_drop_shadow()
         self.track_name_label.setGraphicsEffect(track_shadow)
-        print("Track name added")
         # Add artist name label
 
         self.artist_name_label = QLabel("", self)
@@ -226,7 +216,7 @@ class SpotifyWidget(QPushButton):
         self.toggle_playback(init=True)
         global_signal_dispatcher.delete_button_signal.connect(self.delete_widget)
         global_signal_dispatcher.selected_button.connect(lambda btn: selected_button(self,btn))
-        spotify_signals.album_art_update.connect(self.update_widget)
+        spotify_signals.widget_update.connect(self.update_widget)
         spotify_signals.slider_update.connect(self.update_slider)
 
     def toggle_playback(self,init=False):
@@ -252,6 +242,7 @@ class SpotifyWidget(QPushButton):
             QMessageBox.critical(self, "Spotify Error", f"Playback toggle failed: {str(e)}")
 
     def update_slider(self, data):
+        #update slider progress and update playback button (if needed)
         progress = data.get("progress", 0)
         is_playing = bool(data.get("is_playing"))
         if is_playing != self.is_playing_temp:
@@ -264,25 +255,24 @@ class SpotifyWidget(QPushButton):
         self.progress_label.setText(f"{progress // 60000}:{(progress // 1000) % 60:02}")
 
     def update_widget(self, data):
+        #receive data from signal
         image_data = data.get("image_data")
         palette = data.get("palette")
         name = data.get("name")
-        self.artist = data.get("artist")
+        artist = data.get("artist")
         duration = data.get("duration")
-
         if image_data:
-            # Update the album art image
+            #update
             image = QPixmap()
             image.loadFromData(image_data)
             rounded_pixmap = create_rounded_icon(image, self.album_art_label.size(), radius=5)
             self.album_art_label.setPixmap(rounded_pixmap)
         if palette:
             try:
-                # Extract the main two colors from the palette
-                self.color1 = "#{:02x}{:02x}{:02x}".format(*palette[0])
-                self.color2 = "#{:02x}{:02x}{:02x}".format(*palette[1])
-
-                # Update the background gradient with the extracted colors
+                #convert rgb values to hex
+                color1 = "#{:02x}{:02x}{:02x}".format(*palette[0])
+                color2 = "#{:02x}{:02x}{:02x}".format(*palette[1])
+                #update the widget background
                 self.setStyleSheet(f"""
                        QPushButton {{
                            border-radius: 8px;
@@ -290,20 +280,19 @@ class SpotifyWidget(QPushButton):
                            background: qlineargradient(
                                spread:pad,
                                x1: 0, y1: 0, x2: 0, y2: 1,
-                               stop: 0 {self.color1},
-                               stop: 1 {self.color2}
+                               stop: 0 {color1},
+                               stop: 1 {color2}
                            );
-                       }}
-                   """)
+                }}""")
             except Exception as e:
-                print(f"Failed to apply ColorThief colors: {str(e)}")
+                print(f"Failed to update background: {str(e)}")
         if name:
-            self.track_name_label.setText(name)
-            self.whats_playing = name
-        if self.artist:
-            self.artist_name_label.setText(self.artist)
+            self.track_name_label.setText(name) #set song name
+        if artist:
+            self.artist_name_label.setText(artist) #set artists name(s)
         if duration:
-            self.progress_slider.setMaximum(duration)
+            self.progress_slider.setMaximum(duration) #update the slider duration
+            #convert from ms to minutes and seconds to change label
             self.duration_label.setText(f"{duration // 60000}:{(duration // 1000) % 60:02}")
 
     def set_playback_position(self):
@@ -446,9 +435,3 @@ class SpotifyWidget(QPushButton):
 
         return button
 
-def create_drop_shadow():
-    shadow = QGraphicsDropShadowEffect()
-    shadow.setBlurRadius(13)
-    shadow.setOffset(1, 1)
-    shadow.setColor(QColor(0, 0, 0, 200))
-    return shadow

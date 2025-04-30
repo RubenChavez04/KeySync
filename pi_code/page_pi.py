@@ -4,14 +4,12 @@ import random
 import os
 
 from pi_code.pi_widgets.button_widget_pi import ClientButtonWidget  # Ensure the adjusted ButtonWidget is imported here.
+from pi_code.pi_widgets.spotify_widget.spotify_widget_pi import ClientSpotifyWidget
+from pi_code.pi_widgets.weather_widget.weather_widget_pi import WeatherWidget
 
 
 class Page(QWidget):
-    """
-    Modified client-side Page class for loading and displaying widgets.
-    """
-
-    def __init__(self, parent, image_path="page_backgrounds/wallpaper2.jpg"):
+    def __init__(self, parent, image_path=None):
         super().__init__(parent)
 
         self.image_path = image_path
@@ -44,9 +42,6 @@ class Page(QWidget):
         self.set_background(self.image_path)
 
     def set_background(self, image_path):
-        """
-        Set the page background from the provided image path or use a default gradient.
-        """
         if image_path and os.path.exists(image_path):
             # File exists, use it
             self.frame.setStyleSheet(f"""
@@ -55,22 +50,14 @@ class Page(QWidget):
                     background-repeat: no-repeat;
                     background-position: center;
                     background-size: cover;
-                    border: 2px solid darkgray;
+                    border-radius: 0px;
                 }}
             """)
         else:
-            # Default gradient background
-            random_hex1 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
-            random_hex2 = f"{random.randint(0x000000, 0xFFFFFF):06x}"
-            self.frame.setStyleSheet(f"""
-                QFrame {{
-                    background: qlineargradient(
-                        x1: 0, y1: 0, x2: 0, y2: 1,
-                        stop: 0 #{random_hex1},
-                        stop: 1 #{random_hex2}
-                    );
-                    border: 2px solid darkgray;
-                }}
+            self.frame.setStyleSheet("""
+                QFrame 
+                    background: black;
+                    border-radius: 0px;
             """)
         self.update()
 
@@ -111,6 +98,18 @@ class PageGrid(QWidget):
         if widget_type in ["ButtonWidget", "1x1 button", "2x2 button"]:
             try:
                 widget = ClientButtonWidget(self, self.cell_size, size_multiplier, position, color, label, image_path)
+            except Exception as e:
+                print(f"Error occurred while adding widget: {e}")
+                return
+        elif widget_type == "WeatherWidget":
+            try:
+                widget = WeatherWidget(self, self.cell_size, size_multiplier, position)
+            except Exception as e:
+                print(f"Error occurred while adding widget: {e}")
+                return
+        elif widget_type == "SpotifyWidget":
+            try:
+                widget = ClientSpotifyWidget(self,self.cell_size, size_multiplier, position, color)
             except Exception as e:
                 print(f"Error occurred while adding widget: {e}")
                 return

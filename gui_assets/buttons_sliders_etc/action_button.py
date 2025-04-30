@@ -21,11 +21,5 @@ class ActionButton(QToolButton):
                 background-color: #d9d9d9;
                 color: black;
                 }
-            QToolTip {
-                font: bold 14px;
-                background-color: transparent;
-                border-radius: 10px;
-                color: white;
-                }
             """)
 

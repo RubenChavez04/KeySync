@@ -1,18 +1,24 @@
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 from PyQt6.QtWidgets import QToolButton
 
-
 class SideBarToolButton(QToolButton):
     def __init__(self, parent=None, image_path=None, text=None,
-                 font_size=15, tooltip=None, width =200):
+                 font_size=15, tooltip=None, width =200, italic=False):
         super().__init__(parent)
         self.setFixedSize(width, 40)
-        self.setStyleSheet("""
-        QToolButton {
+        italic = "italic" if italic else "normal"
+        self.setStyleSheet(f"""
+        QToolButton {{
             Border-radius: 8px;
             background: #d9d9d9;
             color: black;
-        }""")
+            font-style: {italic}
+        }}
+        QToolButton:disabled {{
+                background-color: #999999;
+                color: black;
+        }}
+        """)
 
         #added this to simplify adding images and button labels, one
         # or the other for a cleaner look

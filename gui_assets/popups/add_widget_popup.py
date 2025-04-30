@@ -52,8 +52,9 @@ class AddWidgetPopup(QDialog):
         i=0
         for display_name, widget_type, size in [
             ("1x1 Button", "ButtonWidget", (1, 1)),
-            ("2x2 Button", "ButtonWidget",(2, 2)),
-            ("Spotify Widget", "SpotifyWidget", (4, 2))
+            ("2x2 Button", "ButtonWidget", (2, 2)),
+            ("Spotify Widget", "SpotifyWidget", (4, 2)),
+            ("Weather Widget", "WeatherWidget", (2, 2))
         ]:
             i=i+1
             btn = SideBarToolButton(self, text=display_name)
