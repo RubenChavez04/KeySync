@@ -35,9 +35,11 @@ class SpotifyWidget(QPushButton):
         print("Initializing spotify widget")
         #get tasker instance
         self.spotify_tasker = SpotifyThreads.get_instance()  #get the single instance
-        self.spotify_tasker.run_in_thread()  #move the instance to run in a thread, if it has not been already
-        self.spotify_tasker.start()  #start running the tasks
+        #self.spotify_tasker.run_in_thread()  # move the instance to run in a thread, if it has not been already
+        self.spotify_tasker.start()  # start running the tasks
         self.spotify = self.spotify_tasker.spotify
+
+
         print("spotify instance created")
         if not self.spotify.sp:
             print("Spotify client not authenticated. Attempting to authenticate...")
@@ -47,11 +49,6 @@ class SpotifyWidget(QPushButton):
             except Exception as e:
                 print(f"Authentication failed: {str(e)}")
                 QMessageBox.critical(self, "Spotify Error", f"Authentication failed: {str(e)}")
-        else:
-            current_track = self.spotify.get_current_playing()
-
-        print("spotify works or is not instanced")
-
 
         # Add album art label
         self.album_art_label = QLabel(self)
@@ -109,7 +106,7 @@ class SpotifyWidget(QPushButton):
         # Add play/pause button
         self.playback_button = self.create_playback_button(
             "gui_assets/gui_icons/play_icon.png",
-            self.toggle_playback,
+            self.spotify.play_pause,
             playback_fixed_size,
             (playback_x, playback_y)
         )
@@ -117,7 +114,7 @@ class SpotifyWidget(QPushButton):
         # Add previous button
         self.previous_button = self.create_playback_button(
             "gui_assets/gui_icons/skip_icon.png",
-            self.previous_song,
+            self.spotify.previous_song,
             playback_fixed_size,
             (playback_x-playback_spacing_x, playback_y),
             True
@@ -126,7 +123,7 @@ class SpotifyWidget(QPushButton):
         # Add skip button
         self.next_button = self.create_playback_button(
             "gui_assets/gui_icons/skip_icon.png",
-            self.next_song,
+            self.spotify.next_song,
             playback_fixed_size,
             (playback_x+playback_spacing_x, playback_y)
         )
@@ -134,7 +131,7 @@ class SpotifyWidget(QPushButton):
         #Add shuffle button
         self.shuffle_button = self.create_playback_button(
             "gui_assets/gui_icons/shuffle_icon.png",
-            self.toggle_shuffle,
+            self.spotify.toggle_shuffle,
             playback_fixed_size,
             (playback_x - int(playback_spacing_x / 2), playback_y + playback_spacing_y)
             )
@@ -142,7 +139,7 @@ class SpotifyWidget(QPushButton):
         # Add repeat button
         self.repeat_button = self.create_playback_button(
             "gui_assets/gui_icons/repeat_icon.png",
-            self.toggle_repeat,
+            self.spotify.toggle_repeat,
             playback_fixed_size,
             (playback_x + int(playback_spacing_x / 2), playback_y + playback_spacing_y)
         )
@@ -171,7 +168,6 @@ class SpotifyWidget(QPushButton):
                                         }
                                     """)
         self.progress_slider.move(50, 220 - 30)  #Below the playback button
-        self.progress_slider.sliderReleased.connect(self.set_playback_position)
 
         self.label_stylesheet = """
                             QLabel {
@@ -211,35 +207,15 @@ class SpotifyWidget(QPushButton):
         self.duration_label.setGraphicsEffect(duration_shadow)
         self.duration_label.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        #self.timer.start(1000)
-        #self.update_slider_timer.start(1000)
-        self.toggle_playback(init=True)
         global_signal_dispatcher.delete_button_signal.connect(self.delete_widget)
         global_signal_dispatcher.selected_button.connect(lambda btn: selected_button(self,btn))
         spotify_signals.widget_update.connect(self.update_widget)
         spotify_signals.slider_update.connect(self.update_slider)
 
-    def toggle_playback(self,init=False):
-        if not self.spotify.sp:
-            print("Spotify client not authenticated. Please authenticate first.")
-            return
-        try:
-            if init:
-                playback = self.spotify.sp.current_playback()
-                if playback and playback["is_playing"]:
-                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/pause_icon.png"))
-                else:
-                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/play_icon.png"))
-            else:
-                self.spotify.play_pause()
-                playback = self.spotify.sp.current_playback()
-                if playback and playback["is_playing"]:
-                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/pause_icon.png"))
-                else:
-                    self.playback_button.setIcon(QIcon("gui_assets/gui_icons/play_icon.png"))
-        except Exception as e:
-            print(f"Playback toggle failed: {str(e)}")
-            QMessageBox.critical(self, "Spotify Error", f"Playback toggle failed: {str(e)}")
+    def delete_widget(self):
+        if self.button_selected==self:
+            self.deleteLater()
+            global_signal_dispatcher.remove_widget_signal.emit(self)
 
     def update_slider(self, data):
         #update slider progress and update playback button (if needed)
@@ -294,76 +270,6 @@ class SpotifyWidget(QPushButton):
             self.progress_slider.setMaximum(duration) #update the slider duration
             #convert from ms to minutes and seconds to change label
             self.duration_label.setText(f"{duration // 60000}:{(duration // 1000) % 60:02}")
-
-    def set_playback_position(self):
-        if not self.spotify.sp:
-            return
-        try:
-            new_position = self.progress_slider.value()
-            self.spotify.sp.seek_track(new_position)
-        except Exception as e:
-            print(f"Failed to set playback position: {str(e)}")
-
-    def previous_song(self):
-        if not self.spotify.sp:
-            print("Spotify client not authenticated. Please authenticate first.")
-            return
-        try:
-            self.spotify.sp.previous_track()
-            print("Skipped to previous track.")
-        except Exception as e:
-            print(f"Failed to skip to previous track: {str(e)}")
-
-    def next_song(self):
-        if not self.spotify.sp:
-            print("Spotify client not authenticated. Please authenticate first.")
-            return
-        try:
-            self.spotify.sp.next_track()
-            print("Skipped to next track.")
-        except Exception as e:
-            print(f"Failed to skip to next track: {str(e)}")
-
-    def toggle_shuffle(self):
-        if not self.spotify.sp:
-            return
-        try:
-            current = self.spotify.sp.current_playback()
-            if not current:
-                print("No active playback found.")
-                return
-
-            shuffle_state = current["shuffle_state"]
-            device_id = current["device"]["id"]
-
-            self.spotify.sp.shuffle(not shuffle_state, device_id=device_id)
-            print(f"Shuffle {'enabled' if not shuffle_state else 'disabled'} on device {device_id}")
-        except Exception as e:
-            print(f"Failed to toggle shuffle: {str(e)}")
-
-    def toggle_repeat(self):
-        if not self.spotify.sp:
-            return
-        try:
-            current = self.spotify.sp.current_playback()
-            repeat_state = current["repeat_state"] if current else "off"
-
-            if repeat_state == "off":
-                new_state = "context"
-            elif repeat_state == "context":
-                new_state = "track"
-            else:
-                new_state = "off"
-
-            self.spotify.sp.repeat(new_state)
-            print(f"Repeat set to {new_state}")
-        except Exception as e:
-            print(f"Failed to toggle repeat: {str(e)}")
-
-    def delete_widget(self):
-        if self.button_selected==self:
-            self.deleteLater()
-            global_signal_dispatcher.remove_widget_signal.emit(self)
 
     def mouseDoubleClickEvent(self,event):
         """Handle double-click to rename the tab."""
@@ -432,4 +338,8 @@ class SpotifyWidget(QPushButton):
             button.setIcon(QIcon(icon_path))
 
         return button
+
+    def delete(self):
+        self.track_name_label.deleteLater()
+        self.deleteLater()
 

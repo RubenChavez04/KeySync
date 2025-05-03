@@ -78,9 +78,9 @@ class OpenMeteoClient:
         precipitation_max = daily.Variables(0).ValuesAsNumpy().round(0).astype(int)
         sunrise = daily.Variables(3).ValuesInt64AsNumpy()
         sunset = daily.Variables(4).ValuesInt64AsNumpy()
-        sunrise_times = [datetime.utcfromtimestamp(ts).replace(tzinfo=pytz.utc).astimezone(
+        sunrise = [datetime.utcfromtimestamp(ts).replace(tzinfo=pytz.utc).astimezone(
             pytz.timezone("America/Chicago")).strftime("%I:%M %p") for ts in sunrise]
-        sunset_times = [datetime.utcfromtimestamp(ts).replace(tzinfo=pytz.utc).astimezone(
+        sunset = [datetime.utcfromtimestamp(ts).replace(tzinfo=pytz.utc).astimezone(
             pytz.timezone("America/Chicago")).strftime("%I:%M %p") for ts in sunset]
 
         dates = pd.date_range(
@@ -95,8 +95,8 @@ class OpenMeteoClient:
             "temperature_2m_min": temperature_min,
             "temperature_2m_max": temperature_max,
             "precipitation_probability_max": precipitation_max,
-            "sunrise": sunrise_times,
-            "sunset": sunset_times
+            "sunrise": sunrise,
+            "sunset": sunset
         })
 
 

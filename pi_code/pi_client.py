@@ -5,14 +5,18 @@ from pi_code.signal_dispatcher_pi import pi_signal_dispatcher
 import time
 
 server_address = "ws://10.0.6.190:1738"
-save_path = "client_assets"
+save_path = "pi_assets"
+save_path_button = "pi_assets/button_images"
 files_updated = False
 websocket_connection = None
 spotify_updated = False
 weather_updated = False
+buttons_updated = False
+initial_page_load = False
 
 async def receive_file(websocket):
     global websocket_connection
+    global initial_page_load
     if websocket_connection is not None:
         try:
             while True:
@@ -24,8 +28,12 @@ async def receive_file(websocket):
                 else:
                     file_name = incoming
                     print(f"Receiving file: {file_name}")
-                    os.makedirs(save_path, exist_ok=True)
-                    file_path = os.path.join(save_path, file_name)
+                    if file_name.endswith((".jpg",".png",".svg",".ico",".jpeg",".gif")):
+                        os.makedirs(save_path_button, exist_ok=True)
+                        file_path = os.path.join(save_path_button, file_name)
+                    else:
+                        os.makedirs(save_path, exist_ok=True)
+                        file_path = os.path.join(save_path, file_name)
                     print("File path good")
                     with open(file_path, "wb") as file:
                         while True:
@@ -64,15 +72,16 @@ async def websocket_client():
     global files_updated
     global spotify_updated
     global weather_updated
+    global buttons_updated
     while True:
         try:
             print(f"Attempting to connect to {server_address}")
             async with websockets.connect(server_address) as websocket:
                 print(f"Connected to {server_address}")
                 websocket_connection = websocket
-                if not files_updated:
-                    await send_message("files")
-                    files_updated = True
+                if not buttons_updated:
+                    await send_message("button")
+                    buttons_updated = True
                     await asyncio.sleep(2)
                 if not spotify_updated:
                     await request_from_server("spotify_json")
@@ -87,6 +96,11 @@ async def websocket_client():
                     pi_signal_dispatcher.update_weather_widget.emit()
                     weather_updated = True
                     await asyncio.sleep(2)
+                if not files_updated:
+                    await send_message("files")
+                    files_updated = True
+                    await asyncio.sleep(2)
+
                 await receive_file(websocket)
 
         except Exception as e:

@@ -32,7 +32,7 @@ class TopBar(QWidget):
         change_background_btn = SideBarToolButton(
             self,
             text="Background",
-            tooltip="Change the background of the page",
+            tooltip="Change the background color of the page",
             width=self.width,
             font_size=15
         )

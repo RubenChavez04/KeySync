@@ -32,7 +32,7 @@ class Page(QWidget):
         frame_layout = QVBoxLayout(self.frame)
         frame_layout.setContentsMargins(0, 0, 0, 0)
         self.frame.setLayout(frame_layout)
-        self.set_background(self.image_path)
+        self.set_background(self.color)
 
         self.page_grid = PageGrid(self)
         frame_layout.addWidget(self.page_grid)
@@ -40,45 +40,22 @@ class Page(QWidget):
         layout.addWidget(self.frame)
 
         self.setLayout(layout)
-        global_signal_dispatcher.tab_deleted_signal.connect(self.delete_page)
 
     def show_add_widget_popup(self):
         popup = AddWidgetPopup(self, self.page_grid)
         popup.exec()
 
-    def set_background(self, image_path):
+    def set_background(self, color):
         """set the page background to the given image or default to random gradient."""
-        if image_path and os.path.exists(image_path):  # Ensure the file exists
-            pixmap = QPixmap(image_path)
-            scaled_pixmap = pixmap.scaled(self.frame.size(), Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation)
-            palette = self.frame.palette()
-            palette.setBrush(self.frame.backgroundRole(), QBrush(scaled_pixmap))
-            self.frame.setPalette(palette)
-            self.frame.setAutoFillBackground(True)
-
-            print("background updated")
-        else:
-            #default gradient background if no image is set
-            self.frame.setStyleSheet(f"""
-                QFrame {{
-                    background: black;
-                    border: 2px solid darkgray;
-                }}
-            """)
+        #default gradient background if no image is set
+        self.color = color
+        self.frame.setStyleSheet(f"""
+            QFrame {{
+                background: {self.color};
+                border: 2px solid darkgray;
+            }}
+        """)
         self.update()
-
-    def update_background(self, color, image_path):
-        """update the background if signal is received"""
-        if os.path.exists(image_path):  #ensure the file exists before setting it
-            self.image_path = image_path  #store the image path
-            print(f"updated image path - {self.image_path}")
-            print("updating background")
-            self.set_background(self.image_path)  #apply background change
-            print(f"Image file found - {self.image_path}")
-        else:
-            self.image_path = image_path
-            print(f"Error: Image file not found - {self.image_path}")
-            self.image_path = None
 
     def save_page_data(self):
         data = {
@@ -125,10 +102,7 @@ class Page(QWidget):
         return data
 
     def delete_page(self):
-        for widget in self.page_grid.widgets:
-            widget.delete_widget()
-        self.page_grid.widgets.clear()
-        self.page_grid.deleteLater()
+        self.page_grid.delete()
         self.deleteLater()
 
 
@@ -312,6 +286,12 @@ class PageGrid(QWidget):
             self.widgets.remove(widget)
             print(f"{widget} removed")
         self.remove_widget_position(widget)
+
+    def delete(self):
+        for widget in self.widgets:
+            widget.delete()
+        self.widgets.clear()
+        self.deleteLater()
 
 
 

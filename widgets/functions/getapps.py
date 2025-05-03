@@ -2,7 +2,7 @@ import os
 import subprocess
 import winreg
 
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QPushButton
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QPushButton, QFileDialog
 
 
 def get_apps2():
@@ -63,13 +63,17 @@ class AppSelectionDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle("Select Application")
         layout = QVBoxLayout()
-
+        self.selected_custom_file = None
         # Create list widget with app names
         self.list_widget = QListWidget()
         self.list_widget.addItems([app[0] for app in apps])  # Show only app names
         layout.addWidget(self.list_widget)
 
         # Add selection button
+        choose_exe_button = QPushButton("Open File Explorer")
+        choose_exe_button.clicked.connect(self.open_file_dialog)
+        layout.addWidget(choose_exe_button)
+
         select_button = QPushButton("Select")
         select_button.clicked.connect(self.accept)
         layout.addWidget(select_button)
@@ -80,7 +84,6 @@ class AppSelectionDialog(QDialog):
         self.setStyleSheet("""
                     QListWidget {
                         background-color: lightgray;
-                        alternate-background-color: darkgray;
                     }
                     QDialog {
                         background-color: #f0f0f0;  # Match the style of the rest of the project
@@ -96,6 +99,19 @@ class AppSelectionDialog(QDialog):
                 """)
 
     def get_selected_app(self):
+        if self.selected_custom_file:  # Check if a custom file was selected
+            return self.selected_custom_file
         if self.list_widget.currentItem():
             index = self.list_widget.currentRow()
             return self.apps[index][1]  # Return the AppID of selected item
+
+    def open_file_dialog(self):
+        file_dialog = QFileDialog()
+        file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
+        file_dialog.setNameFilters(["Executable Files (*.exe)","Shortcuts (*.lnk)","All Files (*.*)"])
+
+        if file_dialog.exec():
+            self.selected_custom_file = file_dialog.selectedFiles()[0]  # Set selected file path
+            print(f"Selected file: {self.selected_custom_file}")
+        else:
+            print("No file selected")

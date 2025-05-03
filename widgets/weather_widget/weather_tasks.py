@@ -25,6 +25,8 @@ class GetWeatherInfo(QRunnable):
                 "daily_high": int(daily_weather["temperature_2m_max"].iloc[0]),
                 "daily_low": int(daily_weather["temperature_2m_min"].iloc[0]),
                 "daily_rain_prob":int(daily_weather["precipitation_probability_max"].iloc[0]),
+                "sunrise": str(daily_weather["sunrise"].iloc[0]),
+                "sunset":str(daily_weather["sunset"].iloc[0]),
 
                 "hourly_weather_codes": hourly_weather["weather_codes"].tolist(),
                 "hours": hourly_weather["date"].tolist(),

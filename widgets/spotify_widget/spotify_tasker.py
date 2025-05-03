@@ -11,6 +11,7 @@ class SpotifyThreads(QObject):
 
     @staticmethod #staticmethod used so an instance of the class can be made within the class
     def get_instance():
+        print("spotify_tasker get_instance running")
         #use this method to get instance in spotify widget class
         #check if an instance is created
         if SpotifyThreads._instance is None:
@@ -18,6 +19,8 @@ class SpotifyThreads(QObject):
             SpotifyThreads._instance = SpotifyThreads()
             #get currently playing song to save and initialize spotify widgets
             spotify_signals.widget_update.connect(SpotifyThreads._instance.get_whats_playing)
+
+            global_signal_dispatcher.run_spot_func.connect(SpotifyThreads._instance.run_func)
         #if instance has been created, return the already made instance
         return SpotifyThreads._instance
 
@@ -111,3 +114,20 @@ class SpotifyThreads(QObject):
             global_signal_dispatcher.websocket_send_spot.emit()
         except IOError as e:
             print(f"Error occurred saving spotify data: {e}")
+
+    def run_func(self, param):
+        if self.spotify:
+            if param == "playback":
+                self.spotify.play_pause()
+            elif param == "previous":
+                self.spotify.previous_song()
+            elif param == "skip":
+                self.spotify.next_song()
+            elif param == "shuffle":
+                self.spotify.toggle_shuffle()
+            elif param == "repeat":
+                self.spotify.toggle_repeat()
+            else:
+                print("Invalid spotify param")
+        else:
+            print("Spotify not connected")

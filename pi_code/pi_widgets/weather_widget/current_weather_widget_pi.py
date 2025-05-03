@@ -49,11 +49,12 @@ class CurrentWeatherWidget(QWidget):
         self.weather_icon.move(130,5)
         self.weather_icon.setGraphicsEffect(create_drop_shadow())
         pi_signal_dispatcher.update_weather_widget.connect(self.update_current_values)
+        self.update_current_values()
 
     def update_current_values(self):
-        if os.path.exists("client_assets/weather_data.json"):
+        if os.path.exists("pi_assets/weather_data.json"):
             try:
-                with open ("client_assets/weather_data.json","r") as file:
+                with open ("pi_assets/weather_data.json","r") as file:
                     data = json.load(file)
                 #set the daily high/low and wind speed
                 daily_high = data.get("daily_high")

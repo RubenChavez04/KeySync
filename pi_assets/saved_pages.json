@@ -19,6 +19,37 @@
                 {
                     "type": "ButtonWidget",
                     "position": [
+                        576,
+                        250
+                    ],
+                    "size_multiplier": [
+                        2,
+                        2
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Sceenshot.png",
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "WeatherWidget",
+                    "position": [
+                        11,
+                        250
+                    ],
+                    "size_multiplier": [
+                        2,
+                        2
+                    ]
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
                         463,
                         10
                     ],
@@ -26,31 +57,9 @@
                         1,
                         1
                     ],
-                    "color": "#ff55ff",
+                    "color": "#f0f0f0",
                     "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [
-                            "Change_Page:0"
-                        ],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        576,
-                        10
-                    ],
-                    "size_multiplier": [
-                        2,
-                        2
-                    ],
-                    "color": "#55ff7f",
-                    "label": "",
-                    "image_path": null,
+                    "image_path": "pi_assets/button_images/App - Spotify.png",
                     "functions": {
                         "On_Press": [],
                         "On_Press_Release": [],
@@ -68,13 +77,12 @@
                         1,
                         1
                     ],
-                    "color": "#ff0000",
+                    "color": "#f0f0f0",
                     "label": "",
-                    "image_path": null,
+                    "image_path": "pi_assets/button_images/App - Discord.png",
                     "functions": {
                         "On_Press": [
-                            "Change_Page:2",
-                            "Change Page"
+                            "Launch App:C:\\Users\\chave\\AppData\\Local\\Discord\\Discord.exe"
                         ],
                         "On_Press_Release": [],
                         "Long_Press": [],
@@ -82,27 +90,51 @@
                     }
                 },
                 {
-                    "type": "WeatherWidget",
+                    "type": "ButtonWidget",
                     "position": [
-                        11,
+                        463,
                         250
                     ],
                     "size_multiplier": [
-                        2,
-                        2
-                    ]
-                }
-            ]
-        },
-        {
-            "image_path": null,
-            "color": "black",
-            "name": "Apps",
-            "widgets": [
+                        1,
+                        1
+                    ],
+                    "color": "#ff0000",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/TTULOGOWB.png",
+                    "functions": {
+                        "On_Press": [
+                            "Open URL:https://ttu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_1_1"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
                 {
                     "type": "ButtonWidget",
                     "position": [
-                        11,
+                        463,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Multimedia -Multi Action.png",
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        576,
                         10
                     ],
                     "size_multiplier": [
@@ -111,7 +143,7 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": "C:/Users/chave/Downloads/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/256x256 Icons/App - Spotify.png",
+                    "image_path": "pi_assets/button_images/App - Generic.png",
                     "functions": {
                         "On_Press": [],
                         "On_Press_Release": [],
@@ -123,7 +155,7 @@
                     "type": "ButtonWidget",
                     "position": [
                         237,
-                        10
+                        250
                     ],
                     "size_multiplier": [
                         2,
@@ -131,189 +163,7 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": "C:/Users/chave/Downloads/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/Aurora_Stream_Deck_Icon_Pack-By_Nerd_Or_Die/256x256 Icons/App - Chrome.png",
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "WeatherWidget",
-                    "position": [
-                        463,
-                        10
-                    ],
-                    "size_multiplier": [
-                        2,
-                        2
-                    ]
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        689,
-                        10
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        689,
-                        130
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "SpotifyWidget",
-                    "position": [
-                        11,
-                        250
-                    ],
-                    "size_multiplier": [
-                        4,
-                        2
-                    ]
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        463,
-                        250
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        576,
-                        250
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        689,
-                        250
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        463,
-                        370
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        576,
-                        370
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
-                    "functions": {
-                        "On_Press": [],
-                        "On_Press_Release": [],
-                        "Long_Press": [],
-                        "Long_Press_Release": []
-                    }
-                },
-                {
-                    "type": "ButtonWidget",
-                    "position": [
-                        689,
-                        370
-                    ],
-                    "size_multiplier": [
-                        1,
-                        1
-                    ],
-                    "color": "#f0f0f0",
-                    "label": "",
-                    "image_path": null,
+                    "image_path": "pi_assets/button_images/Misc - Website Link.png",
                     "functions": {
                         "On_Press": [],
                         "On_Press_Release": [],

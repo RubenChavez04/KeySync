@@ -62,6 +62,9 @@ class TabButton(QPushButton):
         line_edit.editingFinished.connect(finish_renaming)
         line_edit.show()
 
+    def delete(self):
+        self.deleteLater()
+
 
 class TabBar(QWidget):
     tab_changed = pyqtSignal(int)  #signal emitted when a tab index is changed
@@ -238,28 +241,22 @@ class TabBar(QWidget):
             scroll_bar.setValue(scroll_bar.value() + 20)
         event.accept()
 
-    def remove_tab(self, tab_button: TabButton):
-        """Remove a tab from the bar."""
-        index = self.tab_buttons.index(tab_button)  # Find index of the tab to be removed
+    def remove_tab(self, tab_button):
+        index = self.tab_buttons.index(tab_button)  # Find the index of the tab to be removed
 
-        # Disconnect any signals associated with the tab
+        # Disconnect signals and clean up resources
         tab_button.deleted.disconnect(self.remove_tab)
         tab_button.clicked.disconnect()
+        self.tab_buttons.pop(index)  # Remove the button from the list
+        self.tabs_layout.removeWidget(tab_button)
+        tab_button.deleteLater()
 
-        # Remove the tab from internal tracking
-        self.tab_buttons.pop(index)  # Remove button from the list
-        self.tabs_layout.removeWidget(tab_button)  # Remove button from the layout
-        tab_button.deleteLater()  # Clean up the tab button object
+        if len(self.tab_buttons) == 0:
+            self.add_new_tab()
 
-        # Emit a signal to notify other components to clean up the corresponding page
-        global_signal_dispatcher.tab_deleted_signal.emit()
+        # Emit a signal with the index to notify other components
+        global_signal_dispatcher.tab_deleted_signal.emit(index)
 
-        # Adjust active tab index
-        if self.current_tab_index == index:
-            self.current_tab_index = max(0, index - 1)
-            if self.tab_buttons:
-                self.set_active_tab(self.tab_buttons[self.current_tab_index])
+        # Adjust the active tab index
 
-        # Update other components about the change
-        self.tab_changed.emit(self.current_tab_index)
 

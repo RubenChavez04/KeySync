@@ -6,14 +6,14 @@ from gui_assets.buttons_sliders_etc.sidebar_button import SideBarToolButton
 
 
 class SelectPagePopup(QDialog):
-    def __init__(self, parent, pages):
+    def __init__(self, pages):
         """
         Popup for selecting a page, styled similarly to SelectFunctionPopup.
 
         :param parent: Parent widget.
         :param pages: List of pages (Page objects or dict containing page attributes).
         """
-        super().__init__(parent)
+        super().__init__()
         self.setWindowTitle("Select Page")
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)  # Make the window frameless
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
@@ -63,20 +63,15 @@ class SelectPagePopup(QDialog):
 
         # Add Buttons for Pages
         for i, page in enumerate(pages):
-            page_name = page.name if hasattr(page, 'name') else f"Page {i + 1}"  # Handle unnamed pages
+            page_name = page.name if hasattr(page, 'name') else f"Page {i + 1}"
             btn = SideBarToolButton(self, text=page_name)
-            btn.clicked.connect(lambda _, idx=i: self.select_page(idx))  # Pass the index on button press
+            btn.clicked.connect(lambda _, name=page_name: self.select_page(name))
             self.container_layout.addWidget(btn, i + 1, 0)
 
         self.window_layout.addLayout(self.container_layout)
         self.setLayout(self.layout)
 
-    def select_page(self, page_index):
-        """
-        Handle the selection of a page.
-
-        :param page_index: The index of the selected page.
-        """
-        self.selected_page_index = page_index
-        print(f"Selected Page Index: {page_index}")  # Debugging output
+    def select_page(self, page_name):
+        self.selected_page_index = page_name
+        print(f"Selected Page Index: {page_name}")  # Debugging output
         self.accept()  # Close the dialog with success

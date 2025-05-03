@@ -1,12 +1,10 @@
 import os
 from datetime import datetime
 import json
-
 import requests
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
-
 from pi_code.signal_dispatcher_pi import pi_signal_dispatcher
 from widgets.widget_asset_functions import create_drop_shadow
 
@@ -33,13 +31,13 @@ class HourlyWeatherWidget(QWidget):
                 hour_label.move(start_x +(i*spacing_x), start_y)
             hour_label.setGraphicsEffect(create_drop_shadow())
             self.hour_labels.append(hour_label)
-
+        self.update_hourly_values()
         pi_signal_dispatcher.update_weather_widget.connect(self.update_hourly_values)
 
     def update_hourly_values(self):
-        if os.path.exists("pi_code/client_assets/weather_data.json"):
+        if os.path.exists("pi_assets/weather_data.json"):
             try:
-                with open ("pi_code/client_assets/weather_data.json","r") as file:
+                with open ("pi_assets/weather_data.json","r") as file:
                     data = json.load(file)
                 hourly_temp = data.get("hourly_temp")
                 hours = data.get("hours")
@@ -52,12 +50,25 @@ class HourlyWeatherWidget(QWidget):
                 next_temps = hourly_temp[current_index:current_index+6]
                 next_weather_codes = weather_codes[current_index:current_index+6]
 
+                sunrise_time = data.get("sunrise")
+                sunset_time = data.get("sunset")
+
                 for i, hour_label in enumerate(self.hour_labels):
                     if i < len(next_temps):
                         hour_label.set_hour_temp(next_hours[i], f"{next_temps[i]}°")
-                        hour_label.set_icon(next_weather_codes[i],1)
+                        hour_label.set_icon(next_weather_codes[i],is_daytime(next_hours[i],sunrise_time,sunset_time))
             except Exception as e:
                 print(f"Error occurred updating hourly: {e}")
+
+def is_daytime(hour_str: str, sunrise: str, sunset: str) -> int:
+    # Convert "7:47 PM" to a date-time
+    hour_obj = datetime.strptime(hour_str, "%I%p")
+    hour = hour_obj.hour
+
+    sunrise_hour = datetime.strptime(sunrise, "%I:%M %p").hour
+    sunset_hour = datetime.strptime(sunset, "%I:%M %p").hour
+
+    return int(sunrise_hour <= hour < sunset_hour)
 
 class HourLabel(QWidget):
     def __init__(self, parent):

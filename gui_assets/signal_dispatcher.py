@@ -16,6 +16,8 @@ class SignalDispatcher(QObject):
     update_position = pyqtSignal(QPushButton)
     function_press = pyqtSignal(str, int)
     remove_widget_signal = pyqtSignal(QPushButton)
+    remove_func_signal = pyqtSignal(str, str)
+    func_added = pyqtSignal(QPushButton)
 
     #appearance widget signals
     add_label_signal = pyqtSignal()
@@ -25,7 +27,7 @@ class SignalDispatcher(QObject):
     selected_button = pyqtSignal(QPushButton)
 
     #page delete signal
-    tab_deleted_signal = pyqtSignal()
+    tab_deleted_signal = pyqtSignal(int)
 
     #close signal
     close_app_signal = pyqtSignal()
@@ -39,6 +41,7 @@ class SignalDispatcher(QObject):
     websocket_send_spot_progress = pyqtSignal(str)
     start_spotify_tasker = pyqtSignal()
     stop_spotify_tasker = pyqtSignal()
+    run_spot_func = pyqtSignal(str)
 
     #weather widget global signals
     websocket_send_weather = pyqtSignal()
@@ -46,6 +49,8 @@ class SignalDispatcher(QObject):
     #raspi button signal
     handle_function_signal = pyqtSignal(str)
 
+    #change page signal for simulate
+    change_page_signal = pyqtSignal(str)
 
 #create a global dispatcher instance for calling in other py files
 global_signal_dispatcher = SignalDispatcher()

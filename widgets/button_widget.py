@@ -1,11 +1,13 @@
 import os
 import re
+import shutil
 
 from PyQt6.QtCore import QPoint, Qt, QSize
 from PyQt6.QtGui import QMouseEvent, QPixmap, QIcon, QColor, QPainter, QPainterPath
-from PyQt6.QtWidgets import QPushButton, QInputDialog, QFileDialog, QColorDialog, QGraphicsDropShadowEffect
+from PyQt6.QtWidgets import QPushButton, QInputDialog, QFileDialog, QColorDialog, QGraphicsDropShadowEffect, QMenu
 
 from gui_assets.signal_dispatcher import global_signal_dispatcher
+from widgets.functions.function_handler import handle_message
 from widgets.widget_asset_functions import selected_button, create_rounded_icon
 
 
@@ -55,6 +57,7 @@ class ButtonWidget(QPushButton):
         global_signal_dispatcher.delete_button_signal.connect(self.delete_widget)
         global_signal_dispatcher.add_icon_signal.connect(self.edit_icon)
         global_signal_dispatcher.selected_button.connect(lambda btn: selected_button(self,btn))
+        global_signal_dispatcher.remove_func_signal.connect(self.remove_function)
 
 
     def edit_color(self):
@@ -94,6 +97,14 @@ class ButtonWidget(QPushButton):
                 else:
                     print("Failed to load image or no image path")
 
+    def remove_function(self, press_type, function):
+        if self.button_selected == self:
+            print(press_type,function)
+            if press_type in self.functions:
+                try:
+                    self.functions[press_type].remove(function)
+                except ValueError:
+                    print("Error occurred removing function")
 
     def choose_icon(self):
         downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -101,13 +112,41 @@ class ButtonWidget(QPushButton):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Icon", downloads_folder,
                                                    "Image Files (*.png *.jpg *.bmp);;All Files (*)")
         if file_path:
-            return file_path
+            button_image_folder = "pi_assets/button_images"
+            filename = os.path.basename(file_path)
+            dest = os.path.join(button_image_folder,filename)
+            shutil.copy(file_path,dest)
+            dest_test = str(dest).replace("\\","/")
+            return dest_test
 
     def delete_widget(self):
         if self.button_selected==self:
             self.button_selected = None
             global_signal_dispatcher.remove_widget_signal.emit(self)
             self.deleteLater()
+
+    def show_context_menu(self, event: QMouseEvent):
+        context_menu = QMenu(self)
+        simulate_on_press_action = context_menu.addAction("Simulate On Press")
+        simulate_press_release_action = context_menu.addAction("Simulate Press Release")
+        simulate_long_press_action = context_menu.addAction("Simulate Long Press")
+        simulate_long_press_release_action = context_menu.addAction("Simulate Long Press Release")
+        action = context_menu.exec(self.mapToGlobal(event.pos()))
+        if action == simulate_on_press_action:
+            self.handle_simulate("On_Press")
+        elif action == simulate_press_release_action:
+            self.handle_simulate("On_Press_Release")
+        elif action == simulate_long_press_action:
+            self.handle_simulate("Long_Press")
+        elif action == simulate_long_press_release_action:
+            self.handle_simulate("Long_Press_Release")
+
+    def handle_simulate(self, press_type):
+        if press_type in self.functions and self.functions[press_type]:
+            for func in self.functions[press_type]:
+                handle_message(func)
+        else:
+            print(f"No functions assigned for {press_type}")
 
     def mouseDoubleClickEvent(self,event):
         """Handle double-click to rename the tab."""
@@ -122,6 +161,10 @@ class ButtonWidget(QPushButton):
             self.startPos = event.pos() #get mouse position
             self.raise_()
             self.last_valid_position = self.pos()#save old position for invalid widget placement
+        if event.button() == Qt.MouseButton.RightButton:
+            self.show_context_menu(event)
+        super().mousePressEvent(event)
+
 
     def mouseMoveEvent(self, event: QMouseEvent):
         """mouse event handling for dragging the widget."""
@@ -135,10 +178,8 @@ class ButtonWidget(QPushButton):
         if event.button() == Qt.MouseButton.LeftButton:
             #get the snapped position for widget
             snapped_pos = self.parent.get_snapped_position(self.pos(), self.size_multiplier)
-
             #temporarily remove old positions, so widget can be moved 1 col over if needed
             self.parent.remove_widget_position(self)
-
             #check if the snapped position is valid to prevent overlapping
             if self.parent.is_position_available(snapped_pos, self.size_multiplier): #if the position in grid is valid
                 self.move(snapped_pos)  #move the widget to the snapped position
@@ -148,4 +189,5 @@ class ButtonWidget(QPushButton):
                 self.parent.save_widget_position(self, self.last_valid_position)  #restore old position
                 self.move(self.last_valid_position)  #revert to old position
             self.parent.update()
-
+    def delete(self):
+        self.deleteLater()

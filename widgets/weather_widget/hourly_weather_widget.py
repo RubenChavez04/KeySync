@@ -47,10 +47,23 @@ class HourlyWeatherWidget(QWidget):
         next_temps = hourly_temp[current_index:current_index+6]
         next_weather_codes = weather_codes[current_index:current_index+6]
 
+        sunrise_time = data.get("sunrise")
+        sunset_time = data.get("sunset")
+
         for i, hour_label in enumerate(self.hour_labels):
             if i < len(next_temps):
                 hour_label.set_hour_temp(next_hours[i], f"{next_temps[i]}°")
-                hour_label.set_icon(next_weather_codes[i],1)
+                hour_label.set_icon(next_weather_codes[i],is_daytime(next_hours[i],sunrise_time,sunset_time))
+
+def is_daytime(hour_str: str, sunrise: str, sunset: str) -> int:
+    # Convert "7:47 PM" to a date-time
+    hour_obj = datetime.strptime(hour_str, "%I%p")
+    hour = hour_obj.hour
+
+    sunrise_hour = datetime.strptime(sunrise, "%I:%M %p").hour
+    sunset_hour = datetime.strptime(sunset, "%I:%M %p").hour
+
+    return int(sunrise_hour <= hour < sunset_hour)
 
 class HourLabel(QWidget):
     def __init__(self, parent):

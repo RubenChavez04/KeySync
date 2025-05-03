@@ -13,7 +13,8 @@ class Page(QWidget):
         super().__init__(parent)
 
         self.image_path = image_path
-
+        self.name = None
+        self.color = None
         # Main page layout
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -39,27 +40,23 @@ class Page(QWidget):
         self.setLayout(layout)
 
         # Set the background
-        self.set_background(self.image_path)
+        self.set_background(self.color)
 
-    def set_background(self, image_path):
-        if image_path and os.path.exists(image_path):
-            # File exists, use it
-            self.frame.setStyleSheet(f"""
-                QFrame {{
-                    background-image: url({image_path});
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size: cover;
-                    border-radius: 0px;
-                }}
-            """)
-        else:
-            self.frame.setStyleSheet("""
-                QFrame 
-                    background: black;
-                    border-radius: 0px;
-            """)
+    def set_background(self, color):
+        """set the page background to the given image or default to random gradient."""
+        # default gradient background if no image is set
+        self.color = color
+        self.frame.setStyleSheet(f"""
+            QFrame {{
+                background: {self.color};
+                border: 2px solid darkgray;
+            }}
+        """)
         self.update()
+
+    def delete_page(self):
+        self.page_grid.delete_grid()
+        self.deleteLater()
 
 
 class PageGrid(QWidget):
@@ -168,3 +165,9 @@ class PageGrid(QWidget):
                 if (cell_x, cell_y) in self.positions:
                     return False
         return True
+
+    def delete_grid(self):
+        for widget in self.widgets:
+            widget.delete()
+        self.widgets.clear()
+        self.deleteLater()

@@ -70,6 +70,7 @@ class ClientButtonWidget(QPushButton):
         """handle button press events."""
         if event.button() == Qt.MouseButton.LeftButton:
             print("Button pressed: On_Press functions triggered")
+
             for func in self.functions["On_Press"]:
                 self.func_handler(func)
         elif event.button() == Qt.MouseButton.RightButton:
@@ -90,17 +91,18 @@ class ClientButtonWidget(QPushButton):
                 self.func_handler(func)
         super().mouseReleaseEvent(event)
 
+    def delete(self):
+        self.deleteLater()
+
     def func_handler(self, func):
         """send signal for button press to client, or run locally depending on func"""
-        colon_start = func.find(":")
-        func_type = func[0:colon_start]
-        param = func[colon_start+1:]
+        colon_start = func.split(":")
+        func_type = colon_start[0]
         print(func_type)
-        print(param)
         print(f"Triggered function:{func}")
         if func_type == "Change Page":
-            index = int(param)
-            pi_signal_dispatcher.change_page_signal.emit(index)
+            page_name = colon_start[1]
+            pi_signal_dispatcher.change_page_signal.emit(page_name)
             return
         else:
             pi_signal_dispatcher.send_func_signal.emit(func)
@@ -108,4 +110,27 @@ class ClientButtonWidget(QPushButton):
 
 
 
+"""
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            print("Button pressed: On_Press functions triggered")
+            
+            for func in self.functions["On_Press"]:
+                self.func_handler(func)
+        elif event.button() == Qt.MouseButton.RightButton:
+            print("Button pressed: Long_Press functions triggered")
+            for func in self.functions["Long_Press"]:
+                self.func_handler(func)
+        super().mousePressEvent(event)
 
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            print("Button released: On_Press_Release functions triggered")
+            for func in self.functions["On_Press_Release"]:
+                self.func_handler(func)
+        elif event.button() == Qt.MouseButton.RightButton:
+            print("Button released: Long_Press_Release functions triggered")
+            for func in self.functions["Long_Press_Release"]:
+                self.func_handler(func)
+        super().mouseReleaseEvent(event)
+"""

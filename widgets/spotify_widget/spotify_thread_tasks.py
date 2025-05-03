@@ -13,10 +13,12 @@ class GetTrackInfoTask(QRunnable):
         super().__init__()
         self.sp = spotify
         self.wp = whats_playing
-
+        print("tasks running")
     def run(self):
         try:
+            print("trying")
             if self.sp.sp:
+                print("good")
                 current_track = self.sp.get_current_playing()
                 if current_track: #if a song is playing
                     # check if the currently playing song is still the same
@@ -46,6 +48,7 @@ class GetTrackInfoTask(QRunnable):
                             "artist": artist,
                             "duration": duration
                         })
+
         except Exception as e:
             print(f"Failed to fetch album info or extract palette: {str(e)}")
             # Emit an empty result in case of failure

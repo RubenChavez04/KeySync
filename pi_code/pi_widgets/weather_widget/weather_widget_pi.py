@@ -5,7 +5,6 @@ from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QMouseEvent
 from PyQt6.QtWidgets import QStackedWidget
 
-from gui_assets.signal_dispatcher import global_signal_dispatcher
 from pi_code.pi_widgets.weather_widget.current_weather_widget_pi import CurrentWeatherWidget
 from pi_code.pi_widgets.weather_widget.hourly_weather_widget_pi import HourlyWeatherWidget
 from pi_code.signal_dispatcher_pi import pi_signal_dispatcher
@@ -50,11 +49,12 @@ class WeatherWidget(QStackedWidget):
         self.hourly_widget = HourlyWeatherWidget(self, self.width, self.height)
         self.addWidget(self.hourly_widget)
         pi_signal_dispatcher.update_weather_widget.connect(self.recolor_widget)
+        self.recolor_widget()
 
     def recolor_widget(self):
-        if os.path.exists("client_assets/weather_data.json"):
+        if os.path.exists("pi_assets/weather_data.json"):
             try:
-                with open("client_assets/weather_data.json", "r") as file:
+                with open("pi_assets/weather_data.json", "r") as file:
                     data = json.load(file)
                 is_day = data.get("is_day")
                 day_night = "day" if is_day == 1 else "night"
@@ -107,11 +107,6 @@ class WeatherWidget(QStackedWidget):
             except Exception as e:
                 print(f"Error occurred recoloring weather widget: {e}")
 
-    def delete_widget(self):
-        if self.button_selected == self:
-            self.deleteLater()
-            global_signal_dispatcher.remove_widget_signal.emit(self)
-
     def mousePressEvent(self, event: QMouseEvent):
         """mouse event handling for initializing dragging the widget."""
         if event.button() == Qt.MouseButton.LeftButton:
@@ -124,3 +119,6 @@ class WeatherWidget(QStackedWidget):
                 self.setCurrentIndex(0)
 
 
+    def delete(self):
+        # Delete the widget safely
+        self.deleteLater()

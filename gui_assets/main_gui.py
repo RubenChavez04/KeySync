@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QColor, QAction, QIcon
 from PyQt6.QtWidgets import (
     QMainWindow, QVBoxLayout, QWidget, QGridLayout,
-    QStackedLayout, QMenu, QSystemTrayIcon
+    QStackedLayout, QMenu, QSystemTrayIcon, QColorDialog
 )
 
 from gui_assets.buttons_sliders_etc.page import Page
@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
         main_window_layout.addWidget(self.top_bar, 0, 1, alignment=Qt.AlignmentFlag.AlignTop) #add top bar to layout
 
         #connect the tabs of the current page
-        self.top_bar.tab_bar.tab_changed.connect(self.switch_or_add_page) #go to switch or add page when state change
+        self.top_bar.tab_bar.tab_changed.connect(lambda index: self.switch_or_add_page(index=index)) #go to switch or add page when state change
 
         #run button function
         global_signal_dispatcher.function_press.connect(exec_button_press)
@@ -119,6 +119,7 @@ class MainWindow(QMainWindow):
         global_signal_dispatcher.tab_deleted_signal.connect(self.handle_tab_deletion)
         global_signal_dispatcher.save_pages_signal.connect(self.save_all_pages_data)
         global_signal_dispatcher.tab_renamed_signal.connect(self.update_page_name)
+        global_signal_dispatcher.change_page_signal.connect(lambda page: self.switch_or_add_page(page_name=page))
 
         #set the layout for the central widget
         title_bar_layout.addLayout(main_window_layout)
@@ -183,28 +184,47 @@ class MainWindow(QMainWindow):
         self.page_container.addWidget(page) #add page to page container
         page.name = f"Page {len(self.pages)}"
 
-    def switch_or_add_page(self,index, restore=False):
+    def switch_or_add_page(self,index = None, page_name = None, restore=False):
         """When a tab is changed or added, switch to page that is indexed with tab, else add a new page"""
         if not restore:
             self.blockSignals(False)
         if restore:
             self.blockSignals(True)
-        if index >= len(self.pages): #check if page exists with current amount of tabs
-            self.add_new_page() #add a new page
-
-        self.page_container.setCurrentWidget(self.pages[index]) #go to page indexed with tab
+        if page_name is not None:
+            for i, page in enumerate(self.pages):
+                name = self.pages[i].name
+                if name == page_name:
+                    self.page_container.setCurrentWidget(self.pages[i]) #go to page indexed with tab
+                    self.top_bar.tab_bar.change_tab(i)
+                    return
+        elif index is not None:
+            if index >= len(self.pages):  # check if page exists with current amount of tabs
+                self.add_new_page()  # add a new page
+            self.page_container.setCurrentWidget(self.pages[index])
+            return
 
     def update_page_name(self, new_name, index):
         if index < len(self.pages):
             self.pages[index].name = new_name
             print(f"Name:{new_name} Index:{index}")
 
-    def handle_tab_deletion(self):
-        if self.pages:
-            current_index = self.page_container.currentIndex()
-            page_to_remove = self.pages.pop(current_index)
-            self.page_container.removeWidget(page_to_remove)
-            page_to_remove.deleteLater()
+    def handle_tab_deletion(self, index):
+        current_widget = self.page_container.currentWidget()
+        if index <= len(self.pages):  # Ensure the index is valid
+            page_to_remove = self.pages.pop(index)  # Remove the page from the list
+            self.page_container.removeWidget(page_to_remove)  # Remove it from the stacked layout
+            page_to_remove.delete_page()  # Clean up the widget
+
+        if not self.pages:
+            self.add_new_page()
+            new_index = 0
+        else:
+            if current_widget in self.pages:
+                new_index = self.page_container.currentIndex()
+            else:
+                new_index = 0
+        self.switch_or_add_page(index=new_index)
+        self.top_bar.tab_bar.change_tab(new_index)
 
     def show_add_widget_popup(self):
         #get the current page from index and show popup for respective page
@@ -213,13 +233,15 @@ class MainWindow(QMainWindow):
 
     def show_background_dialog(self):
         """Open the image import dialog."""
-        dialog = ChangePageBackgroundDialog()
-        dialog.exec()
+        color = QColorDialog.getColor(initial=QColor(255, 255, 255), title="Select Color")
+        if color.isValid():
+            color = color.name()
+            self.update_page_background(color)
 
-    def update_page_background(self, image_path):
+    def update_page_background(self, color):
         """Update the background of the current page."""
         current_page = self.pages[self.page_container.currentIndex()]
-        current_page.update_background(image_path)
+        current_page.set_background(color)
 
     def save_all_pages_data(self,close=False):
         page_save_path = "pi_assets/saved_pages.json"
@@ -259,15 +281,16 @@ class MainWindow(QMainWindow):
             # Loop through all pages in JSON
             for index, page_data in enumerate(all_pages_data["pages"]):
                 # Ensure the page exists in the stack layout
-                self.switch_or_add_page(index, restore=True)
+                self.switch_or_add_page(index=index, restore=True)
 
                 # Access the newly added page
                 page = self.pages[index]
 
                 # Restore the page's background
-                page.image_path = page_data.get("image_path", "")
+                page.color = page_data.get("color", "#000000")
+                #page.image_path = page_data.get("image_path", "")
                 page.name = page_data.get("name", f"Page {index+1}")
-                page.set_background(page.image_path)
+                page.set_background(page.color)
 
                 # Only add a new tab for restored pages
                 if index == 0:
@@ -304,7 +327,6 @@ class MainWindow(QMainWindow):
         self.top_bar.tab_bar.change_tab(0)
         self.update()  # Ensure everything is rendered correctly
         print("Finished restoring all pages")
-
 
 
 

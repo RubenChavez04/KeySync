@@ -162,3 +162,6 @@ class WeatherWidget(QStackedWidget):
                 self.move(self.last_valid_position)  #revert to old position
         self.parent.update()
 
+    def delete(self):
+        self.deleteLater()
+

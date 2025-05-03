@@ -91,14 +91,14 @@ class ClientSpotifyWidget(QPushButton):
         # Add play/pause button
 
         self.playback_button = self.create_playback_button(
-            "client_assets/play_icon.png",
+            "pi_widgets/spotify_widget/spotify_widget_assets/play_icon.png",
             (lambda: pi_signal_dispatcher.send_func_signal.emit("spotify:playback")),
             playback_fixed_size,
             (playback_x, playback_y)
         )
         # Add previous button
         self.previous_button = self.create_playback_button(
-            "client_assets/skip_icon.png",
+            "pi_widgets/spotify_widget/spotify_widget_assets/skip_icon.png",
             (lambda: pi_signal_dispatcher.send_func_signal.emit("spotify:previous")),
             playback_fixed_size,
             (playback_x-playback_spacing_x, playback_y),
@@ -107,7 +107,7 @@ class ClientSpotifyWidget(QPushButton):
 
         # Add skip button
         self.next_button = self.create_playback_button(
-            "client_assets/skip_icon.png",
+            "pi_widgets/spotify_widget/spotify_widget_assets/skip_icon.png",
             (lambda: pi_signal_dispatcher.send_func_signal.emit("spotify:skip")),
             playback_fixed_size,
             (playback_x+playback_spacing_x, playback_y)
@@ -115,7 +115,7 @@ class ClientSpotifyWidget(QPushButton):
 
         #Add shuffle button
         self.shuffle_button = self.create_playback_button(
-            "client_assets/shuffle_icon.png",
+            "pi_widgets/spotify_widget/spotify_widget_assets/shuffle_icon.png",
             (lambda: pi_signal_dispatcher.send_func_signal.emit("spotify:shuffle")),
             playback_fixed_size,
             (playback_x - int(playback_spacing_x / 2), playback_y + playback_spacing_y)
@@ -123,7 +123,7 @@ class ClientSpotifyWidget(QPushButton):
 
         # Add repeat button
         self.repeat_button = self.create_playback_button(
-            "client_assets/repeat_icon.png",
+            "pi_widgets/spotify_widget/spotify_widget_assets/repeat_icon.png",
             (lambda: pi_signal_dispatcher.send_func_signal.emit("spotify:repeat")),
             playback_fixed_size,
             (playback_x + int(playback_spacing_x / 2), playback_y + playback_spacing_y)
@@ -201,18 +201,18 @@ class ClientSpotifyWidget(QPushButton):
         if is_playing != self.is_playing_temp:
             self.is_playing_temp = is_playing
             if is_playing == 'True':
-                self.playback_button.setIcon(QIcon("client_assets/pause_icon.png"))
+                self.playback_button.setIcon(QIcon("pi_widgets/spotify_widget/spotify_widget_assets/pause_icon.png"))
             else:
-                self.playback_button.setIcon(QIcon("client_assets/play_icon.png"))
+                self.playback_button.setIcon(QIcon("pi_widgets/spotify_widget/spotify_widget_assets/play_icon.png"))
         self.progress_slider.setValue(progress)
         self.progress_label.setText(f"{progress // 60000}:{(progress // 1000) % 60:02}")
 
     def update_widget(self):
-        if not os.path.exists("client_assets/spotify_data.json"):
+        if not os.path.exists("pi_assets/spotify_data.json"):
             print("spotify_data.json not found")
             return
         try:
-            with open("client_assets/spotify_data.json") as file:
+            with open("pi_assets/spotify_data.json") as file:
                 data = json.load(file)
         except (IOError, json.JSONDecodeError) as e:
             print(f"Error loading spotify data: {e}")
@@ -290,6 +290,9 @@ class ClientSpotifyWidget(QPushButton):
             button.setIcon(QIcon(icon_path))
 
         return button
+
+    def delete(self):
+        self.deleteLater()
 
 def create_drop_shadow():
     shadow = QGraphicsDropShadowEffect()
