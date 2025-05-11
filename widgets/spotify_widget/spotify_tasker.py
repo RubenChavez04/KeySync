@@ -5,13 +5,13 @@ from widgets.spotify_widget.spotify import SpotifyIntegration
 from widgets.spotify_widget.spotify_signals import spotify_signals
 from widgets.spotify_widget.spotify_thread_tasks import GetTrackInfoTask, UpdateSliderTask
 
+
 #TODO: need to make a signal that can initially update the image when a new widget is added
 class SpotifyThreads(QObject):
     _instance = None  #variable to check if an instance is created
 
     @staticmethod #staticmethod used so an instance of the class can be made within the class
     def get_instance():
-        print("spotify_tasker get_instance running")
         #use this method to get instance in spotify widget class
         #check if an instance is created
         if SpotifyThreads._instance is None:

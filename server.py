@@ -28,7 +28,7 @@ async def send_initial_files(websocket):
     all_paths = get_icons(initial_file_path)
     for path in all_paths:
         await send_file(websocket,path)
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.3)
 
 async def send_file(websocket, file_path):
     if os.path.exists(file_path):
@@ -42,7 +42,7 @@ async def send_file(websocket, file_path):
         await websocket.send(b"EOF")
 
         print(f"Sent file: {file_name}")
-        await asyncio.sleep(2)
+        await asyncio.sleep(0.3)
     else:
         print(f"File not found: {file_path}")
 
@@ -54,13 +54,13 @@ async def receive_messages(websocket):
             print(f"Pi >>> {message}")
             if message.startswith("files"):
                 await send_initial_files(websocket)
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.2)
             elif message.startswith("json"):
                 await send_file(websocket,json_path)
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.2)
             elif "spotify_json" in message:
                 await send_file(websocket,spotify_data_path)
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.2)
             elif "button" in message:
                 await send_button_images()
             else:
@@ -125,8 +125,8 @@ async def send_spotify_data_file():
                 await send_file(websocket, spotify_data_path)  # Send Spotify data
             except Exception as e:
                 print(f"Error sending Spotify data file: {e}")
-            else:
-                print("No active WebSocket connection to send Spotify data file.")
+    else:
+        print("No active WebSocket connection to send Spotify data file.")
 
 async def send_weather_data_file():
     global active_connections
@@ -135,9 +135,9 @@ async def send_weather_data_file():
             try:
                 await send_file(websocket, weather_data_path)  # Send Spotify data
             except Exception as e:
-                print(f"Error sending Spotify data file: {e}")
-            else:
-                print("No active WebSocket connection to send Spotify data file.")
+                print(f"Error sending Weather data file: {e}")
+    else:
+        print("No active WebSocket connection to send Weather data file.")
 
 async def send_json_file():
     global active_connections
@@ -146,9 +146,9 @@ async def send_json_file():
             try:
                 await send_file(websocket, json_path)
             except Exception as e:
-                print(f"Error sending Spotify data file: {e}")
-            else:
-                print("No active WebSocket connection to send Spotify data file.")
+                print(f"Error sending json data file: {e}")
+    else:
+        print("No active WebSocket connection to send json data file.")
 
 async def send_button_images():
     global active_connections
@@ -157,12 +157,13 @@ async def send_button_images():
             for path in get_icons(button_images_file_path):
                 try:
                     await send_file(websocket, path)
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(.1)
                 except Exception as e:
-                    print(f"Error sending Spotify data file: {e}")
-                else:
-                    print("No active WebSocket connection to send Spotify data file.")
+                    print(f"Error sending button_image: {e}")
             await send_json_file()
+    else:
+        print("No active WebSocket connection to send json data file.")
+
 
 global_signal_dispatcher.websocket_send_message.connect(lambda msg: asyncio.create_task(send_message(msg)))
 global_signal_dispatcher.websocket_send_spot.connect(lambda: asyncio.create_task(send_spotify_data_file()))

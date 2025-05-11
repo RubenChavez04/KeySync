@@ -4,7 +4,6 @@ import winreg
 
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QPushButton, QFileDialog
 
-
 def get_apps2():
     # Get the directory of the current Python script
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,7 +21,6 @@ def get_apps2():
         print(result.stdout)
     else:
         print(f"Error running script: {result.stderr}")
-
 
 def get_apps():
     uninstall_keys = [
@@ -56,7 +54,6 @@ def get_apps():
             except FileNotFoundError:
                 continue
     return sorted(apps_list, key=lambda x: x[0].lower())
-
 
 class AppSelectionDialog(QDialog):
     def __init__(self, apps, parent=None):

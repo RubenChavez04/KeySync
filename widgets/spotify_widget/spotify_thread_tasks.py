@@ -13,12 +13,9 @@ class GetTrackInfoTask(QRunnable):
         super().__init__()
         self.sp = spotify
         self.wp = whats_playing
-        print("tasks running")
     def run(self):
         try:
-            print("trying")
             if self.sp.sp:
-                print("good")
                 current_track = self.sp.get_current_playing()
                 if current_track: #if a song is playing
                     # check if the currently playing song is still the same
@@ -39,7 +36,6 @@ class GetTrackInfoTask(QRunnable):
                         if len(palette) < 2:
                             palette.append(palette[0])  #
                         #emit data
-                        print("sending signal")
                         spotify_signals.widget_update.emit({
                             "image_data": image_data,
                             "url": url,

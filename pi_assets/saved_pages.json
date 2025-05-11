@@ -28,9 +28,11 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": "pi_assets/button_images/Sceenshot.png",
+                    "image_path": "pi_assets/button_images/App - Chrome.png",
                     "functions": {
-                        "On_Press": [],
+                        "On_Press": [
+                            "Launch App:C:/Program Files/Google/Chrome/Application/chrome.exe"
+                        ],
                         "On_Press_Release": [],
                         "Long_Press": [],
                         "Long_Press_Release": []
@@ -61,7 +63,9 @@
                     "label": "",
                     "image_path": "pi_assets/button_images/App - Spotify.png",
                     "functions": {
-                        "On_Press": [],
+                        "On_Press": [
+                            "Launch App:C:\\Users\\chave\\AppData\\Roaming\\Spotify\\Spotify.exe"
+                        ],
                         "On_Press_Release": [],
                         "Long_Press": [],
                         "Long_Press_Release": []
@@ -82,7 +86,7 @@
                     "image_path": "pi_assets/button_images/App - Discord.png",
                     "functions": {
                         "On_Press": [
-                            "Launch App:C:\\Users\\chave\\AppData\\Local\\Discord\\Discord.exe"
+                            "Launch App:C:/GameShortcuts/Discord.lnk"
                         ],
                         "On_Press_Release": [],
                         "Long_Press": [],
@@ -123,7 +127,7 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": "pi_assets/button_images/Multimedia -Multi Action.png",
+                    "image_path": "pi_assets/button_images/Aurora_BG_7.png",
                     "functions": {
                         "On_Press": [],
                         "On_Press_Release": [],
@@ -145,7 +149,9 @@
                     "label": "",
                     "image_path": "pi_assets/button_images/App - Generic.png",
                     "functions": {
-                        "On_Press": [],
+                        "On_Press": [
+                            "Change Page:Apps"
+                        ],
                         "On_Press_Release": [],
                         "Long_Press": [],
                         "Long_Press_Release": []
@@ -163,9 +169,470 @@
                     ],
                     "color": "#f0f0f0",
                     "label": "",
-                    "image_path": "pi_assets/button_images/Misc - Website Link.png",
+                    "image_path": "pi_assets/button_images/App - Microsoft Outlook.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/Program Files/Microsoft Office/root/Office16/OUTLOOK.EXE"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                }
+            ]
+        },
+        {
+            "image_path": null,
+            "color": "#000000",
+            "name": "Apps",
+            "widgets": [
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        350,
+                        10
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Misc - Home.png",
+                    "functions": {
+                        "On_Press": [
+                            "Change Page:Main/Home"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        350,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Misc - Folder.png",
                     "functions": {
                         "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        463,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Settings.png",
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        11,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Web - Youtube.png",
+                    "functions": {
+                        "On_Press": [
+                            "Open URL:youtube.com"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        124,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Discord.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/GameShortcuts/Discord.lnk"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        237,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Xbox.png",
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        350,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Game - Fortnite.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/GameShortcuts/Fortnite.url"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        463,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/THE-HOLY-ZYN.jpg",
+                    "functions": {
+                        "On_Press": [
+                            "Open URL:https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        576,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Game - Rainbow 6.jpg",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/GameShortcuts/Tom Clancy's Rainbow Six Siege.url"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        130
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Microsoft Word.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/Program Files/Microsoft Office/root/Office16/WINWORD.EXE"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        11,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Microsoft PowerPoint.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/Program Files/Microsoft Office/root/Office16/POWERPNT.EXE"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        237,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Amazon.png",
+                    "functions": {
+                        "On_Press": [
+                            "Open URL:amazon.com"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        350,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/Game - RocketLeague.jpg",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/GameShortcuts/Rocket League\u00ae.url"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        463,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#000000",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/2611fdd1a2a998be4d3af1466d41d9d1.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:steam://rungameid/431960"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        576,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Google Drive.png",
+                    "functions": {
+                        "On_Press": [
+                            "Open URL:drive.google.com"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Epic Games.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/Program Files (x86)/Epic Games/Launcher/Portal/Binaries/Win32/EpicGamesLauncher.exe"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        11,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Steam.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/Program Files (x86)/Steam/steam.exe"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        124,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#ff4a1d",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/wooting_logo_white.png",
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        237,
+                        370
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Microsoft Teams.png",
+                    "functions": {
+                        "On_Press": [],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        124,
+                        250
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#f0f0f0",
+                    "label": "",
+                    "image_path": "pi_assets/button_images/App - Microsoft Excel.png",
+                    "functions": {
+                        "On_Press": [
+                            "Launch App:C:/Program Files/Microsoft Office/root/Office16/EXCEL.EXE"
+                        ],
+                        "On_Press_Release": [],
+                        "Long_Press": [],
+                        "Long_Press_Release": []
+                    }
+                },
+                {
+                    "type": "ButtonWidget",
+                    "position": [
+                        689,
+                        10
+                    ],
+                    "size_multiplier": [
+                        1,
+                        1
+                    ],
+                    "color": "#ff00ff",
+                    "label": "",
+                    "image_path": null,
+                    "functions": {
+                        "On_Press": [
+                            "Change Page:Page 3"
+                        ],
                         "On_Press_Release": [],
                         "Long_Press": [],
                         "Long_Press_Release": []

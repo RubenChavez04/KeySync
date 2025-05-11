@@ -42,7 +42,7 @@ def handle_message(message):
                     param = param+":"+param_temp
                 else:
                     param = param_temp
-        webbrowser.get().open(param)
+        webbrowser.open(param)
     else:
         print("Function not recognized")
     return

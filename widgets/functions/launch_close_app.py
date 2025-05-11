@@ -47,15 +47,20 @@ def run_function(app, function):
 
 def open_app(filepath):
     if ".exe" in filepath:
-        shell_process = subprocess.Popen(filepath, shell=True, close_fds=True)
+        subprocess.Popen(filepath, shell=True, close_fds=True)
         """for i in range(len(appList)):
             if appList[i][0] == app:
                 appList[i][2] = shell_process.pid
                 break"""
     elif "URL " in filepath:  #Given from get_file_path, will start with 'URL '
         webbrowser.open(filepath[4:])
-    elif "Steam" in filepath:
+    elif "steam" in filepath:
         subprocess.Popen(['explorer.exe',f'steam://rungameid/{filepath[6:]}'],shell=True)
+    else:
+        try:
+            subprocess.Popen(filepath,shell=True,close_fds=True)
+        except Exception as e:
+            print(f"Error launching {filepath}: {e}")
 
 def close_app(app):
     child_pid = get_child_shell(app)
